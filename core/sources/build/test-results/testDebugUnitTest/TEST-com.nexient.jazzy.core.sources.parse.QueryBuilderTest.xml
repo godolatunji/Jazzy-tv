@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.nexient.jazzy.core.sources.parse.QueryBuilderTest" tests="12" skipped="0" failures="0" errors="0" timestamp="2026-10-10T22:22:40.606Z" hostname="Olatunjis-MacBook-Pro.local" time="0.002">
+  <properties/>
+  <testcase name="movie query is title plus year" classname="com.nexient.jazzy.core.sources.parse.QueryBuilderTest" time="0.001"/>
+  <testcase name="double digit seasons and episodes are zero padded only to two" classname="com.nexient.jazzy.core.sources.parse.QueryBuilderTest" time="0.0"/>
+  <testcase name="movie without year is the title alone" classname="com.nexient.jazzy.core.sources.parse.QueryBuilderTest" time="0.0"/>
+  <testcase name="show without season is the show name" classname="com.nexient.jazzy.core.sources.parse.QueryBuilderTest" time="0.0"/>
+  <testcase name="season without episode skips the episode query" classname="com.nexient.jazzy.core.sources.parse.QueryBuilderTest" time="0.0"/>
+  <testcase name="original title in a non-latin script is skipped" classname="com.nexient.jazzy.core.sources.parse.QueryBuilderTest" time="0.0"/>
+  <testcase name="punctuation is stripped for searching" classname="com.nexient.jazzy.core.sources.parse.QueryBuilderTest" time="0.0"/>
+  <testcase name="original title equal after normalisation is not repeated" classname="com.nexient.jazzy.core.sources.parse.QueryBuilderTest" time="0.0"/>
+  <testcase name="episode query then season pack then complete" classname="com.nexient.jazzy.core.sources.parse.QueryBuilderTest" time="0.0"/>
+  <testcase name="different original title adds a second query" classname="com.nexient.jazzy.core.sources.parse.QueryBuilderTest" time="0.0"/>
+  <testcase name="normaliser drops leading articles and and for matching" classname="com.nexient.jazzy.core.sources.parse.QueryBuilderTest" time="0.0"/>
+  <testcase name="ampersand becomes and, apostrophes and accents are dropped" classname="com.nexient.jazzy.core.sources.parse.QueryBuilderTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

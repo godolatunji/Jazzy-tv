@@ -1,16 +1,16 @@
 -- Merging decision tree log ---
 manifest
-ADDED from /Users/olatunji/AndroidStudioProjects/Jazzy/core/sources/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest11579977446041611493.xml:2:13-83
-INJECTED from /Users/olatunji/AndroidStudioProjects/Jazzy/core/sources/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest11579977446041611493.xml:2:13-83
+ADDED from /Users/olatunji/AndroidStudioProjects/Jazzy/core/sources/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest2098949826603220885.xml:2:13-83
+INJECTED from /Users/olatunji/AndroidStudioProjects/Jazzy/core/sources/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest2098949826603220885.xml:2:13-83
 	package
-		INJECTED from /Users/olatunji/AndroidStudioProjects/Jazzy/core/sources/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest11579977446041611493.xml
+		INJECTED from /Users/olatunji/AndroidStudioProjects/Jazzy/core/sources/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest2098949826603220885.xml
 	xmlns:android
-		ADDED from /Users/olatunji/AndroidStudioProjects/Jazzy/core/sources/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest11579977446041611493.xml:2:23-81
+		ADDED from /Users/olatunji/AndroidStudioProjects/Jazzy/core/sources/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest2098949826603220885.xml:2:23-81
 uses-sdk
-INJECTED from /Users/olatunji/AndroidStudioProjects/Jazzy/core/sources/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest11579977446041611493.xml reason: use-sdk injection requested
-INJECTED from /Users/olatunji/AndroidStudioProjects/Jazzy/core/sources/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest11579977446041611493.xml
-INJECTED from /Users/olatunji/AndroidStudioProjects/Jazzy/core/sources/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest11579977446041611493.xml
+INJECTED from /Users/olatunji/AndroidStudioProjects/Jazzy/core/sources/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest2098949826603220885.xml reason: use-sdk injection requested
+INJECTED from /Users/olatunji/AndroidStudioProjects/Jazzy/core/sources/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest2098949826603220885.xml
+INJECTED from /Users/olatunji/AndroidStudioProjects/Jazzy/core/sources/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest2098949826603220885.xml
 	android:targetSdkVersion
-		INJECTED from /Users/olatunji/AndroidStudioProjects/Jazzy/core/sources/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest11579977446041611493.xml
+		INJECTED from /Users/olatunji/AndroidStudioProjects/Jazzy/core/sources/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest2098949826603220885.xml
 	android:minSdkVersion
-		INJECTED from /Users/olatunji/AndroidStudioProjects/Jazzy/core/sources/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest11579977446041611493.xml
+		INJECTED from /Users/olatunji/AndroidStudioProjects/Jazzy/core/sources/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest2098949826603220885.xml

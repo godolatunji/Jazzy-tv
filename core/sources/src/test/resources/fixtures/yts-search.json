@@ -1,0 +1,4 @@
+{"status":"ok","data":{"movie_count":1,"movies":[{"id":1,"url":"https://yts.example/movies/big-buck-bunny-2008","imdb_code":"tt1254207","title":"Big Buck Bunny","year":2008,"torrents":[
+  {"url":"https://yts.example/torrent/download/AAA","hash":"C87BA9523D37B0FBCCEB30F0C4D11E917D9ED0DC","quality":"720p","type":"bluray","video_codec":"x264","audio_channels":"2.0","seeds":30,"peers":2,"size":"500.1 MB","size_bytes":524392448,"date_uploaded":"2015-11-01 00:00:00"},
+  {"url":"https://yts.example/torrent/download/BBB","hash":"DD8255ECDC7CA55FB0BBF81323D87062DB1F6D1C","quality":"1080p","type":"web","video_codec":"x265","audio_channels":"5.1","seeds":80,"peers":5,"size":"1.2 GB","size_bytes":1288490189,"date_uploaded":"2015-11-01 00:00:00"}
+]}]}}

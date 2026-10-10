@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.nexient.jazzy.core.sources.test" >
+
+    <uses-sdk
+        android:minSdkVersion="28"
+        android:targetSdkVersion="37" />
+
+    <instrumentation
+        android:name="androidx.test.runner.AndroidJUnitRunner"
+        android:label="Tests for com.nexient.jazzy.core.sources.test"
+        android:targetPackage="com.nexient.jazzy.core.sources.test" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
+        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+        android:debuggable="true" >
+        <provider
+            android:name="androidx.startup.InitializationProvider"
+            android:authorities="com.nexient.jazzy.core.sources.test.androidx-startup"
+            android:exported="false" >
+            <meta-data
+                android:name="okhttp3.internal.platform.PlatformInitializer"
+                android:value="androidx.startup" />
+        </provider>
+    </application>
+
+</manifest>

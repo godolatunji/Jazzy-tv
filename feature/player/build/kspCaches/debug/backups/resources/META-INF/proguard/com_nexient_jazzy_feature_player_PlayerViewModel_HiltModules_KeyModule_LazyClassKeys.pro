@@ -1,0 +1,1 @@
+-keep,allowobfuscation,allowshrinking class com.nexient.jazzy.feature.player.PlayerViewModel

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.nexient.jazzy.core.sources.parse.ReleaseParserCorpusTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2026-10-10T22:22:40.610Z" hostname="Olatunjis-MacBook-Pro.local" time="0.013">
+  <properties/>
+  <testcase name="corpus has at least 120 names" classname="com.nexient.jazzy.core.sources.parse.ReleaseParserCorpusTest" time="0.0"/>
+  <testcase name="every corpus name parses as expected" classname="com.nexient.jazzy.core.sources.parse.ReleaseParserCorpusTest" time="0.012"/>
+  <testcase name="quality label combines resolution and source" classname="com.nexient.jazzy.core.sources.parse.ReleaseParserCorpusTest" time="0.0"/>
+  <testcase name="ranges are exposed for matching" classname="com.nexient.jazzy.core.sources.parse.ReleaseParserCorpusTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

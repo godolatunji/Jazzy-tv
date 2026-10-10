@@ -133,6 +133,23 @@ class LibraryRepository @Inject constructor(
         entity.toModel()
     }
 
+    /** Fire-and-forget progress write on the application scope, so it survives the player closing (RS-2). */
+    fun saveProgressDetached(
+        profileId: Long,
+        playable: PlayableRef,
+        positionMs: Long,
+        durationMs: Long,
+        source: SourceRef?,
+        episodeTitle: String?,
+        sessionId: Long? = null,
+        watchedMs: Long = 0,
+    ) {
+        appScope.launch(io) {
+            saveProgress(profileId, playable, positionMs, durationMs, source, episodeTitle)
+            sessionId?.let { sessionDao.checkpoint(it, positionMs, durationMs, watchedMs, clock.nowMillis()) }
+        }
+    }
+
     /** RS-6: no history entry is created. */
     suspend fun markWatched(profileId: Long, playable: PlayableRef, watched: Boolean, durationMs: Long = 1) = withContext(io) {
         val existing = progressDao.get(profileId, playable.tmdbId, playable.mediaType.apiValue, playable.season, playable.episode)

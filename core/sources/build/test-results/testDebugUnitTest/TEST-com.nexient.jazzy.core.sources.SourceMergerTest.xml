@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.nexient.jazzy.core.sources.SourceMergerTest" tests="7" skipped="0" failures="0" errors="0" timestamp="2026-10-10T22:22:40.288Z" hostname="Olatunjis-MacBook-Pro.local" time="0.002">
+  <properties/>
+  <testcase name="sort is seeders, then resolution, then smaller size" classname="com.nexient.jazzy.core.sources.SourceMergerTest" time="0.001"/>
+  <testcase name="a row without hash joins a hashed group with the same name and size" classname="com.nexient.jazzy.core.sources.SourceMergerTest" time="0.0"/>
+  <testcase name="rows without hash merge by normalised name and size within one percent" classname="com.nexient.jazzy.core.sources.SourceMergerTest" time="0.0"/>
+  <testcase name="same hash merges with max seeders and every provider" classname="com.nexient.jazzy.core.sources.SourceMergerTest" time="0.0"/>
+  <testcase name="size tolerance helpers" classname="com.nexient.jazzy.core.sources.SourceMergerTest" time="0.0"/>
+  <testcase name="rows without hash or size are only merged with the same key" classname="com.nexient.jazzy.core.sources.SourceMergerTest" time="0.0"/>
+  <testcase name="zero seeder rows are kept" classname="com.nexient.jazzy.core.sources.SourceMergerTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
