@@ -22,6 +22,8 @@ class AndroidLibraryConventionPlugin : Plugin<Project> {
             }
             testOptions.unitTests.isIncludeAndroidResources = true
         }
+        // Modules without tests yet shouldn't fail the aggregate `testDebugUnitTest` run (Gradle 9).
+        tasks.withType(org.gradle.api.tasks.testing.Test::class.java).configureEach { failOnNoDiscoveredTests.set(false) }
         dependencies {
             add("implementation", libs.lib("kotlinx-coroutines-android"))
             add("testImplementation", libs.lib("junit"))
