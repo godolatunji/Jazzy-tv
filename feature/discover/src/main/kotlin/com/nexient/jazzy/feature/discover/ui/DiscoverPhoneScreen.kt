@@ -131,7 +131,7 @@ internal fun ScrollToTopOnFilterChange(state: DiscoverUiState, gridState: LazyGr
 @Composable
 internal fun RestrictedNote(modifier: Modifier = Modifier) {
     Text(
-        "Results follow this profile's maturity setting, so some filters may not apply.",
+        "Results follow this profile's maturity setting.",
         style = MaterialTheme.typography.bodySmall,
         color = JazzyColors.TextTertiary,
         modifier = modifier,

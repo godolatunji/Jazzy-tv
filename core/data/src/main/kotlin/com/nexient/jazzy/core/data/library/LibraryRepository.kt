@@ -71,10 +71,11 @@ class LibraryRepository @Inject constructor(
 
     fun myListKeys(profileId: Long): Flow<Set<TitleRef>> = libraryDao.observeMyListKeys(profileId).map { it.toRefs() }
 
-    suspend fun setInMyList(profileId: Long, snapshot: TitleSnapshot, inList: Boolean) = withContext(io) {
+    /** [addedAt] lets Undo restore an item at its original position (ML-4). */
+    suspend fun setInMyList(profileId: Long, snapshot: TitleSnapshot, inList: Boolean, addedAt: Long? = null) = withContext(io) {
         if (inList) {
             snapshotDao.upsert(snapshot.toEntity(clock.nowMillis()))
-            libraryDao.addToMyList(MyListItemEntity(profileId, snapshot.tmdbId, snapshot.mediaType.apiValue, clock.nowMillis()))
+            libraryDao.addToMyList(MyListItemEntity(profileId, snapshot.tmdbId, snapshot.mediaType.apiValue, addedAt ?: clock.nowMillis()))
         } else {
             libraryDao.removeFromMyList(profileId, snapshot.tmdbId, snapshot.mediaType.apiValue)
         }
@@ -90,10 +91,11 @@ class LibraryRepository @Inject constructor(
 
     fun likedKeys(profileId: Long): Flow<Set<TitleRef>> = libraryDao.observeLikedKeys(profileId).map { it.toRefs() }
 
-    suspend fun setLiked(profileId: Long, snapshot: TitleSnapshot, liked: Boolean) = withContext(io) {
+    /** [likedAt] lets Undo restore an item at its original position (LK-4). */
+    suspend fun setLiked(profileId: Long, snapshot: TitleSnapshot, liked: Boolean, likedAt: Long? = null) = withContext(io) {
         if (liked) {
             snapshotDao.upsert(snapshot.toEntity(clock.nowMillis()))
-            libraryDao.like(LikedTitleEntity(profileId, snapshot.tmdbId, snapshot.mediaType.apiValue, clock.nowMillis()))
+            libraryDao.like(LikedTitleEntity(profileId, snapshot.tmdbId, snapshot.mediaType.apiValue, likedAt ?: clock.nowMillis()))
         } else {
             libraryDao.unlike(profileId, snapshot.tmdbId, snapshot.mediaType.apiValue)
         }
@@ -233,9 +235,14 @@ class LibraryRepository @Inject constructor(
                     val entries = sessions.groupBy { it.tmdbId to it.mediaType }.mapNotNull { (key, group) ->
                         val snapshot = snapshots.getOrPut(key) { snapshotDao.get(key.first, key.second)?.toModel() } ?: return@mapNotNull null
                         val latest = group.maxBy { it.startedAt }
-                        HistoryEntry(snapshot, latest.toModel(), group.size, group.sumOf { it.watchedMs }) to group.map { it.id }
+                        HistoryEntry(snapshot, latest.toModel(), group.size, group.sumOf { it.watchedMs }) to group.sortedByDescending { it.startedAt }
                     }
-                    HistoryDay(day, entries.map { it.first }, entries.associate { it.first.latest.id to it.second })
+                    HistoryDay(
+                        day,
+                        entries.map { it.first },
+                        entries.associate { (entry, group) -> entry.latest.id to group.map { it.id } },
+                        entries.associate { (entry, group) -> entry.latest.id to group.map { it.toModel() } },
+                    )
                 }
                 .sortedByDescending { it.date }
         }
@@ -268,7 +275,13 @@ data class SourceRef(
 )
 
 /** History grouped by day (HS-3); [sessionIds] maps each entry's latest session ID to all folded sessions. */
-data class HistoryDay(val date: LocalDate, val entries: List<HistoryEntry>, val sessionIds: Map<Long, List<Long>>)
+data class HistoryDay(
+    val date: LocalDate,
+    val entries: List<HistoryEntry>,
+    val sessionIds: Map<Long, List<Long>>,
+    /** Every folded session of an entry, newest first, keyed by the entry's latest session ID (HS-5). */
+    val sessions: Map<Long, List<PlaySession>> = emptyMap(),
+)
 
 internal fun TitleSnapshot.toEntity(now: Long) = TitleSnapshotEntity(
     tmdbId, mediaType.apiValue, title, originalTitle, year, posterPath, backdropPath, genreIds, imdbId, now,

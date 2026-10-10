@@ -304,24 +304,23 @@ private fun HistoryRow(
     }
 }
 
-/**
- * The sessions folded into an entry (HS-5). `HistoryDay` only carries full details for the latest
- * session; earlier ones are listed by position and can be removed individually.
- */
+/** The sessions folded into an entry (HS-5), newest first; each can be removed on its own. */
 @Composable
 private fun SessionList(item: HistoryItem, onRemoveSession: (Long) -> Unit) {
-    val latest = item.entry.latest
-    val ordered = listOf(latest.id) + item.sessionIds.filter { it != latest.id }
+    val time = java.time.format.DateTimeFormatter.ofPattern("HH:mm")
     Column(Modifier.fillMaxWidth().padding(start = if (JazzyTheme.isTv) 232.dp else 148.dp)) {
-        ordered.forEachIndexed { index, id ->
+        item.sessions.forEach { session ->
+            val started = java.time.Instant.ofEpochMilli(session.startedAt).atZone(java.time.ZoneId.systemDefault()).format(time)
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(
-                    if (index == 0) "Latest · ${item.entry.stoppedLine()}" else "Earlier session ${index + 1} of ${ordered.size}",
+                    "$started · stopped at ${com.nexient.jazzy.core.common.formatDuration(session.stopPositionMs)}" +
+                        " · watched ${com.nexient.jazzy.core.common.formatDuration(session.watchedMs)}" +
+                        (session.quality?.let { " · $it" } ?: ""),
                     style = MaterialTheme.typography.bodySmall,
                     color = JazzyColors.TextSecondary,
                     modifier = Modifier.weight(1f),
                 )
-                IconButton(onClick = { onRemoveSession(id) }) {
+                IconButton(onClick = { onRemoveSession(session.id) }) {
                     Icon(Icons.Filled.Close, "Remove this session", tint = JazzyColors.TextTertiary, modifier = Modifier.size(18.dp))
                 }
             }

@@ -47,7 +47,12 @@ fun List<LibraryItem>.arrange(filter: TypeFilter, sort: LibrarySort): List<Libra
 }
 
 /** One History row: a (possibly folded) entry plus every session ID it stands for (HS-5). */
-data class HistoryItem(val entry: HistoryEntry, val sessionIds: List<Long>) {
+data class HistoryItem(
+    val entry: HistoryEntry,
+    val sessionIds: List<Long>,
+    /** Every folded session, newest first. */
+    val sessions: List<com.nexient.jazzy.core.model.PlaySession> = listOf(entry.latest),
+) {
     val key: Long get() = entry.latest.id
     val snapshot: TitleSnapshot get() = entry.snapshot
     val folded: Boolean get() = entry.sessionCount > 1
@@ -70,7 +75,7 @@ fun List<HistoryDay>.toSections(query: String, today: LocalDate): List<HistorySe
     return mapNotNull { day ->
         val items = day.entries
             .filter { q.isEmpty() || it.matches(q) }
-            .map { HistoryItem(it, day.sessionIds[it.latest.id] ?: listOf(it.latest.id)) }
+            .map { HistoryItem(it, day.sessionIds[it.latest.id] ?: listOf(it.latest.id), day.sessions[it.latest.id] ?: listOf(it.latest)) }
             .sortedByDescending { it.entry.latest.startedAt }
         if (items.isEmpty()) null else HistorySection(day.date, dayLabel(day.date, today), items)
     }

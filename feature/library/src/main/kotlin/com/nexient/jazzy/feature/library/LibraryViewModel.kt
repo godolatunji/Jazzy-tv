@@ -67,7 +67,7 @@ data class LibraryUiState(
 
 /** One-off snackbar messages. [undo] re-adds the removed title with the same snapshot (ML-4, LK-4). */
 data class LibraryMessage(val text: String, val undo: Undo? = null) {
-    data class Undo(val kind: CollectionKind, val snapshot: TitleSnapshot)
+    data class Undo(val kind: CollectionKind, val snapshot: TitleSnapshot, val addedAt: Long? = null)
 }
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -150,13 +150,13 @@ class LibraryViewModel @Inject constructor(
         viewModelScope.launch {
             set(kind, p.id, item.snapshot, false)
             val text = if (kind == CollectionKind.MY_LIST) "Removed ${item.snapshot.title} from My List" else "Unliked ${item.snapshot.title}"
-            _messages.send(LibraryMessage(text, LibraryMessage.Undo(kind, item.snapshot)))
+            _messages.send(LibraryMessage(text, LibraryMessage.Undo(kind, item.snapshot, item.addedAt)))
         }
     }
 
     fun undo(undo: LibraryMessage.Undo) {
         val p = profile.value ?: return
-        viewModelScope.launch { set(undo.kind, p.id, undo.snapshot, true) }
+        viewModelScope.launch { set(undo.kind, p.id, undo.snapshot, true, undo.addedAt) }
     }
 
     /** Card-menu toggle for the other list (e.g. "Like" from My List). */
@@ -166,9 +166,9 @@ class LibraryViewModel @Inject constructor(
         viewModelScope.launch { set(kind, p.id, snapshot, snapshot.ref !in current) }
     }
 
-    private suspend fun set(kind: CollectionKind, profileId: Long, snapshot: TitleSnapshot, value: Boolean) = when (kind) {
-        CollectionKind.MY_LIST -> library.setInMyList(profileId, snapshot, value)
-        CollectionKind.LIKED -> library.setLiked(profileId, snapshot, value)
+    private suspend fun set(kind: CollectionKind, profileId: Long, snapshot: TitleSnapshot, value: Boolean, at: Long? = null) = when (kind) {
+        CollectionKind.MY_LIST -> library.setInMyList(profileId, snapshot, value, at)
+        CollectionKind.LIKED -> library.setLiked(profileId, snapshot, value, at)
     }
 
     // ---- History (HS-3 … HS-7) ----

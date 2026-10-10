@@ -111,11 +111,11 @@ class CatalogRepository @Inject constructor(
         if (maturity == MaturityLevel.ALL) return source
         fun movie(sort: String, extra: Map<String, String> = emptyMap()) = RailSource.Discover(
             MediaType.MOVIE,
-            mapOf("certification_country" to "US", "certification.lte" to maturity.movieCeiling, "sort_by" to sort) + extra,
+            extra + mapOf("certification_country" to "US", "certification.lte" to maturity.movieCeiling, "sort_by" to sort),
         )
         fun tv(sort: String, extra: Map<String, String> = emptyMap()) = RailSource.Discover(
             MediaType.TV,
-            mapOf("with_genres" to KIDS_TV_GENRES, "without_genres" to "80,10768,9648", "sort_by" to sort) + extra,
+            extra + mapOf("with_genres" to KIDS_TV_GENRES, "without_genres" to "80,10768,9648", "sort_by" to sort),
         )
         val type = when (source) {
             is RailSource.Trending -> source.mediaType ?: MediaType.MOVIE
@@ -129,7 +129,11 @@ class CatalogRepository @Inject constructor(
         }
         val extra = mutableMapOf<String, String>()
         if (sort == "vote_average.desc") extra["vote_count.gte"] = "300"
-        (source as? RailSource.Discover)?.filters?.get("with_genres")?.let { if (type == MediaType.MOVIE) extra["with_genres"] = it }
+        // Keep the user's own Discover filters (year, rating, votes, language, runtime); the maturity
+        // limits below always win because they're applied last.
+        (source as? RailSource.Discover)?.filters?.forEach { (k, v) ->
+            if (k !in RESTRICTED_KEYS && !(k == "with_genres" && type == MediaType.TV)) extra[k] = v
+        }
         return if (type == MediaType.MOVIE) movie(sort, extra) else tv(sort, extra)
     }
 
@@ -146,6 +150,7 @@ class CatalogRepository @Inject constructor(
 
     companion object {
         const val KIDS_TV_GENRES = "10762|10751|16"
+        private val RESTRICTED_KEYS = setOf("certification_country", "certification", "certification.lte", "certification.gte", "include_adult", "without_genres", "sort_by", "with_networks")
         val KIDS_TV_GENRE_IDS = setOf(10762, 10751, 16)
         val LIST_TTL = 6 * HOUR_MS
         val DETAILS_TTL = DAY_MS
