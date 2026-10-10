@@ -5,6 +5,7 @@ plugins {
 
 dependencies {
     implementation(projects.core.model)
+    api(projects.core.common)
     api(libs.androidx.compose.material3)
     api(libs.androidx.compose.material.icons.extended)
     api(libs.androidx.tv.material)
