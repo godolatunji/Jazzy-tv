@@ -9,7 +9,7 @@ dependencies {
     implementation(projects.core.common)
     implementation(projects.core.network)
     implementation(projects.core.database)
-    implementation(projects.core.sources)
+    api(projects.core.sources)
     implementation(projects.core.recommendations)
     api(projects.core.torrent)
     api(libs.androidx.paging.runtime)

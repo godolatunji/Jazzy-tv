@@ -1,16 +1,24 @@
 -- Merging decision tree log ---
 manifest
-ADDED from /Users/olatunji/AndroidStudioProjects/Jazzy/feature/search/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest12167000022795831783.xml:2:13-83
-INJECTED from /Users/olatunji/AndroidStudioProjects/Jazzy/feature/search/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest12167000022795831783.xml:2:13-83
+ADDED from /Users/olatunji/AndroidStudioProjects/Jazzy/feature/search/src/main/AndroidManifest.xml:2:1-9:12
+INJECTED from /Users/olatunji/AndroidStudioProjects/Jazzy/feature/search/src/main/AndroidManifest.xml:2:1-9:12
 	package
-		INJECTED from /Users/olatunji/AndroidStudioProjects/Jazzy/feature/search/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest12167000022795831783.xml
+		INJECTED from /Users/olatunji/AndroidStudioProjects/Jazzy/feature/search/src/main/AndroidManifest.xml
 	xmlns:android
-		ADDED from /Users/olatunji/AndroidStudioProjects/Jazzy/feature/search/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest12167000022795831783.xml:2:23-81
+		ADDED from /Users/olatunji/AndroidStudioProjects/Jazzy/feature/search/src/main/AndroidManifest.xml:2:11-69
+queries
+ADDED from /Users/olatunji/AndroidStudioProjects/Jazzy/feature/search/src/main/AndroidManifest.xml:4:5-8:15
+intent#action:name:android.speech.action.RECOGNIZE_SPEECH
+ADDED from /Users/olatunji/AndroidStudioProjects/Jazzy/feature/search/src/main/AndroidManifest.xml:5:9-7:18
+action#android.speech.action.RECOGNIZE_SPEECH
+ADDED from /Users/olatunji/AndroidStudioProjects/Jazzy/feature/search/src/main/AndroidManifest.xml:6:13-77
+	android:name
+		ADDED from /Users/olatunji/AndroidStudioProjects/Jazzy/feature/search/src/main/AndroidManifest.xml:6:21-74
 uses-sdk
-INJECTED from /Users/olatunji/AndroidStudioProjects/Jazzy/feature/search/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest12167000022795831783.xml reason: use-sdk injection requested
-INJECTED from /Users/olatunji/AndroidStudioProjects/Jazzy/feature/search/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest12167000022795831783.xml
-INJECTED from /Users/olatunji/AndroidStudioProjects/Jazzy/feature/search/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest12167000022795831783.xml
+INJECTED from /Users/olatunji/AndroidStudioProjects/Jazzy/feature/search/src/main/AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from /Users/olatunji/AndroidStudioProjects/Jazzy/feature/search/src/main/AndroidManifest.xml
+INJECTED from /Users/olatunji/AndroidStudioProjects/Jazzy/feature/search/src/main/AndroidManifest.xml
 	android:targetSdkVersion
-		INJECTED from /Users/olatunji/AndroidStudioProjects/Jazzy/feature/search/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest12167000022795831783.xml
+		INJECTED from /Users/olatunji/AndroidStudioProjects/Jazzy/feature/search/src/main/AndroidManifest.xml
 	android:minSdkVersion
-		INJECTED from /Users/olatunji/AndroidStudioProjects/Jazzy/feature/search/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest12167000022795831783.xml
+		INJECTED from /Users/olatunji/AndroidStudioProjects/Jazzy/feature/search/src/main/AndroidManifest.xml

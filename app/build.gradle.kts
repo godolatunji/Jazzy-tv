@@ -1,3 +1,5 @@
+import com.android.build.api.variant.FilterConfiguration
+
 plugins {
     alias(libs.plugins.jazzy.android.application)
     alias(libs.plugins.jazzy.android.compose)
@@ -8,10 +10,24 @@ plugins {
 android {
     namespace = "com.nexient.jazzy"
 
+    buildFeatures {
+        buildConfig = true
+    }
+
     defaultConfig {
         applicationId = "com.nexient.jazzy"
         versionCode = 1
         versionName = "0.1.0"
+    }
+
+    // Per-ABI APKs plus a universal one for sideloading (plan E0-04, §14.2).
+    splits {
+        abi {
+            isEnable = true
+            reset()
+            include("arm64-v8a", "armeabi-v7a", "x86_64")
+            isUniversalApk = true
+        }
     }
 
     buildTypes {
@@ -36,6 +52,7 @@ dependencies {
     implementation(projects.core.model)
     implementation(projects.core.common)
     implementation(projects.core.data)
+    implementation(projects.core.network)
     implementation(projects.core.designsystem)
     implementation(projects.core.player)
 
@@ -61,6 +78,7 @@ dependencies {
     ksp(libs.androidx.hilt.compiler)
     implementation(libs.androidx.profileinstaller)
     implementation(libs.androidx.tv.material)
+    implementation(libs.androidx.tvprovider)
     implementation(libs.coil.compose)
     implementation(libs.coil.network.okhttp)
     implementation(libs.kotlinx.serialization.json)
@@ -68,4 +86,16 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+}
+
+// versionCode = base * 10 + ABI digit (0 universal, 1 armeabi-v7a, 2 arm64-v8a, 3 x86_64), plan §14.2.
+val abiCodes = mapOf("armeabi-v7a" to 1, "arm64-v8a" to 2, "x86_64" to 3)
+androidComponents {
+    onVariants { variant ->
+        variant.outputs.forEach { output ->
+            val abi = output.filters.find { it.filterType == FilterConfiguration.FilterType.ABI }?.identifier
+            val base = output.versionCode.orNull ?: 1
+            output.versionCode.set(base * 10 + (abiCodes[abi] ?: 0))
+        }
+    }
 }

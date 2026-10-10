@@ -34,6 +34,7 @@ turbine = "1.2.1"
 truth = "1.4.5"
 robolectric = "4.17"
 androidxTestCore = "1.7.0"
+androidxTestRunner = "1.7.0"
 
 [libraries]
 # AndroidX core
@@ -113,6 +114,7 @@ nanohttpd = { group = "org.nanohttpd", name = "nanohttpd", version.ref = "nanoht
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-test-core = { group = "androidx.test", name = "core", version.ref = "androidxTestCore" }
+androidx-test-runner = { group = "androidx.test", name = "runner", version.ref = "androidxTestRunner" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
 turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbine" }
 truth = { group = "com.google.truth", name = "truth", version.ref = "truth" }

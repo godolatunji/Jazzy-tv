@@ -107,6 +107,7 @@ class PlayerViewModel @AssistedInject constructor(
     private val titles: TitleRepository,
     private val profiles: ProfileRepository,
     private val nextEpisodes: NextEpisodeResolver,
+    private val loopback: com.nexient.jazzy.core.torrent.LoopbackStreamServer,
 ) : ViewModel() {
 
     @AssistedFactory
@@ -163,6 +164,8 @@ class PlayerViewModel @AssistedInject constructor(
         player.addListener(listener)
         viewModelScope.launch {
             profile = profiles.activeProfile.first()
+            // Profile language preferences (PL-8): ISO 639-1 codes; null subtitles = off.
+            profile?.let { com.nexient.jazzy.core.player.TrackHelper.setPreferredLanguages(player, it.audioLanguage, it.subtitleLanguage) }
             profile?.let { p ->
                 launch { library.isLiked(p.id, initial.snapshot.ref).collect { liked -> _state.update { it.copy(liked = liked) } } }
             }
@@ -530,6 +533,13 @@ class PlayerViewModel @AssistedInject constructor(
         if (sessionId != null) exit()
         holder.release()
         super.onCleared()
+    }
+
+    /** "Open in external player" (spec §5.9.2): a tokenised 127.0.0.1 URL with Range support. Pauses our player. */
+    fun externalPlayerUrl(): String? {
+        val s = stream ?: return null
+        player.pause()
+        return runCatching { loopback.urlFor(s) }.getOrNull()
     }
 
     fun resumeLabel(): String = formatDuration(_state.value.positionMs)

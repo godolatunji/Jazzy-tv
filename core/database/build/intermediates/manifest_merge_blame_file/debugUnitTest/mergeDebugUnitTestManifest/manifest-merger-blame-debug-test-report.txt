@@ -3,86 +3,86 @@
 3    package="com.nexient.jazzy.core.database.test" >
 4
 5    <uses-sdk
-5-->/Users/olatunji/AndroidStudioProjects/Jazzy/core/database/build/intermediates/tmp/manifest/test/debug/tempFile1ProcessTestManifest13437074770728217275.xml:5:5-74
+5-->/Users/olatunji/AndroidStudioProjects/Jazzy/core/database/build/intermediates/tmp/manifest/test/debug/tempFile1ProcessTestManifest2005791021820760955.xml:5:5-74
 6        android:minSdkVersion="28"
-6-->/Users/olatunji/AndroidStudioProjects/Jazzy/core/database/build/intermediates/tmp/manifest/test/debug/tempFile1ProcessTestManifest13437074770728217275.xml:5:15-41
+6-->/Users/olatunji/AndroidStudioProjects/Jazzy/core/database/build/intermediates/tmp/manifest/test/debug/tempFile1ProcessTestManifest2005791021820760955.xml:5:15-41
 7        android:targetSdkVersion="37" />
-7-->/Users/olatunji/AndroidStudioProjects/Jazzy/core/database/build/intermediates/tmp/manifest/test/debug/tempFile1ProcessTestManifest13437074770728217275.xml:5:42-71
+7-->/Users/olatunji/AndroidStudioProjects/Jazzy/core/database/build/intermediates/tmp/manifest/test/debug/tempFile1ProcessTestManifest2005791021820760955.xml:5:42-71
 8
 9    <instrumentation
-9-->/Users/olatunji/AndroidStudioProjects/Jazzy/core/database/build/intermediates/tmp/manifest/test/debug/tempFile1ProcessTestManifest13437074770728217275.xml:9:5-11:86
+9-->/Users/olatunji/AndroidStudioProjects/Jazzy/core/database/build/intermediates/tmp/manifest/test/debug/tempFile1ProcessTestManifest2005791021820760955.xml:9:5-11:86
 10        android:name="androidx.test.runner.AndroidJUnitRunner"
-10-->/Users/olatunji/AndroidStudioProjects/Jazzy/core/database/build/intermediates/tmp/manifest/test/debug/tempFile1ProcessTestManifest13437074770728217275.xml:9:22-76
+10-->/Users/olatunji/AndroidStudioProjects/Jazzy/core/database/build/intermediates/tmp/manifest/test/debug/tempFile1ProcessTestManifest2005791021820760955.xml:9:22-76
 11        android:label="Tests for com.nexient.jazzy.core.database.test"
-11-->/Users/olatunji/AndroidStudioProjects/Jazzy/core/database/build/intermediates/tmp/manifest/test/debug/tempFile1ProcessTestManifest13437074770728217275.xml:11:22-84
+11-->/Users/olatunji/AndroidStudioProjects/Jazzy/core/database/build/intermediates/tmp/manifest/test/debug/tempFile1ProcessTestManifest2005791021820760955.xml:11:22-84
 12        android:targetPackage="com.nexient.jazzy.core.database.test" />
-12-->/Users/olatunji/AndroidStudioProjects/Jazzy/core/database/build/intermediates/tmp/manifest/test/debug/tempFile1ProcessTestManifest13437074770728217275.xml:10:22-82
+12-->/Users/olatunji/AndroidStudioProjects/Jazzy/core/database/build/intermediates/tmp/manifest/test/debug/tempFile1ProcessTestManifest2005791021820760955.xml:10:22-82
 13
 14    <uses-permission android:name="android.permission.REORDER_TASKS" />
-14-->[androidx.test:core:1.7.0] /Users/olatunji/.gradle/caches/9.6.0/transforms/ca147d9405293d5157738ec471b9fc6b/transformed/core-1.7.0/AndroidManifest.xml:24:5-72
-14-->[androidx.test:core:1.7.0] /Users/olatunji/.gradle/caches/9.6.0/transforms/ca147d9405293d5157738ec471b9fc6b/transformed/core-1.7.0/AndroidManifest.xml:24:22-69
+14-->[androidx.test:core:1.7.0] /Users/olatunji/.gradle/caches/9.6.0/transforms/99b6f72e6eaf3fd302319a3da181ff16/transformed/core-1.7.0/AndroidManifest.xml:24:5-72
+14-->[androidx.test:core:1.7.0] /Users/olatunji/.gradle/caches/9.6.0/transforms/99b6f72e6eaf3fd302319a3da181ff16/transformed/core-1.7.0/AndroidManifest.xml:24:22-69
 15
 16    <application
-16-->/Users/olatunji/AndroidStudioProjects/Jazzy/core/database/build/intermediates/tmp/manifest/test/debug/tempFile1ProcessTestManifest13437074770728217275.xml:7:5-46
+16-->/Users/olatunji/AndroidStudioProjects/Jazzy/core/database/build/intermediates/tmp/manifest/test/debug/tempFile1ProcessTestManifest2005791021820760955.xml:7:5-46
 17        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
-17-->[androidx.core:core:1.8.0] /Users/olatunji/.gradle/caches/9.6.0/transforms/d77ebd8aebd2eaabdbf2b720c3b19759/transformed/core-1.8.0/AndroidManifest.xml:24:18-86
+17-->[androidx.core:core:1.8.0] /Users/olatunji/.gradle/caches/9.6.0/transforms/35807f4a69e3b65c59a90859172c7fc1/transformed/core-1.8.0/AndroidManifest.xml:24:18-86
 18        android:debuggable="true" >
-18-->/Users/olatunji/AndroidStudioProjects/Jazzy/core/database/build/intermediates/tmp/manifest/test/debug/tempFile1ProcessTestManifest13437074770728217275.xml:7:18-43
+18-->/Users/olatunji/AndroidStudioProjects/Jazzy/core/database/build/intermediates/tmp/manifest/test/debug/tempFile1ProcessTestManifest2005791021820760955.xml:7:18-43
 19        <service
-19-->[androidx.room:room-runtime-android:2.8.5] /Users/olatunji/.gradle/caches/9.6.0/transforms/a2cdce2989ab50a57c10c378ec277994/transformed/room-runtime/AndroidManifest.xml:24:9-28:63
+19-->[androidx.room:room-runtime-android:2.8.5] /Users/olatunji/.gradle/caches/9.6.0/transforms/e6156fd11270f74798d0a7cf1c5d99b0/transformed/room-runtime/AndroidManifest.xml:24:9-28:63
 20            android:name="androidx.room.MultiInstanceInvalidationService"
-20-->[androidx.room:room-runtime-android:2.8.5] /Users/olatunji/.gradle/caches/9.6.0/transforms/a2cdce2989ab50a57c10c378ec277994/transformed/room-runtime/AndroidManifest.xml:25:13-74
+20-->[androidx.room:room-runtime-android:2.8.5] /Users/olatunji/.gradle/caches/9.6.0/transforms/e6156fd11270f74798d0a7cf1c5d99b0/transformed/room-runtime/AndroidManifest.xml:25:13-74
 21            android:directBootAware="true"
-21-->[androidx.room:room-runtime-android:2.8.5] /Users/olatunji/.gradle/caches/9.6.0/transforms/a2cdce2989ab50a57c10c378ec277994/transformed/room-runtime/AndroidManifest.xml:26:13-43
+21-->[androidx.room:room-runtime-android:2.8.5] /Users/olatunji/.gradle/caches/9.6.0/transforms/e6156fd11270f74798d0a7cf1c5d99b0/transformed/room-runtime/AndroidManifest.xml:26:13-43
 22            android:exported="false" />
-22-->[androidx.room:room-runtime-android:2.8.5] /Users/olatunji/.gradle/caches/9.6.0/transforms/a2cdce2989ab50a57c10c378ec277994/transformed/room-runtime/AndroidManifest.xml:27:13-37
+22-->[androidx.room:room-runtime-android:2.8.5] /Users/olatunji/.gradle/caches/9.6.0/transforms/e6156fd11270f74798d0a7cf1c5d99b0/transformed/room-runtime/AndroidManifest.xml:27:13-37
 23
 24        <activity
-24-->[androidx.test:core:1.7.0] /Users/olatunji/.gradle/caches/9.6.0/transforms/ca147d9405293d5157738ec471b9fc6b/transformed/core-1.7.0/AndroidManifest.xml:27:9-34:20
+24-->[androidx.test:core:1.7.0] /Users/olatunji/.gradle/caches/9.6.0/transforms/99b6f72e6eaf3fd302319a3da181ff16/transformed/core-1.7.0/AndroidManifest.xml:27:9-34:20
 25            android:name="androidx.test.core.app.InstrumentationActivityInvoker$BootstrapActivity"
-25-->[androidx.test:core:1.7.0] /Users/olatunji/.gradle/caches/9.6.0/transforms/ca147d9405293d5157738ec471b9fc6b/transformed/core-1.7.0/AndroidManifest.xml:28:13-99
+25-->[androidx.test:core:1.7.0] /Users/olatunji/.gradle/caches/9.6.0/transforms/99b6f72e6eaf3fd302319a3da181ff16/transformed/core-1.7.0/AndroidManifest.xml:28:13-99
 26            android:exported="true"
-26-->[androidx.test:core:1.7.0] /Users/olatunji/.gradle/caches/9.6.0/transforms/ca147d9405293d5157738ec471b9fc6b/transformed/core-1.7.0/AndroidManifest.xml:29:13-36
+26-->[androidx.test:core:1.7.0] /Users/olatunji/.gradle/caches/9.6.0/transforms/99b6f72e6eaf3fd302319a3da181ff16/transformed/core-1.7.0/AndroidManifest.xml:29:13-36
 27            android:theme="@style/WhiteBackgroundTheme" >
-27-->[androidx.test:core:1.7.0] /Users/olatunji/.gradle/caches/9.6.0/transforms/ca147d9405293d5157738ec471b9fc6b/transformed/core-1.7.0/AndroidManifest.xml:30:13-56
+27-->[androidx.test:core:1.7.0] /Users/olatunji/.gradle/caches/9.6.0/transforms/99b6f72e6eaf3fd302319a3da181ff16/transformed/core-1.7.0/AndroidManifest.xml:30:13-56
 28            <intent-filter android:priority="-100" >
-28-->[androidx.test:core:1.7.0] /Users/olatunji/.gradle/caches/9.6.0/transforms/ca147d9405293d5157738ec471b9fc6b/transformed/core-1.7.0/AndroidManifest.xml:31:13-33:29
-28-->[androidx.test:core:1.7.0] /Users/olatunji/.gradle/caches/9.6.0/transforms/ca147d9405293d5157738ec471b9fc6b/transformed/core-1.7.0/AndroidManifest.xml:31:28-51
+28-->[androidx.test:core:1.7.0] /Users/olatunji/.gradle/caches/9.6.0/transforms/99b6f72e6eaf3fd302319a3da181ff16/transformed/core-1.7.0/AndroidManifest.xml:31:13-33:29
+28-->[androidx.test:core:1.7.0] /Users/olatunji/.gradle/caches/9.6.0/transforms/99b6f72e6eaf3fd302319a3da181ff16/transformed/core-1.7.0/AndroidManifest.xml:31:28-51
 29                <category android:name="android.intent.category.LAUNCHER" />
-29-->[androidx.test:core:1.7.0] /Users/olatunji/.gradle/caches/9.6.0/transforms/ca147d9405293d5157738ec471b9fc6b/transformed/core-1.7.0/AndroidManifest.xml:32:17-77
-29-->[androidx.test:core:1.7.0] /Users/olatunji/.gradle/caches/9.6.0/transforms/ca147d9405293d5157738ec471b9fc6b/transformed/core-1.7.0/AndroidManifest.xml:32:27-74
+29-->[androidx.test:core:1.7.0] /Users/olatunji/.gradle/caches/9.6.0/transforms/99b6f72e6eaf3fd302319a3da181ff16/transformed/core-1.7.0/AndroidManifest.xml:32:17-77
+29-->[androidx.test:core:1.7.0] /Users/olatunji/.gradle/caches/9.6.0/transforms/99b6f72e6eaf3fd302319a3da181ff16/transformed/core-1.7.0/AndroidManifest.xml:32:27-74
 30            </intent-filter>
 31        </activity>
 32        <activity
-32-->[androidx.test:core:1.7.0] /Users/olatunji/.gradle/caches/9.6.0/transforms/ca147d9405293d5157738ec471b9fc6b/transformed/core-1.7.0/AndroidManifest.xml:35:9-42:20
+32-->[androidx.test:core:1.7.0] /Users/olatunji/.gradle/caches/9.6.0/transforms/99b6f72e6eaf3fd302319a3da181ff16/transformed/core-1.7.0/AndroidManifest.xml:35:9-42:20
 33            android:name="androidx.test.core.app.InstrumentationActivityInvoker$EmptyActivity"
-33-->[androidx.test:core:1.7.0] /Users/olatunji/.gradle/caches/9.6.0/transforms/ca147d9405293d5157738ec471b9fc6b/transformed/core-1.7.0/AndroidManifest.xml:36:13-95
+33-->[androidx.test:core:1.7.0] /Users/olatunji/.gradle/caches/9.6.0/transforms/99b6f72e6eaf3fd302319a3da181ff16/transformed/core-1.7.0/AndroidManifest.xml:36:13-95
 34            android:exported="true"
-34-->[androidx.test:core:1.7.0] /Users/olatunji/.gradle/caches/9.6.0/transforms/ca147d9405293d5157738ec471b9fc6b/transformed/core-1.7.0/AndroidManifest.xml:37:13-36
+34-->[androidx.test:core:1.7.0] /Users/olatunji/.gradle/caches/9.6.0/transforms/99b6f72e6eaf3fd302319a3da181ff16/transformed/core-1.7.0/AndroidManifest.xml:37:13-36
 35            android:theme="@style/WhiteBackgroundTheme" >
-35-->[androidx.test:core:1.7.0] /Users/olatunji/.gradle/caches/9.6.0/transforms/ca147d9405293d5157738ec471b9fc6b/transformed/core-1.7.0/AndroidManifest.xml:38:13-56
+35-->[androidx.test:core:1.7.0] /Users/olatunji/.gradle/caches/9.6.0/transforms/99b6f72e6eaf3fd302319a3da181ff16/transformed/core-1.7.0/AndroidManifest.xml:38:13-56
 36            <intent-filter android:priority="-100" >
-36-->[androidx.test:core:1.7.0] /Users/olatunji/.gradle/caches/9.6.0/transforms/ca147d9405293d5157738ec471b9fc6b/transformed/core-1.7.0/AndroidManifest.xml:31:13-33:29
-36-->[androidx.test:core:1.7.0] /Users/olatunji/.gradle/caches/9.6.0/transforms/ca147d9405293d5157738ec471b9fc6b/transformed/core-1.7.0/AndroidManifest.xml:31:28-51
+36-->[androidx.test:core:1.7.0] /Users/olatunji/.gradle/caches/9.6.0/transforms/99b6f72e6eaf3fd302319a3da181ff16/transformed/core-1.7.0/AndroidManifest.xml:31:13-33:29
+36-->[androidx.test:core:1.7.0] /Users/olatunji/.gradle/caches/9.6.0/transforms/99b6f72e6eaf3fd302319a3da181ff16/transformed/core-1.7.0/AndroidManifest.xml:31:28-51
 37                <category android:name="android.intent.category.LAUNCHER" />
-37-->[androidx.test:core:1.7.0] /Users/olatunji/.gradle/caches/9.6.0/transforms/ca147d9405293d5157738ec471b9fc6b/transformed/core-1.7.0/AndroidManifest.xml:32:17-77
-37-->[androidx.test:core:1.7.0] /Users/olatunji/.gradle/caches/9.6.0/transforms/ca147d9405293d5157738ec471b9fc6b/transformed/core-1.7.0/AndroidManifest.xml:32:27-74
+37-->[androidx.test:core:1.7.0] /Users/olatunji/.gradle/caches/9.6.0/transforms/99b6f72e6eaf3fd302319a3da181ff16/transformed/core-1.7.0/AndroidManifest.xml:32:17-77
+37-->[androidx.test:core:1.7.0] /Users/olatunji/.gradle/caches/9.6.0/transforms/99b6f72e6eaf3fd302319a3da181ff16/transformed/core-1.7.0/AndroidManifest.xml:32:27-74
 38            </intent-filter>
 39        </activity>
 40        <activity
-40-->[androidx.test:core:1.7.0] /Users/olatunji/.gradle/caches/9.6.0/transforms/ca147d9405293d5157738ec471b9fc6b/transformed/core-1.7.0/AndroidManifest.xml:43:9-50:20
+40-->[androidx.test:core:1.7.0] /Users/olatunji/.gradle/caches/9.6.0/transforms/99b6f72e6eaf3fd302319a3da181ff16/transformed/core-1.7.0/AndroidManifest.xml:43:9-50:20
 41            android:name="androidx.test.core.app.InstrumentationActivityInvoker$EmptyFloatingActivity"
-41-->[androidx.test:core:1.7.0] /Users/olatunji/.gradle/caches/9.6.0/transforms/ca147d9405293d5157738ec471b9fc6b/transformed/core-1.7.0/AndroidManifest.xml:44:13-103
+41-->[androidx.test:core:1.7.0] /Users/olatunji/.gradle/caches/9.6.0/transforms/99b6f72e6eaf3fd302319a3da181ff16/transformed/core-1.7.0/AndroidManifest.xml:44:13-103
 42            android:exported="true"
-42-->[androidx.test:core:1.7.0] /Users/olatunji/.gradle/caches/9.6.0/transforms/ca147d9405293d5157738ec471b9fc6b/transformed/core-1.7.0/AndroidManifest.xml:45:13-36
+42-->[androidx.test:core:1.7.0] /Users/olatunji/.gradle/caches/9.6.0/transforms/99b6f72e6eaf3fd302319a3da181ff16/transformed/core-1.7.0/AndroidManifest.xml:45:13-36
 43            android:theme="@style/WhiteBackgroundDialogTheme" >
-43-->[androidx.test:core:1.7.0] /Users/olatunji/.gradle/caches/9.6.0/transforms/ca147d9405293d5157738ec471b9fc6b/transformed/core-1.7.0/AndroidManifest.xml:46:13-62
+43-->[androidx.test:core:1.7.0] /Users/olatunji/.gradle/caches/9.6.0/transforms/99b6f72e6eaf3fd302319a3da181ff16/transformed/core-1.7.0/AndroidManifest.xml:46:13-62
 44            <intent-filter android:priority="-100" >
-44-->[androidx.test:core:1.7.0] /Users/olatunji/.gradle/caches/9.6.0/transforms/ca147d9405293d5157738ec471b9fc6b/transformed/core-1.7.0/AndroidManifest.xml:31:13-33:29
-44-->[androidx.test:core:1.7.0] /Users/olatunji/.gradle/caches/9.6.0/transforms/ca147d9405293d5157738ec471b9fc6b/transformed/core-1.7.0/AndroidManifest.xml:31:28-51
+44-->[androidx.test:core:1.7.0] /Users/olatunji/.gradle/caches/9.6.0/transforms/99b6f72e6eaf3fd302319a3da181ff16/transformed/core-1.7.0/AndroidManifest.xml:31:13-33:29
+44-->[androidx.test:core:1.7.0] /Users/olatunji/.gradle/caches/9.6.0/transforms/99b6f72e6eaf3fd302319a3da181ff16/transformed/core-1.7.0/AndroidManifest.xml:31:28-51
 45                <category android:name="android.intent.category.LAUNCHER" />
-45-->[androidx.test:core:1.7.0] /Users/olatunji/.gradle/caches/9.6.0/transforms/ca147d9405293d5157738ec471b9fc6b/transformed/core-1.7.0/AndroidManifest.xml:32:17-77
-45-->[androidx.test:core:1.7.0] /Users/olatunji/.gradle/caches/9.6.0/transforms/ca147d9405293d5157738ec471b9fc6b/transformed/core-1.7.0/AndroidManifest.xml:32:27-74
+45-->[androidx.test:core:1.7.0] /Users/olatunji/.gradle/caches/9.6.0/transforms/99b6f72e6eaf3fd302319a3da181ff16/transformed/core-1.7.0/AndroidManifest.xml:32:17-77
+45-->[androidx.test:core:1.7.0] /Users/olatunji/.gradle/caches/9.6.0/transforms/99b6f72e6eaf3fd302319a3da181ff16/transformed/core-1.7.0/AndroidManifest.xml:32:27-74
 46            </intent-filter>
 47        </activity>
 48    </application>

@@ -49,7 +49,11 @@ class DeviceCapabilities @Inject constructor(@ApplicationContext private val con
         }.maxOrNull() ?: 1080
     }
 
-    var softwareAudio: Boolean = true
+    /**
+     * True once an LGPL FFmpeg audio decoder ships with the app (PL-2, plan E10-11). Until then DTS/TrueHD
+     * only play through HDMI passthrough, so rows with them are flagged when passthrough isn't available.
+     */
+    var softwareAudio: Boolean = false
 
     private fun passthrough(encoding: Int): Boolean = runCatching {
         val am = context.getSystemService(AudioManager::class.java)

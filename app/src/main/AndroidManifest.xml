@@ -42,7 +42,24 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LEANBACK_LAUNCHER" />
             </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+            <meta-data android:name="android.app.searchable" android:resource="@xml/searchable" />
+            <!-- Deep links from the Google TV Watch Next row: jazzy://title/{movie|tv}/{id}?s=&e= -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="jazzy" android:host="title" />
+            </intent-filter>
         </activity>
+
+        <!-- Google TV / system global search (SR-6). -->
+        <provider
+            android:name=".tv.SearchSuggestionsProvider"
+            android:authorities="com.nexient.jazzy.search"
+            android:exported="true" />
 
         <!-- WorkManager is initialised on demand by JazzyApplication (Hilt worker factory). -->
         <provider

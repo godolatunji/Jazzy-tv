@@ -5,5 +5,15 @@
 5    <uses-sdk android:minSdkVersion="28" />
 5-->INJECTED
 5-->INJECTED
-6
-7</manifest>
+6    <!-- Package visibility (API 30+): lets Search check that a voice recognizer exists before showing the mic (SR-2). -->
+7    <queries>
+7-->/Users/olatunji/AndroidStudioProjects/Jazzy/feature/search/src/main/AndroidManifest.xml:4:5-8:15
+8        <intent>
+8-->/Users/olatunji/AndroidStudioProjects/Jazzy/feature/search/src/main/AndroidManifest.xml:5:9-7:18
+9            <action android:name="android.speech.action.RECOGNIZE_SPEECH" />
+9-->/Users/olatunji/AndroidStudioProjects/Jazzy/feature/search/src/main/AndroidManifest.xml:6:13-77
+9-->/Users/olatunji/AndroidStudioProjects/Jazzy/feature/search/src/main/AndroidManifest.xml:6:21-74
+10        </intent>
+11    </queries>
+12
+13</manifest>

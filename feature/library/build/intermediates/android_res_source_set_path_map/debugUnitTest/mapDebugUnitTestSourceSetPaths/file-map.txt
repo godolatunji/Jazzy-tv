@@ -1,0 +1,4 @@
+com.nexient.jazzy.feature.library.test.library-mergeDebugUnitTestResources-0 /Users/olatunji/AndroidStudioProjects/Jazzy/feature/library/build/intermediates/incremental/debugUnitTest/mergeDebugUnitTestResources/merged.dir
+com.nexient.jazzy.feature.library.test.library-mergeDebugUnitTestResources-1 /Users/olatunji/AndroidStudioProjects/Jazzy/feature/library/build/intermediates/incremental/debugUnitTest/mergeDebugUnitTestResources/stripped.dir
+com.nexient.jazzy.feature.library.test.library-debugUnitTest-2 /Users/olatunji/AndroidStudioProjects/Jazzy/feature/library/build/intermediates/merged_res/debugUnitTest/mergeDebugUnitTestResources
+gradleHome-0 /Users/olatunji/.gradle

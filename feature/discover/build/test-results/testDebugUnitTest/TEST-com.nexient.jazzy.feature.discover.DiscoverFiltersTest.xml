@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.nexient.jazzy.feature.discover.DiscoverFiltersTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2026-10-10T22:30:50.169Z" hostname="Olatunjis-MacBook-Pro.local" time="0.067">
+  <properties/>
+  <testcase name="movie filters map to TMDB discover params" classname="com.nexient.jazzy.feature.discover.DiscoverFiltersTest" time="0.053"/>
+  <testcase name="defaults sort by popularity with the minimum vote count" classname="com.nexient.jazzy.feature.discover.DiscoverFiltersTest" time="0.001"/>
+  <testcase name="tv uses first air date and original name" classname="com.nexient.jazzy.feature.discover.DiscoverFiltersTest" time="0.005"/>
+  <testcase name="year bounds are kept in order" classname="com.nexient.jazzy.feature.discover.DiscoverFiltersTest" time="0.001"/>
+  <testcase name="switching to tv drops the movie-only revenue sort and runtime" classname="com.nexient.jazzy.feature.discover.DiscoverFiltersTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

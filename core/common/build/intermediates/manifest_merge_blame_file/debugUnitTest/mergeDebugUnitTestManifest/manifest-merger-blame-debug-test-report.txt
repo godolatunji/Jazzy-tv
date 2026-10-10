@@ -1,0 +1,28 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="com.nexient.jazzy.core.common.test" >
+4
+5    <uses-sdk
+5-->/Users/olatunji/AndroidStudioProjects/Jazzy/core/common/build/intermediates/tmp/manifest/test/debug/tempFile1ProcessTestManifest14646677755080809899.xml:5:5-74
+6        android:minSdkVersion="28"
+6-->/Users/olatunji/AndroidStudioProjects/Jazzy/core/common/build/intermediates/tmp/manifest/test/debug/tempFile1ProcessTestManifest14646677755080809899.xml:5:15-41
+7        android:targetSdkVersion="37" />
+7-->/Users/olatunji/AndroidStudioProjects/Jazzy/core/common/build/intermediates/tmp/manifest/test/debug/tempFile1ProcessTestManifest14646677755080809899.xml:5:42-71
+8
+9    <instrumentation
+9-->/Users/olatunji/AndroidStudioProjects/Jazzy/core/common/build/intermediates/tmp/manifest/test/debug/tempFile1ProcessTestManifest14646677755080809899.xml:9:5-11:84
+10        android:name="androidx.test.runner.AndroidJUnitRunner"
+10-->/Users/olatunji/AndroidStudioProjects/Jazzy/core/common/build/intermediates/tmp/manifest/test/debug/tempFile1ProcessTestManifest14646677755080809899.xml:9:22-76
+11        android:label="Tests for com.nexient.jazzy.core.common.test"
+11-->/Users/olatunji/AndroidStudioProjects/Jazzy/core/common/build/intermediates/tmp/manifest/test/debug/tempFile1ProcessTestManifest14646677755080809899.xml:11:22-82
+12        android:targetPackage="com.nexient.jazzy.core.common.test" />
+12-->/Users/olatunji/AndroidStudioProjects/Jazzy/core/common/build/intermediates/tmp/manifest/test/debug/tempFile1ProcessTestManifest14646677755080809899.xml:10:22-80
+13
+14    <application
+14-->/Users/olatunji/AndroidStudioProjects/Jazzy/core/common/build/intermediates/tmp/manifest/test/debug/tempFile1ProcessTestManifest14646677755080809899.xml:7:5-46
+15        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+15-->[androidx.core:core:1.8.0] /Users/olatunji/.gradle/caches/9.6.0/transforms/35807f4a69e3b65c59a90859172c7fc1/transformed/core-1.8.0/AndroidManifest.xml:24:18-86
+16        android:debuggable="true" />
+16-->/Users/olatunji/AndroidStudioProjects/Jazzy/core/common/build/intermediates/tmp/manifest/test/debug/tempFile1ProcessTestManifest14646677755080809899.xml:7:18-43
+17
+18</manifest>

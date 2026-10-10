@@ -30,6 +30,7 @@ import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Forward10
 import androidx.compose.material.icons.filled.Insights
+import androidx.compose.material.icons.filled.OpenInNew
 import androidx.compose.material.icons.filled.Pause
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Replay10
@@ -276,6 +277,13 @@ private fun Controls(
             if (state.request.playable.isEpisode) IconButton(onClick = { viewModel.openPanel(PlayerPanel.EPISODES) }) { Icon(Icons.Filled.VideoLibrary, "Episodes") }
             IconButton(onClick = { viewModel.openPanel(PlayerPanel.TRACKS) }) { Icon(Icons.Filled.Subtitles, "Audio and subtitles") }
             IconButton(onClick = onToggleStats) { Icon(Icons.Filled.Insights, "Stats") }
+            val context = LocalContext.current
+            IconButton(onClick = {
+                viewModel.externalPlayerUrl()?.let { url ->
+                    val intent = android.content.Intent(android.content.Intent.ACTION_VIEW).setDataAndType(android.net.Uri.parse(url), "video/*")
+                    runCatching { context.startActivity(android.content.Intent.createChooser(intent, "Open with")) }
+                }
+            }) { Icon(Icons.Filled.OpenInNew, "Open in external player") }
         }
         // Centre transport
         Row(Modifier.align(Alignment.Center), horizontalArrangement = Arrangement.spacedBy(32.dp), verticalAlignment = Alignment.CenterVertically) {

@@ -1,0 +1,200 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="com.nexient.jazzy.core.data.test" >
+4
+5    <uses-sdk
+5-->/Users/olatunji/AndroidStudioProjects/Jazzy/core/data/build/intermediates/tmp/manifest/test/debug/tempFile1ProcessTestManifest8233446775528406317.xml:5:5-74
+6        android:minSdkVersion="28"
+6-->/Users/olatunji/AndroidStudioProjects/Jazzy/core/data/build/intermediates/tmp/manifest/test/debug/tempFile1ProcessTestManifest8233446775528406317.xml:5:15-41
+7        android:targetSdkVersion="37" />
+7-->/Users/olatunji/AndroidStudioProjects/Jazzy/core/data/build/intermediates/tmp/manifest/test/debug/tempFile1ProcessTestManifest8233446775528406317.xml:5:42-71
+8
+9    <instrumentation
+9-->/Users/olatunji/AndroidStudioProjects/Jazzy/core/data/build/intermediates/tmp/manifest/test/debug/tempFile1ProcessTestManifest8233446775528406317.xml:9:5-11:82
+10        android:name="androidx.test.runner.AndroidJUnitRunner"
+10-->/Users/olatunji/AndroidStudioProjects/Jazzy/core/data/build/intermediates/tmp/manifest/test/debug/tempFile1ProcessTestManifest8233446775528406317.xml:9:22-76
+11        android:label="Tests for com.nexient.jazzy.core.data.test"
+11-->/Users/olatunji/AndroidStudioProjects/Jazzy/core/data/build/intermediates/tmp/manifest/test/debug/tempFile1ProcessTestManifest8233446775528406317.xml:11:22-80
+12        android:targetPackage="com.nexient.jazzy.core.data.test" />
+12-->/Users/olatunji/AndroidStudioProjects/Jazzy/core/data/build/intermediates/tmp/manifest/test/debug/tempFile1ProcessTestManifest8233446775528406317.xml:10:22-78
+13
+14    <uses-permission android:name="android.permission.INTERNET" /> <!-- Wi-Fi-only rule (TE-11): ConnectivityManager.isActiveNetworkMetered. -->
+14-->[:core:torrent] /Users/olatunji/AndroidStudioProjects/Jazzy/core/torrent/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:7:5-67
+14-->[:core:torrent] /Users/olatunji/AndroidStudioProjects/Jazzy/core/torrent/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:7:22-64
+15    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+15-->[:core:torrent] /Users/olatunji/AndroidStudioProjects/Jazzy/core/torrent/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:9:5-79
+15-->[:core:torrent] /Users/olatunji/AndroidStudioProjects/Jazzy/core/torrent/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:9:22-76
+16    <uses-permission android:name="android.permission.WAKE_LOCK" />
+16-->[androidx.work:work-runtime:2.12.0] /Users/olatunji/.gradle/caches/9.6.0/transforms/2e0138537515a8dc01050842d50c0901/transformed/work-runtime-2.12.0/AndroidManifest.xml:23:5-68
+16-->[androidx.work:work-runtime:2.12.0] /Users/olatunji/.gradle/caches/9.6.0/transforms/2e0138537515a8dc01050842d50c0901/transformed/work-runtime-2.12.0/AndroidManifest.xml:23:22-65
+17    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+17-->[androidx.work:work-runtime:2.12.0] /Users/olatunji/.gradle/caches/9.6.0/transforms/2e0138537515a8dc01050842d50c0901/transformed/work-runtime-2.12.0/AndroidManifest.xml:25:5-81
+17-->[androidx.work:work-runtime:2.12.0] /Users/olatunji/.gradle/caches/9.6.0/transforms/2e0138537515a8dc01050842d50c0901/transformed/work-runtime-2.12.0/AndroidManifest.xml:25:22-78
+18    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+18-->[androidx.work:work-runtime:2.12.0] /Users/olatunji/.gradle/caches/9.6.0/transforms/2e0138537515a8dc01050842d50c0901/transformed/work-runtime-2.12.0/AndroidManifest.xml:26:5-77
+18-->[androidx.work:work-runtime:2.12.0] /Users/olatunji/.gradle/caches/9.6.0/transforms/2e0138537515a8dc01050842d50c0901/transformed/work-runtime-2.12.0/AndroidManifest.xml:26:22-74
+19
+20    <permission
+20-->[androidx.core:core:1.13.1] /Users/olatunji/.gradle/caches/9.6.0/transforms/750a9ed418c73acf3ed3ffae303dfd0c/transformed/core-1.13.1/AndroidManifest.xml:22:5-24:47
+21        android:name="com.nexient.jazzy.core.data.test.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
+21-->[androidx.core:core:1.13.1] /Users/olatunji/.gradle/caches/9.6.0/transforms/750a9ed418c73acf3ed3ffae303dfd0c/transformed/core-1.13.1/AndroidManifest.xml:23:9-81
+22        android:protectionLevel="signature" />
+22-->[androidx.core:core:1.13.1] /Users/olatunji/.gradle/caches/9.6.0/transforms/750a9ed418c73acf3ed3ffae303dfd0c/transformed/core-1.13.1/AndroidManifest.xml:24:9-44
+23
+24    <uses-permission android:name="com.nexient.jazzy.core.data.test.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" />
+24-->[androidx.core:core:1.13.1] /Users/olatunji/.gradle/caches/9.6.0/transforms/750a9ed418c73acf3ed3ffae303dfd0c/transformed/core-1.13.1/AndroidManifest.xml:26:5-97
+24-->[androidx.core:core:1.13.1] /Users/olatunji/.gradle/caches/9.6.0/transforms/750a9ed418c73acf3ed3ffae303dfd0c/transformed/core-1.13.1/AndroidManifest.xml:26:22-94
+25
+26    <application
+26-->/Users/olatunji/AndroidStudioProjects/Jazzy/core/data/build/intermediates/tmp/manifest/test/debug/tempFile1ProcessTestManifest8233446775528406317.xml:7:5-46
+27        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+27-->[androidx.core:core:1.13.1] /Users/olatunji/.gradle/caches/9.6.0/transforms/750a9ed418c73acf3ed3ffae303dfd0c/transformed/core-1.13.1/AndroidManifest.xml:28:18-86
+28        android:debuggable="true" >
+28-->/Users/olatunji/AndroidStudioProjects/Jazzy/core/data/build/intermediates/tmp/manifest/test/debug/tempFile1ProcessTestManifest8233446775528406317.xml:7:18-43
+29        <provider
+29-->[androidx.work:work-runtime:2.12.0] /Users/olatunji/.gradle/caches/9.6.0/transforms/2e0138537515a8dc01050842d50c0901/transformed/work-runtime-2.12.0/AndroidManifest.xml:29:9-37:20
+30            android:name="androidx.startup.InitializationProvider"
+30-->[androidx.work:work-runtime:2.12.0] /Users/olatunji/.gradle/caches/9.6.0/transforms/2e0138537515a8dc01050842d50c0901/transformed/work-runtime-2.12.0/AndroidManifest.xml:30:13-67
+31            android:authorities="com.nexient.jazzy.core.data.test.androidx-startup"
+31-->[androidx.work:work-runtime:2.12.0] /Users/olatunji/.gradle/caches/9.6.0/transforms/2e0138537515a8dc01050842d50c0901/transformed/work-runtime-2.12.0/AndroidManifest.xml:31:13-68
+32            android:exported="false" >
+32-->[androidx.work:work-runtime:2.12.0] /Users/olatunji/.gradle/caches/9.6.0/transforms/2e0138537515a8dc01050842d50c0901/transformed/work-runtime-2.12.0/AndroidManifest.xml:32:13-37
+33            <meta-data
+33-->[androidx.work:work-runtime:2.12.0] /Users/olatunji/.gradle/caches/9.6.0/transforms/2e0138537515a8dc01050842d50c0901/transformed/work-runtime-2.12.0/AndroidManifest.xml:34:13-36:52
+34                android:name="androidx.work.WorkManagerInitializer"
+34-->[androidx.work:work-runtime:2.12.0] /Users/olatunji/.gradle/caches/9.6.0/transforms/2e0138537515a8dc01050842d50c0901/transformed/work-runtime-2.12.0/AndroidManifest.xml:35:17-68
+35                android:value="androidx.startup" />
+35-->[androidx.work:work-runtime:2.12.0] /Users/olatunji/.gradle/caches/9.6.0/transforms/2e0138537515a8dc01050842d50c0901/transformed/work-runtime-2.12.0/AndroidManifest.xml:36:17-49
+36            <meta-data
+36-->[com.squareup.okhttp3:okhttp-android:5.5.0] /Users/olatunji/.gradle/caches/9.6.0/transforms/1515f196f0759894afb1004d4b9f1039/transformed/okhttp/AndroidManifest.xml:16:13-18:52
+37                android:name="okhttp3.internal.platform.PlatformInitializer"
+37-->[com.squareup.okhttp3:okhttp-android:5.5.0] /Users/olatunji/.gradle/caches/9.6.0/transforms/1515f196f0759894afb1004d4b9f1039/transformed/okhttp/AndroidManifest.xml:17:17-77
+38                android:value="androidx.startup" />
+38-->[com.squareup.okhttp3:okhttp-android:5.5.0] /Users/olatunji/.gradle/caches/9.6.0/transforms/1515f196f0759894afb1004d4b9f1039/transformed/okhttp/AndroidManifest.xml:18:17-49
+39            <meta-data
+39-->[androidx.profileinstaller:profileinstaller:1.4.0] /Users/olatunji/.gradle/caches/9.6.0/transforms/60ed490ef095d8480c492b05fe74d9b2/transformed/profileinstaller-1.4.0/AndroidManifest.xml:29:13-31:52
+40                android:name="androidx.profileinstaller.ProfileInstallerInitializer"
+40-->[androidx.profileinstaller:profileinstaller:1.4.0] /Users/olatunji/.gradle/caches/9.6.0/transforms/60ed490ef095d8480c492b05fe74d9b2/transformed/profileinstaller-1.4.0/AndroidManifest.xml:30:17-85
+41                android:value="androidx.startup" />
+41-->[androidx.profileinstaller:profileinstaller:1.4.0] /Users/olatunji/.gradle/caches/9.6.0/transforms/60ed490ef095d8480c492b05fe74d9b2/transformed/profileinstaller-1.4.0/AndroidManifest.xml:31:17-49
+42        </provider>
+43
+44        <service
+44-->[androidx.work:work-runtime:2.12.0] /Users/olatunji/.gradle/caches/9.6.0/transforms/2e0138537515a8dc01050842d50c0901/transformed/work-runtime-2.12.0/AndroidManifest.xml:39:9-45:35
+45            android:name="androidx.work.impl.background.systemjob.SystemJobService"
+45-->[androidx.work:work-runtime:2.12.0] /Users/olatunji/.gradle/caches/9.6.0/transforms/2e0138537515a8dc01050842d50c0901/transformed/work-runtime-2.12.0/AndroidManifest.xml:40:13-84
+46            android:directBootAware="false"
+46-->[androidx.work:work-runtime:2.12.0] /Users/olatunji/.gradle/caches/9.6.0/transforms/2e0138537515a8dc01050842d50c0901/transformed/work-runtime-2.12.0/AndroidManifest.xml:41:13-44
+47            android:enabled="@bool/enable_system_job_service_default"
+47-->[androidx.work:work-runtime:2.12.0] /Users/olatunji/.gradle/caches/9.6.0/transforms/2e0138537515a8dc01050842d50c0901/transformed/work-runtime-2.12.0/AndroidManifest.xml:42:13-70
+48            android:exported="true"
+48-->[androidx.work:work-runtime:2.12.0] /Users/olatunji/.gradle/caches/9.6.0/transforms/2e0138537515a8dc01050842d50c0901/transformed/work-runtime-2.12.0/AndroidManifest.xml:43:13-36
+49            android:permission="android.permission.BIND_JOB_SERVICE" />
+49-->[androidx.work:work-runtime:2.12.0] /Users/olatunji/.gradle/caches/9.6.0/transforms/2e0138537515a8dc01050842d50c0901/transformed/work-runtime-2.12.0/AndroidManifest.xml:44:13-69
+50        <service
+50-->[androidx.work:work-runtime:2.12.0] /Users/olatunji/.gradle/caches/9.6.0/transforms/2e0138537515a8dc01050842d50c0901/transformed/work-runtime-2.12.0/AndroidManifest.xml:46:9-52:35
+51            android:name="androidx.work.impl.foreground.SystemForegroundService"
+51-->[androidx.work:work-runtime:2.12.0] /Users/olatunji/.gradle/caches/9.6.0/transforms/2e0138537515a8dc01050842d50c0901/transformed/work-runtime-2.12.0/AndroidManifest.xml:47:13-81
+52            android:directBootAware="false"
+52-->[androidx.work:work-runtime:2.12.0] /Users/olatunji/.gradle/caches/9.6.0/transforms/2e0138537515a8dc01050842d50c0901/transformed/work-runtime-2.12.0/AndroidManifest.xml:48:13-44
+53            android:enabled="@bool/enable_system_foreground_service_default"
+53-->[androidx.work:work-runtime:2.12.0] /Users/olatunji/.gradle/caches/9.6.0/transforms/2e0138537515a8dc01050842d50c0901/transformed/work-runtime-2.12.0/AndroidManifest.xml:49:13-77
+54            android:exported="false" />
+54-->[androidx.work:work-runtime:2.12.0] /Users/olatunji/.gradle/caches/9.6.0/transforms/2e0138537515a8dc01050842d50c0901/transformed/work-runtime-2.12.0/AndroidManifest.xml:50:13-37
+55
+56        <receiver
+56-->[androidx.work:work-runtime:2.12.0] /Users/olatunji/.gradle/caches/9.6.0/transforms/2e0138537515a8dc01050842d50c0901/transformed/work-runtime-2.12.0/AndroidManifest.xml:54:9-59:35
+57            android:name="androidx.work.impl.utils.ForceStopRunnable$BroadcastReceiver"
+57-->[androidx.work:work-runtime:2.12.0] /Users/olatunji/.gradle/caches/9.6.0/transforms/2e0138537515a8dc01050842d50c0901/transformed/work-runtime-2.12.0/AndroidManifest.xml:55:13-88
+58            android:directBootAware="false"
+58-->[androidx.work:work-runtime:2.12.0] /Users/olatunji/.gradle/caches/9.6.0/transforms/2e0138537515a8dc01050842d50c0901/transformed/work-runtime-2.12.0/AndroidManifest.xml:56:13-44
+59            android:enabled="true"
+59-->[androidx.work:work-runtime:2.12.0] /Users/olatunji/.gradle/caches/9.6.0/transforms/2e0138537515a8dc01050842d50c0901/transformed/work-runtime-2.12.0/AndroidManifest.xml:57:13-35
+60            android:exported="false" />
+60-->[androidx.work:work-runtime:2.12.0] /Users/olatunji/.gradle/caches/9.6.0/transforms/2e0138537515a8dc01050842d50c0901/transformed/work-runtime-2.12.0/AndroidManifest.xml:58:13-37
+61        <receiver
+61-->[androidx.work:work-runtime:2.12.0] /Users/olatunji/.gradle/caches/9.6.0/transforms/2e0138537515a8dc01050842d50c0901/transformed/work-runtime-2.12.0/AndroidManifest.xml:60:9-69:20
+62            android:name="androidx.work.impl.background.systemalarm.RescheduleReceiver"
+62-->[androidx.work:work-runtime:2.12.0] /Users/olatunji/.gradle/caches/9.6.0/transforms/2e0138537515a8dc01050842d50c0901/transformed/work-runtime-2.12.0/AndroidManifest.xml:61:13-88
+63            android:directBootAware="false"
+63-->[androidx.work:work-runtime:2.12.0] /Users/olatunji/.gradle/caches/9.6.0/transforms/2e0138537515a8dc01050842d50c0901/transformed/work-runtime-2.12.0/AndroidManifest.xml:62:13-44
+64            android:enabled="false"
+64-->[androidx.work:work-runtime:2.12.0] /Users/olatunji/.gradle/caches/9.6.0/transforms/2e0138537515a8dc01050842d50c0901/transformed/work-runtime-2.12.0/AndroidManifest.xml:63:13-36
+65            android:exported="false" >
+65-->[androidx.work:work-runtime:2.12.0] /Users/olatunji/.gradle/caches/9.6.0/transforms/2e0138537515a8dc01050842d50c0901/transformed/work-runtime-2.12.0/AndroidManifest.xml:64:13-37
+66            <intent-filter>
+66-->[androidx.work:work-runtime:2.12.0] /Users/olatunji/.gradle/caches/9.6.0/transforms/2e0138537515a8dc01050842d50c0901/transformed/work-runtime-2.12.0/AndroidManifest.xml:66:13-68:29
+67                <action android:name="android.intent.action.BOOT_COMPLETED" />
+67-->[androidx.work:work-runtime:2.12.0] /Users/olatunji/.gradle/caches/9.6.0/transforms/2e0138537515a8dc01050842d50c0901/transformed/work-runtime-2.12.0/AndroidManifest.xml:67:17-79
+67-->[androidx.work:work-runtime:2.12.0] /Users/olatunji/.gradle/caches/9.6.0/transforms/2e0138537515a8dc01050842d50c0901/transformed/work-runtime-2.12.0/AndroidManifest.xml:67:25-76
+68            </intent-filter>
+69        </receiver>
+70        <receiver
+70-->[androidx.work:work-runtime:2.12.0] /Users/olatunji/.gradle/caches/9.6.0/transforms/2e0138537515a8dc01050842d50c0901/transformed/work-runtime-2.12.0/AndroidManifest.xml:70:9-80:20
+71            android:name="androidx.work.impl.diagnostics.DiagnosticsReceiver"
+71-->[androidx.work:work-runtime:2.12.0] /Users/olatunji/.gradle/caches/9.6.0/transforms/2e0138537515a8dc01050842d50c0901/transformed/work-runtime-2.12.0/AndroidManifest.xml:71:13-78
+72            android:directBootAware="false"
+72-->[androidx.work:work-runtime:2.12.0] /Users/olatunji/.gradle/caches/9.6.0/transforms/2e0138537515a8dc01050842d50c0901/transformed/work-runtime-2.12.0/AndroidManifest.xml:72:13-44
+73            android:enabled="true"
+73-->[androidx.work:work-runtime:2.12.0] /Users/olatunji/.gradle/caches/9.6.0/transforms/2e0138537515a8dc01050842d50c0901/transformed/work-runtime-2.12.0/AndroidManifest.xml:73:13-35
+74            android:exported="true"
+74-->[androidx.work:work-runtime:2.12.0] /Users/olatunji/.gradle/caches/9.6.0/transforms/2e0138537515a8dc01050842d50c0901/transformed/work-runtime-2.12.0/AndroidManifest.xml:74:13-36
+75            android:permission="android.permission.DUMP" >
+75-->[androidx.work:work-runtime:2.12.0] /Users/olatunji/.gradle/caches/9.6.0/transforms/2e0138537515a8dc01050842d50c0901/transformed/work-runtime-2.12.0/AndroidManifest.xml:75:13-57
+76            <intent-filter>
+76-->[androidx.work:work-runtime:2.12.0] /Users/olatunji/.gradle/caches/9.6.0/transforms/2e0138537515a8dc01050842d50c0901/transformed/work-runtime-2.12.0/AndroidManifest.xml:77:13-79:29
+77                <action android:name="androidx.work.diagnostics.REQUEST_DIAGNOSTICS" />
+77-->[androidx.work:work-runtime:2.12.0] /Users/olatunji/.gradle/caches/9.6.0/transforms/2e0138537515a8dc01050842d50c0901/transformed/work-runtime-2.12.0/AndroidManifest.xml:78:17-88
+77-->[androidx.work:work-runtime:2.12.0] /Users/olatunji/.gradle/caches/9.6.0/transforms/2e0138537515a8dc01050842d50c0901/transformed/work-runtime-2.12.0/AndroidManifest.xml:78:25-85
+78            </intent-filter>
+79        </receiver>
+80
+81        <service
+81-->[androidx.room:room-runtime-android:2.8.5] /Users/olatunji/.gradle/caches/9.6.0/transforms/e6156fd11270f74798d0a7cf1c5d99b0/transformed/room-runtime/AndroidManifest.xml:24:9-28:63
+82            android:name="androidx.room.MultiInstanceInvalidationService"
+82-->[androidx.room:room-runtime-android:2.8.5] /Users/olatunji/.gradle/caches/9.6.0/transforms/e6156fd11270f74798d0a7cf1c5d99b0/transformed/room-runtime/AndroidManifest.xml:25:13-74
+83            android:directBootAware="true"
+83-->[androidx.room:room-runtime-android:2.8.5] /Users/olatunji/.gradle/caches/9.6.0/transforms/e6156fd11270f74798d0a7cf1c5d99b0/transformed/room-runtime/AndroidManifest.xml:26:13-43
+84            android:exported="false" />
+84-->[androidx.room:room-runtime-android:2.8.5] /Users/olatunji/.gradle/caches/9.6.0/transforms/e6156fd11270f74798d0a7cf1c5d99b0/transformed/room-runtime/AndroidManifest.xml:27:13-37
+85
+86        <receiver
+86-->[androidx.profileinstaller:profileinstaller:1.4.0] /Users/olatunji/.gradle/caches/9.6.0/transforms/60ed490ef095d8480c492b05fe74d9b2/transformed/profileinstaller-1.4.0/AndroidManifest.xml:34:9-52:20
+87            android:name="androidx.profileinstaller.ProfileInstallReceiver"
+87-->[androidx.profileinstaller:profileinstaller:1.4.0] /Users/olatunji/.gradle/caches/9.6.0/transforms/60ed490ef095d8480c492b05fe74d9b2/transformed/profileinstaller-1.4.0/AndroidManifest.xml:35:13-76
+88            android:directBootAware="false"
+88-->[androidx.profileinstaller:profileinstaller:1.4.0] /Users/olatunji/.gradle/caches/9.6.0/transforms/60ed490ef095d8480c492b05fe74d9b2/transformed/profileinstaller-1.4.0/AndroidManifest.xml:36:13-44
+89            android:enabled="true"
+89-->[androidx.profileinstaller:profileinstaller:1.4.0] /Users/olatunji/.gradle/caches/9.6.0/transforms/60ed490ef095d8480c492b05fe74d9b2/transformed/profileinstaller-1.4.0/AndroidManifest.xml:37:13-35
+90            android:exported="true"
+90-->[androidx.profileinstaller:profileinstaller:1.4.0] /Users/olatunji/.gradle/caches/9.6.0/transforms/60ed490ef095d8480c492b05fe74d9b2/transformed/profileinstaller-1.4.0/AndroidManifest.xml:38:13-36
+91            android:permission="android.permission.DUMP" >
+91-->[androidx.profileinstaller:profileinstaller:1.4.0] /Users/olatunji/.gradle/caches/9.6.0/transforms/60ed490ef095d8480c492b05fe74d9b2/transformed/profileinstaller-1.4.0/AndroidManifest.xml:39:13-57
+92            <intent-filter>
+92-->[androidx.profileinstaller:profileinstaller:1.4.0] /Users/olatunji/.gradle/caches/9.6.0/transforms/60ed490ef095d8480c492b05fe74d9b2/transformed/profileinstaller-1.4.0/AndroidManifest.xml:40:13-42:29
+93                <action android:name="androidx.profileinstaller.action.INSTALL_PROFILE" />
+93-->[androidx.profileinstaller:profileinstaller:1.4.0] /Users/olatunji/.gradle/caches/9.6.0/transforms/60ed490ef095d8480c492b05fe74d9b2/transformed/profileinstaller-1.4.0/AndroidManifest.xml:41:17-91
+93-->[androidx.profileinstaller:profileinstaller:1.4.0] /Users/olatunji/.gradle/caches/9.6.0/transforms/60ed490ef095d8480c492b05fe74d9b2/transformed/profileinstaller-1.4.0/AndroidManifest.xml:41:25-88
+94            </intent-filter>
+95            <intent-filter>
+95-->[androidx.profileinstaller:profileinstaller:1.4.0] /Users/olatunji/.gradle/caches/9.6.0/transforms/60ed490ef095d8480c492b05fe74d9b2/transformed/profileinstaller-1.4.0/AndroidManifest.xml:43:13-45:29
+96                <action android:name="androidx.profileinstaller.action.SKIP_FILE" />
+96-->[androidx.profileinstaller:profileinstaller:1.4.0] /Users/olatunji/.gradle/caches/9.6.0/transforms/60ed490ef095d8480c492b05fe74d9b2/transformed/profileinstaller-1.4.0/AndroidManifest.xml:44:17-85
+96-->[androidx.profileinstaller:profileinstaller:1.4.0] /Users/olatunji/.gradle/caches/9.6.0/transforms/60ed490ef095d8480c492b05fe74d9b2/transformed/profileinstaller-1.4.0/AndroidManifest.xml:44:25-82
+97            </intent-filter>
+98            <intent-filter>
+98-->[androidx.profileinstaller:profileinstaller:1.4.0] /Users/olatunji/.gradle/caches/9.6.0/transforms/60ed490ef095d8480c492b05fe74d9b2/transformed/profileinstaller-1.4.0/AndroidManifest.xml:46:13-48:29
+99                <action android:name="androidx.profileinstaller.action.SAVE_PROFILE" />
+99-->[androidx.profileinstaller:profileinstaller:1.4.0] /Users/olatunji/.gradle/caches/9.6.0/transforms/60ed490ef095d8480c492b05fe74d9b2/transformed/profileinstaller-1.4.0/AndroidManifest.xml:47:17-88
+99-->[androidx.profileinstaller:profileinstaller:1.4.0] /Users/olatunji/.gradle/caches/9.6.0/transforms/60ed490ef095d8480c492b05fe74d9b2/transformed/profileinstaller-1.4.0/AndroidManifest.xml:47:25-85
+100            </intent-filter>
+101            <intent-filter>
+101-->[androidx.profileinstaller:profileinstaller:1.4.0] /Users/olatunji/.gradle/caches/9.6.0/transforms/60ed490ef095d8480c492b05fe74d9b2/transformed/profileinstaller-1.4.0/AndroidManifest.xml:49:13-51:29
+102                <action android:name="androidx.profileinstaller.action.BENCHMARK_OPERATION" />
+102-->[androidx.profileinstaller:profileinstaller:1.4.0] /Users/olatunji/.gradle/caches/9.6.0/transforms/60ed490ef095d8480c492b05fe74d9b2/transformed/profileinstaller-1.4.0/AndroidManifest.xml:50:17-95
+102-->[androidx.profileinstaller:profileinstaller:1.4.0] /Users/olatunji/.gradle/caches/9.6.0/transforms/60ed490ef095d8480c492b05fe74d9b2/transformed/profileinstaller-1.4.0/AndroidManifest.xml:50:25-92
+103            </intent-filter>
+104        </receiver>
+105    </application>
+106
+107</manifest>

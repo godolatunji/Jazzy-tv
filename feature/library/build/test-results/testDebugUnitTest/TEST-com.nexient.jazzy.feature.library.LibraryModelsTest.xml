@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.nexient.jazzy.feature.library.LibraryModelsTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2026-10-10T22:30:50.159Z" hostname="Olatunjis-MacBook-Pro.local" time="0.087">
+  <properties/>
+  <testcase name="day labels follow today, yesterday, weekday, then date" classname="com.nexient.jazzy.feature.library.LibraryModelsTest" time="0.037"/>
+  <testcase name="collections sort newest first, by title, or by release year and filter by type" classname="com.nexient.jazzy.feature.library.LibraryModelsTest" time="0.024"/>
+  <testcase name="sections keep folded session ids and filter by title" classname="com.nexient.jazzy.feature.library.LibraryModelsTest" time="0.01"/>
+  <testcase name="entry lines" classname="com.nexient.jazzy.feature.library.LibraryModelsTest" time="0.006"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

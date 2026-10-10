@@ -1,16 +1,32 @@
 -- Merging decision tree log ---
 manifest
-ADDED from /Users/olatunji/AndroidStudioProjects/Jazzy/core/player/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest6792744031481990060.xml:2:13-83
-INJECTED from /Users/olatunji/AndroidStudioProjects/Jazzy/core/player/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest6792744031481990060.xml:2:13-83
+ADDED from /Users/olatunji/AndroidStudioProjects/Jazzy/core/player/src/main/AndroidManifest.xml:2:1-14:12
+INJECTED from /Users/olatunji/AndroidStudioProjects/Jazzy/core/player/src/main/AndroidManifest.xml:2:1-14:12
 	package
-		INJECTED from /Users/olatunji/AndroidStudioProjects/Jazzy/core/player/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest6792744031481990060.xml
+		INJECTED from /Users/olatunji/AndroidStudioProjects/Jazzy/core/player/src/main/AndroidManifest.xml
 	xmlns:android
-		ADDED from /Users/olatunji/AndroidStudioProjects/Jazzy/core/player/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest6792744031481990060.xml:2:23-81
+		ADDED from /Users/olatunji/AndroidStudioProjects/Jazzy/core/player/src/main/AndroidManifest.xml:2:11-69
+application
+ADDED from /Users/olatunji/AndroidStudioProjects/Jazzy/core/player/src/main/AndroidManifest.xml:3:5-13:19
+service#com.nexient.jazzy.core.player.PlaybackService
+ADDED from /Users/olatunji/AndroidStudioProjects/Jazzy/core/player/src/main/AndroidManifest.xml:5:9-12:19
+	android:exported
+		ADDED from /Users/olatunji/AndroidStudioProjects/Jazzy/core/player/src/main/AndroidManifest.xml:7:13-36
+	android:foregroundServiceType
+		ADDED from /Users/olatunji/AndroidStudioProjects/Jazzy/core/player/src/main/AndroidManifest.xml:8:13-58
+	android:name
+		ADDED from /Users/olatunji/AndroidStudioProjects/Jazzy/core/player/src/main/AndroidManifest.xml:6:13-73
+intent-filter#action:name:androidx.media3.session.MediaSessionService
+ADDED from /Users/olatunji/AndroidStudioProjects/Jazzy/core/player/src/main/AndroidManifest.xml:9:13-11:29
+action#androidx.media3.session.MediaSessionService
+ADDED from /Users/olatunji/AndroidStudioProjects/Jazzy/core/player/src/main/AndroidManifest.xml:10:17-86
+	android:name
+		ADDED from /Users/olatunji/AndroidStudioProjects/Jazzy/core/player/src/main/AndroidManifest.xml:10:25-83
 uses-sdk
-INJECTED from /Users/olatunji/AndroidStudioProjects/Jazzy/core/player/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest6792744031481990060.xml reason: use-sdk injection requested
-INJECTED from /Users/olatunji/AndroidStudioProjects/Jazzy/core/player/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest6792744031481990060.xml
-INJECTED from /Users/olatunji/AndroidStudioProjects/Jazzy/core/player/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest6792744031481990060.xml
+INJECTED from /Users/olatunji/AndroidStudioProjects/Jazzy/core/player/src/main/AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from /Users/olatunji/AndroidStudioProjects/Jazzy/core/player/src/main/AndroidManifest.xml
+INJECTED from /Users/olatunji/AndroidStudioProjects/Jazzy/core/player/src/main/AndroidManifest.xml
 	android:targetSdkVersion
-		INJECTED from /Users/olatunji/AndroidStudioProjects/Jazzy/core/player/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest6792744031481990060.xml
+		INJECTED from /Users/olatunji/AndroidStudioProjects/Jazzy/core/player/src/main/AndroidManifest.xml
 	android:minSdkVersion
-		INJECTED from /Users/olatunji/AndroidStudioProjects/Jazzy/core/player/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest6792744031481990060.xml
+		INJECTED from /Users/olatunji/AndroidStudioProjects/Jazzy/core/player/src/main/AndroidManifest.xml
