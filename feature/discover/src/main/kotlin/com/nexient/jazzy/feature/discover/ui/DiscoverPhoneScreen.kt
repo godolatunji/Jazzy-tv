@@ -34,6 +34,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
@@ -44,6 +45,7 @@ import com.nexient.jazzy.core.designsystem.theme.JazzyColors
 import com.nexient.jazzy.core.designsystem.theme.JazzyTheme
 import com.nexient.jazzy.core.model.TitleSummary
 import com.nexient.jazzy.feature.discover.DiscoverUiState
+import com.nexient.jazzy.feature.discover.R
 
 /** Phone: type + sort + "Filters" chips over the grid; the full filter set lives in a bottom sheet. */
 @OptIn(ExperimentalMaterial3Api::class)
@@ -62,7 +64,7 @@ internal fun DiscoverPhoneScreen(
 
     Column(Modifier.fillMaxSize().windowInsetsPadding(WindowInsets.statusBars)) {
         Text(
-            "Discover",
+            stringResource(R.string.discover_title),
             style = MaterialTheme.typography.headlineSmall,
             modifier = Modifier.padding(horizontal = gutter, vertical = 12.dp).semantics { heading() },
         )
@@ -75,7 +77,7 @@ internal fun DiscoverPhoneScreen(
             SortDropdownChip(state.filters, callbacks.onSort)
             val count = state.filters.activeCount
             JazzyChip(
-                if (count > 0) "Filters · $count" else "Filters",
+                if (count > 0) stringResource(R.string.discover_filters_chip_count, count) else stringResource(R.string.discover_filters_chip),
                 selected = count > 0,
                 onClick = { showFilters = true },
                 leadingIcon = Icons.Filled.Tune,
@@ -98,8 +100,8 @@ internal fun DiscoverPhoneScreen(
         ModalBottomSheet(onDismissRequest = { showFilters = false }, sheetState = sheetState, containerColor = JazzyColors.SurfaceRaised) {
             Column(Modifier.fillMaxWidth().navigationBarsPadding()) {
                 Row(Modifier.fillMaxWidth().padding(horizontal = gutter), verticalAlignment = Alignment.CenterVertically) {
-                    Text("Filters", style = MaterialTheme.typography.titleLarge, modifier = Modifier.weight(1f).semantics { heading() })
-                    if (state.filters.activeCount > 0) TextButton(onClick = callbacks.onReset) { Text("Reset") }
+                    Text(stringResource(R.string.discover_filters_title), style = MaterialTheme.typography.titleLarge, modifier = Modifier.weight(1f).semantics { heading() })
+                    if (state.filters.activeCount > 0) TextButton(onClick = callbacks.onReset) { Text(stringResource(R.string.discover_filters_reset)) }
                 }
                 FilterPanel(
                     state = state,
@@ -110,7 +112,7 @@ internal fun DiscoverPhoneScreen(
                 Button(
                     onClick = { showFilters = false },
                     modifier = Modifier.fillMaxWidth().padding(horizontal = gutter, vertical = 12.dp),
-                ) { Text("Show results") }
+                ) { Text(stringResource(R.string.discover_filters_show_results)) }
             }
         }
     }
@@ -131,7 +133,7 @@ internal fun ScrollToTopOnFilterChange(state: DiscoverUiState, gridState: LazyGr
 @Composable
 internal fun RestrictedNote(modifier: Modifier = Modifier) {
     Text(
-        "Results follow this profile's maturity setting.",
+        stringResource(R.string.discover_restricted_note),
         style = MaterialTheme.typography.bodySmall,
         color = JazzyColors.TextTertiary,
         modifier = modifier,

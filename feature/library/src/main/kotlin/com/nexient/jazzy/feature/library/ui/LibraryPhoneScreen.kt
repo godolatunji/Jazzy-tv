@@ -14,6 +14,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
@@ -23,6 +24,7 @@ import com.nexient.jazzy.feature.library.LibraryNav
 import com.nexient.jazzy.feature.library.LibraryTab
 import com.nexient.jazzy.feature.library.LibraryUiState
 import com.nexient.jazzy.feature.library.LibraryViewModel
+import com.nexient.jazzy.feature.library.R
 
 /** Phone: a title, three tabs (My List · Liked · History) and the selected tab's content. */
 @Composable
@@ -30,7 +32,7 @@ internal fun LibraryPhoneScreen(state: LibraryUiState, viewModel: LibraryViewMod
     val gutter = JazzyTheme.spacing.gutter
     Column(Modifier.fillMaxSize().windowInsetsPadding(WindowInsets.statusBars)) {
         Text(
-            "Library",
+            stringResource(R.string.library_title),
             style = MaterialTheme.typography.headlineSmall,
             modifier = Modifier.padding(horizontal = gutter, vertical = 12.dp).semantics { heading() },
         )
@@ -39,7 +41,7 @@ internal fun LibraryPhoneScreen(state: LibraryUiState, viewModel: LibraryViewMod
                 Tab(
                     selected = index == nav.tab,
                     onClick = { nav.onTab(index) },
-                    text = { Text(tab.label) },
+                    text = { Text(stringResource(tab.label)) },
                     unselectedContentColor = JazzyColors.TextSecondary,
                 )
             }

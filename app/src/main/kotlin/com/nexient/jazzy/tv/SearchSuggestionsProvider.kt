@@ -7,6 +7,7 @@ import android.database.Cursor
 import android.database.MatrixCursor
 import android.net.Uri
 import android.provider.BaseColumns
+import com.nexient.jazzy.R
 import com.nexient.jazzy.core.model.SearchResult
 import com.nexient.jazzy.core.model.TmdbImages
 import com.nexient.jazzy.core.network.TmdbApi
@@ -36,7 +37,10 @@ class SearchSuggestionsProvider : ContentProvider() {
         val query = (uri.lastPathSegment?.takeIf { it != SearchManager.SUGGEST_URI_PATH_QUERY } ?: selectionArgs?.firstOrNull()).orEmpty().trim()
         val cursor = MatrixCursor(COLUMNS)
         if (query.length < 2) return cursor
-        val api = EntryPointAccessors.fromApplication(requireNotNull(context).applicationContext, Deps::class.java).tmdbApi()
+        val ctx = requireNotNull(context)
+        val api = EntryPointAccessors.fromApplication(ctx.applicationContext, Deps::class.java).tmdbApi()
+        val tvLabel = ctx.getString(R.string.app_search_suggestion_tv)
+        val movieLabel = ctx.getString(R.string.app_search_suggestion_movie)
         val language = Locale.getDefault().let { "${it.language}-${it.country.ifEmpty { "US" }}" }
         val results = runBlocking {
             withTimeoutOrNull(4_000) { runCatching { api.searchMulti(query, language, 1).results }.getOrNull() }
@@ -46,7 +50,7 @@ class SearchSuggestionsProvider : ContentProvider() {
                 arrayOf<Any?>(
                     i.toLong(),
                     t.title,
-                    listOfNotNull(t.year?.toString(), if (t.mediaType.apiValue == "tv") "TV series" else "Movie").joinToString(" · "),
+                    listOfNotNull(t.year?.toString(), if (t.mediaType.apiValue == "tv") tvLabel else movieLabel).joinToString(" · "),
                     TmdbImages.poster(t.posterPath),
                     "jazzy://title/${t.mediaType.apiValue}/${t.tmdbId}",
                     t.year?.toString(),

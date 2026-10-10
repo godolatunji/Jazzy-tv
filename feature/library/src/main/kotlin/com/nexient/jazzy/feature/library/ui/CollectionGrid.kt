@@ -32,6 +32,7 @@ import androidx.compose.ui.input.key.KeyEventType
 import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.onPreviewKeyEvent
 import androidx.compose.ui.input.key.type
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.nexient.jazzy.core.designsystem.component.JazzyChip
 import com.nexient.jazzy.core.designsystem.component.MessageState
@@ -45,6 +46,7 @@ import com.nexient.jazzy.feature.library.CollectionKind
 import com.nexient.jazzy.feature.library.CollectionState
 import com.nexient.jazzy.feature.library.LibraryUiState
 import com.nexient.jazzy.feature.library.LibraryViewModel
+import com.nexient.jazzy.feature.library.R
 import com.nexient.jazzy.feature.library.TypeFilter
 import com.nexient.jazzy.feature.library.label
 
@@ -77,10 +79,15 @@ internal fun CollectionGrid(
             collection.total == 0 -> item(key = "empty", span = { GridItemSpan(maxLineSpan) }) { EmptyCollection(kind) }
             collection.items.isEmpty() -> item(key = "no_match", span = { GridItemSpan(maxLineSpan) }) {
                 MessageState(
-                    title = if (collection.options.filter == TypeFilter.MOVIES) "No movies here yet" else "No TV shows here yet",
-                    message = "Switch to All to see everything in ${if (kind == CollectionKind.MY_LIST) "My List" else "Liked"}.",
+                    title = stringResource(
+                        if (collection.options.filter == TypeFilter.MOVIES) R.string.library_collection_no_movies else R.string.library_collection_no_tv,
+                    ),
+                    message = stringResource(
+                        R.string.library_collection_no_match_message,
+                        stringResource(if (kind == CollectionKind.MY_LIST) R.string.library_tab_my_list else R.string.library_tab_liked),
+                    ),
                     icon = Icons.Filled.FilterAltOff,
-                    actionLabel = "Show all",
+                    actionLabel = stringResource(R.string.library_collection_show_all),
                     onAction = { viewModel.setFilter(kind, TypeFilter.ALL) },
                 )
             }
@@ -99,12 +106,12 @@ private fun Controls(collection: CollectionState, viewModel: LibraryViewModel) {
         horizontalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         TypeFilter.entries.forEach { f ->
-            JazzyChip(f.label, collection.options.filter == f, onClick = { viewModel.setFilter(kind, f) })
+            JazzyChip(stringResource(f.label), collection.options.filter == f, onClick = { viewModel.setFilter(kind, f) })
         }
         var open by remember { mutableStateOf(false) }
         Box {
             JazzyChip(
-                "Sort: ${collection.options.sort.label(kind)}",
+                stringResource(R.string.library_collection_sort_chip, stringResource(collection.options.sort.label(kind))),
                 selected = false,
                 onClick = { open = true },
                 trailingIcon = Icons.Filled.ArrowDropDown,
@@ -112,7 +119,10 @@ private fun Controls(collection: CollectionState, viewModel: LibraryViewModel) {
             DropdownMenu(expanded = open, onDismissRequest = { open = false }) {
                 LibrarySort.entries.forEach { s ->
                     DropdownMenuItem(
-                        text = { Text(if (s == collection.options.sort) "✓  ${s.label(kind)}" else s.label(kind)) },
+                        text = {
+                            val label = stringResource(s.label(kind))
+                            Text(if (s == collection.options.sort) stringResource(R.string.library_collection_sort_selected, label) else label)
+                        },
                         onClick = { open = false; viewModel.setSort(kind, s) },
                     )
                 }
@@ -124,17 +134,15 @@ private fun Controls(collection: CollectionState, viewModel: LibraryViewModel) {
 @Composable
 private fun EmptyCollection(kind: CollectionKind) {
     val tv = JazzyTheme.isTv
-    val how = if (tv) "Select" else "Tap"
     when (kind) {
         CollectionKind.MY_LIST -> MessageState(
-            title = "Your list is empty",
-            message = "$how + My List on any movie or show to save it here for later. " +
-                if (tv) "You can also press Menu on a card." else "You can also long-press a poster.",
+            title = stringResource(R.string.library_mylist_empty_title),
+            message = stringResource(if (tv) R.string.library_mylist_empty_message_tv else R.string.library_mylist_empty_message_phone),
             icon = Icons.Filled.BookmarkBorder,
         )
         CollectionKind.LIKED -> MessageState(
-            title = "No liked titles yet",
-            message = "$how ♥ Like on a movie or show you enjoyed. Likes also shape your recommendations.",
+            title = stringResource(R.string.library_liked_empty_title),
+            message = stringResource(if (tv) R.string.library_liked_empty_message_tv else R.string.library_liked_empty_message_phone),
             icon = Icons.Filled.FavoriteBorder,
         )
     }
@@ -168,18 +176,22 @@ private fun LibraryCard(
             onLongClick = { menu = true },
         )
         DropdownMenu(expanded = menu, onDismissRequest = { menu = false }) {
-            DropdownMenuItem(text = { Text("Open details") }, onClick = { menu = false; onOpen(s) })
+            DropdownMenuItem(text = { Text(stringResource(R.string.library_card_open_details)) }, onClick = { menu = false; onOpen(s) })
             DropdownMenuItem(
-                text = { Text(if (kind == CollectionKind.MY_LIST) "Remove from My List" else "Unlike") },
+                text = {
+                    Text(stringResource(if (kind == CollectionKind.MY_LIST) R.string.library_card_remove_from_my_list else R.string.library_card_unlike))
+                },
                 onClick = { menu = false; viewModel.remove(kind, item) },
             )
             when (kind) {
                 CollectionKind.MY_LIST -> DropdownMenuItem(
-                    text = { Text(if (s.ref in state.likedKeys) "Unlike" else "Like") },
+                    text = { Text(stringResource(if (s.ref in state.likedKeys) R.string.library_card_unlike else R.string.library_card_like)) },
                     onClick = { menu = false; viewModel.toggle(CollectionKind.LIKED, s) },
                 )
                 CollectionKind.LIKED -> DropdownMenuItem(
-                    text = { Text(if (s.ref in state.myListKeys) "Remove from My List" else "Add to My List") },
+                    text = {
+                        Text(stringResource(if (s.ref in state.myListKeys) R.string.library_card_remove_from_my_list else R.string.library_card_add_to_my_list))
+                    },
                     onClick = { menu = false; viewModel.toggle(CollectionKind.MY_LIST, s) },
                 )
             }

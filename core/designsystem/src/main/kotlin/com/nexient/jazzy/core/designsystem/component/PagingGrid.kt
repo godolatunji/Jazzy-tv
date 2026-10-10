@@ -15,11 +15,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
+import com.nexient.jazzy.core.designsystem.R
 import com.nexient.jazzy.core.designsystem.theme.JazzyColors
 
 /** Shimmering 2:3 poster placeholders for a grid that has no data yet. */
@@ -49,7 +51,7 @@ fun LazyGridScope.pagingFooter(items: LazyPagingItems<*>) {
         }
         is LoadState.Error -> item(key = "paging_footer", span = { GridItemSpan(maxLineSpan) }, contentType = "footer") {
             Box(Modifier.fillMaxWidth().padding(8.dp), contentAlignment = Alignment.Center) {
-                TextButton(onClick = items::retry) { Text("Couldn't load more. Retry") }
+                TextButton(onClick = items::retry) { Text(stringResource(R.string.designsystem_paging_load_more_failed)) }
             }
         }
         is LoadState.NotLoading -> Unit

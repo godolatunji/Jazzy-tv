@@ -6,9 +6,98 @@
     <string name="player_online_subtitles_searching">Searching…</string>
     <string name="player_online_subtitles_none">No subtitles found in your languages.</string>
     <string name="player_online_subtitles_using">Using: %1$s</string>
-    <string name="player_online_subtitles_downloads">%1$d downloads</string>
+    <plurals name="player_online_subtitles_downloads">
+        <item quantity="one">%1$d download</item>
+        <item quantity="other">%1$d downloads</item>
+    </plurals>
     <string name="player_online_subtitles_hi">Hearing impaired</string>
     <string name="player_online_subtitles_machine">Machine translated</string>
     <string name="player_subtitle_earlier">−0.5 s</string>
     <string name="player_subtitle_later">+0.5 s</string>
+    <!-- Common -->
+    <string name="player_common_cancel">Cancel</string>
+    <string name="player_common_retry">Retry</string>
+    <string name="player_common_back">Back</string>
+
+    <!-- Errors (PlayerViewModel) -->
+    <string name="player_error_resolve_link">Couldn\'t get the link from %1$s.</string>
+    <string name="player_error_the_site">the site</string>
+    <string name="player_error_metadata_timeout">This link isn\'t responding.</string>
+    <string name="player_error_title_mismatch">This link doesn\'t match %1$s. It has been flagged.</string>
+    <string name="player_error_no_video">This link has no playable video.</string>
+    <string name="player_error_network_not_allowed">Streaming is set to Wi-Fi only, and you\'re on a metered connection. Change it in Settings → Network &amp; storage.</string>
+    <string name="player_error_engine">The streaming engine failed: %1$s</string>
+    <string name="player_error_unknown">unknown error</string>
+    <string name="player_error_decoder">This device can\'t decode this video or audio format. Try a different source.</string>
+    <string name="player_error_corrupt">This file looks broken. It has been flagged; try another source.</string>
+    <string name="player_error_playback_failed">Playback failed: %1$s</string>
+    <string name="player_error_choose_source">Choose another source</string>
+    <string name="player_online_subtitles_no_imdb">This title has no IMDb ID, so subtitles can\'t be looked up.</string>
+    <string name="player_online_subtitles_search_failed">Subtitle search failed.</string>
+
+    <!-- Prompts -->
+    <string name="player_stall_prompt">This link is slow. Try the next one? (%1$s · %2$s seeders)</string>
+    <string name="player_stall_try">Try it</string>
+    <string name="player_stall_keep_waiting">Keep waiting</string>
+    <string name="player_next_episode_in">Next episode in %1$d · %2$s</string>
+    <string name="player_next_episode_in_titled">Next episode in %1$d · %2$s · %3$s</string>
+    <string name="player_next_play_now">Play now</string>
+
+    <!-- Pre-roll -->
+    <string name="player_preroll_connecting">Connecting to peers…</string>
+    <plurals name="player_preroll_connecting_peers">
+        <item quantity="one">Connecting to peers… %1$d peer</item>
+        <item quantity="other">Connecting to peers… %1$d peers</item>
+    </plurals>
+    <plurals name="player_preroll_buffering">
+        <item quantity="one">Buffering… %1$d peer · %2$s · %3$d%%</item>
+        <item quantity="other">Buffering… %1$d peers · %2$s · %3$d%%</item>
+    </plurals>
+    <string name="player_preroll_source">%1$s · %2$s</string>
+
+    <!-- Controls (accessibility labels) -->
+    <string name="player_controls_like">Like</string>
+    <string name="player_controls_unlike">Unlike</string>
+    <string name="player_controls_sources">Sources</string>
+    <string name="player_controls_episodes">Episodes</string>
+    <string name="player_controls_tracks">Audio and subtitles</string>
+    <string name="player_controls_stats">Stats</string>
+    <string name="player_controls_open_with">Open with</string>
+    <string name="player_controls_external_player">Open in external player</string>
+    <string name="player_controls_back_10">Back 10 seconds</string>
+    <string name="player_controls_forward_10">Forward 10 seconds</string>
+    <string name="player_controls_play">Play</string>
+    <string name="player_controls_pause">Pause</string>
+    <string name="player_controls_aspect_ratio">Aspect ratio</string>
+    <string name="player_controls_time">%1$s / %2$s</string>
+    <string name="player_controls_speed">" %1$sx"</string>
+    <string name="player_controls_speed_option">%1$sx</string>
+
+    <!-- Stream stats overlay -->
+    <string name="player_stats_title">Stream stats</string>
+    <string name="player_stats_file">File: %1$s</string>
+    <string name="player_stats_metadata">Metadata: %1$d ms</string>
+    <string name="player_stats_first_frame">First frame: %1$d ms</string>
+    <string name="player_stats_rates">↓ %1$s  ↑ %2$s</string>
+    <string name="player_stats_peers">Peers %1$d · seeds %2$d</string>
+    <string name="player_stats_downloaded">Downloaded %1$d%% · ahead %2$d MB</string>
+    <string name="player_stats_state">State: %1$s</string>
+
+    <!-- Side panel -->
+    <string name="player_panel_sources">Sources</string>
+    <string name="player_panel_episodes">Episodes</string>
+    <string name="player_panel_episode_title">S%1$d:E%2$d · %3$s</string>
+    <string name="player_panel_tracks">Audio &amp; subtitles</string>
+    <string name="player_panel_back_to_episodes">Back to episodes</string>
+    <string name="player_panel_close">Close panel</string>
+    <string name="player_panel_specials">Specials</string>
+    <string name="player_panel_season">Season %1$d</string>
+    <string name="player_tracks_audio">Audio</string>
+    <string name="player_tracks_subtitles">Subtitles</string>
+    <string name="player_tracks_no_subtitles">No subtitles in this file</string>
+    <string name="player_tracks_no_audio">No alternative audio</string>
+    <string name="player_tracks_selected">✓ %1$s</string>
+    <string name="player_tracks_unselected">"   %1$s"</string>
+    <string name="player_subtitle_offset">%1$s s</string>
+    <string name="player_online_subtitles_selected">✓ %1$s</string>
 </resources>

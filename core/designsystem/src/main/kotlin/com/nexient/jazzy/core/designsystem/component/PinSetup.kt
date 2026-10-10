@@ -6,6 +6,8 @@ import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.res.stringResource
+import com.nexient.jazzy.core.designsystem.R
 
 /**
  * Two-step "enter a new PIN, then confirm it" flow on top of [PinDialog] (PR-5).
@@ -20,9 +22,11 @@ fun PinSetupDialog(
     var first by remember { mutableStateOf<String?>(null) }
     var error by remember { mutableStateOf<String?>(null) }
     val stage = if (first == null) 0 else 1
+    val confirmTitle = stringResource(R.string.designsystem_pin_confirm_title)
+    val mismatch = stringResource(R.string.designsystem_pin_mismatch)
     key(stage) {
         PinDialog(
-            title = if (stage == 0) title else "Confirm the PIN",
+            title = if (stage == 0) title else confirmTitle,
             onDismiss = onDismiss,
             error = error,
             onPinEntered = { pin ->
@@ -34,7 +38,7 @@ fun PinSetupDialog(
                     onPinSet(pin)
                 } else {
                     first = null
-                    error = "The PINs didn't match. Try again."
+                    error = mismatch
                 }
             },
         )

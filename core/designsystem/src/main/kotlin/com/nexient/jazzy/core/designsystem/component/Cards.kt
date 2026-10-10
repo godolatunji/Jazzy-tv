@@ -30,11 +30,13 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.nexient.jazzy.core.designsystem.R
 import com.nexient.jazzy.core.designsystem.theme.JazzyColors
 import com.nexient.jazzy.core.designsystem.theme.JazzyTheme
 import com.nexient.jazzy.core.model.TmdbImages
@@ -64,8 +66,8 @@ fun PosterCard(
         JazzyImage(TmdbImages.poster(posterPath, JazzyTheme.isTv), title, Modifier.fillMaxSize(), fallbackText = title)
         if (inMyList || liked) {
             Row(Modifier.align(Alignment.TopEnd).padding(4.dp)) {
-                if (inMyList) MarkerIcon { Icon(Icons.Filled.Check, "In My List", Modifier.size(12.dp), tint = Color.White) }
-                if (liked) MarkerIcon { Icon(Icons.Filled.Favorite, "Liked", Modifier.size(12.dp), tint = JazzyColors.Accent) }
+                if (inMyList) MarkerIcon { Icon(Icons.Filled.Check, stringResource(R.string.designsystem_card_in_my_list), Modifier.size(12.dp), tint = Color.White) }
+                if (liked) MarkerIcon { Icon(Icons.Filled.Favorite, stringResource(R.string.designsystem_card_liked), Modifier.size(12.dp), tint = JazzyColors.Accent) }
             }
         }
     }
@@ -117,7 +119,7 @@ fun BackdropProgressCard(
                 if (subtitle != null) Text(subtitle, style = MaterialTheme.typography.bodySmall, color = JazzyColors.TextSecondary, maxLines = 1)
             }
             if (onMenu != null && !JazzyTheme.isTv) {
-                IconButton(onClick = onMenu) { Icon(Icons.Filled.MoreVert, "More options for $title", tint = JazzyColors.TextSecondary) }
+                IconButton(onClick = onMenu) { Icon(Icons.Filled.MoreVert, stringResource(R.string.designsystem_card_more_options, title), tint = JazzyColors.TextSecondary) }
             }
         }
     }

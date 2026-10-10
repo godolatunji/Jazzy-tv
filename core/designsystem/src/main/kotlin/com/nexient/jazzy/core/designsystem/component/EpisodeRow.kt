@@ -23,9 +23,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.nexient.jazzy.core.common.formatRuntime
+import com.nexient.jazzy.core.designsystem.R
 import com.nexient.jazzy.core.designsystem.theme.JazzyColors
 import com.nexient.jazzy.core.designsystem.theme.JazzyTheme
 import com.nexient.jazzy.core.model.Episode
@@ -55,7 +57,7 @@ fun EpisodeRow(
     ) {
         val stillWidth = if (JazzyTheme.isTv) 200.dp else if (compact) 112.dp else 140.dp
         Box(Modifier.width(stillWidth)) {
-            StillCard(TmdbImages.still(episode.stillPath), "Episode ${episode.episodeNumber}", Modifier.fillMaxWidth())
+            StillCard(TmdbImages.still(episode.stillPath), stringResource(R.string.designsystem_episode_still, episode.episodeNumber), Modifier.fillMaxWidth())
             if (progress != null && progress > 0f && !watched) {
                 LinearProgressIndicator(
                     progress = { progress },
@@ -67,7 +69,7 @@ fun EpisodeRow(
             }
             if (watched) {
                 Icon(
-                    Icons.Filled.CheckCircle, "Watched", tint = JazzyColors.Good,
+                    Icons.Filled.CheckCircle, stringResource(R.string.designsystem_episode_watched), tint = JazzyColors.Good,
                     modifier = Modifier.align(Alignment.TopEnd).padding(4.dp).size(20.dp).background(JazzyColors.Scrim, CircleShape),
                 )
             }
@@ -75,7 +77,7 @@ fun EpisodeRow(
         Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(
-                    "${episode.episodeNumber}. ${episode.name}",
+                    stringResource(R.string.designsystem_episode_title, episode.episodeNumber, episode.name),
                     style = MaterialTheme.typography.titleSmall,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,

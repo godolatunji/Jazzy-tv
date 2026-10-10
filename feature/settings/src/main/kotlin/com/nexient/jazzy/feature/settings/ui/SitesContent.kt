@@ -57,6 +57,9 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.focusRestorer
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalResources
+import androidx.compose.ui.res.pluralStringResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
@@ -70,18 +73,13 @@ import com.nexient.jazzy.core.designsystem.theme.JazzyTheme
 import com.nexient.jazzy.core.model.FailureReason
 import com.nexient.jazzy.core.model.ProviderAuthKind
 import com.nexient.jazzy.core.model.ProviderSearchState
+import com.nexient.jazzy.feature.settings.R
 import com.nexient.jazzy.feature.settings.SiteItem
 import com.nexient.jazzy.feature.settings.SiteTest
 import com.nexient.jazzy.feature.settings.SitesSettingsViewModel
 import com.nexient.jazzy.feature.settings.SitesUiState
 
 private val CardShape = RoundedCornerShape(12.dp)
-
-private const val EXPLAINER =
-    "Torrent sites change domains often. If a site stops answering, try a mirror URL, but check a mirror before " +
-        "you rely on it: some clones return the same unrelated file for every search or redirect to ads. " +
-        "Sites that show a CAPTCHA or Cloudflare challenge are reported as \"Blocked by the site\" and skipped; " +
-        "Jazzy never tries to bypass them."
 
 @Composable
 internal fun SitesPhoneScreen(
@@ -92,8 +90,8 @@ internal fun SitesPhoneScreen(
 ) {
     Column(Modifier.fillMaxSize().windowInsetsPadding(WindowInsets.statusBars)) {
         Row(Modifier.fillMaxWidth().padding(horizontal = 4.dp, vertical = 4.dp), verticalAlignment = Alignment.CenterVertically) {
-            IconButton(onClick = onBack) { Icon(Icons.AutoMirrored.Filled.ArrowBack, "Back") }
-            Text("Torrent sites", style = MaterialTheme.typography.titleLarge)
+            IconButton(onClick = onBack) { Icon(Icons.AutoMirrored.Filled.ArrowBack, stringResource(R.string.settings_common_back)) }
+            Text(stringResource(R.string.settings_sites_title), style = MaterialTheme.typography.titleLarge)
         }
         LazyColumn(
             Modifier.fillMaxSize(),
@@ -117,7 +115,7 @@ internal fun SitesPhoneScreen(
 @Composable
 internal fun SitesTvScreen(state: SitesUiState, viewModel: SitesSettingsViewModel, onEditConnection: (String) -> Unit) {
     if (state.items.isEmpty()) {
-        Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) { Text("No sites available", color = JazzyColors.TextSecondary) }
+        Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) { Text(stringResource(R.string.settings_sites_empty), color = JazzyColors.TextSecondary) }
         return
     }
     var selectedId by rememberSaveable { mutableStateOf(state.items.first().info.id) }
@@ -134,7 +132,7 @@ internal fun SitesTvScreen(state: SitesUiState, viewModel: SitesSettingsViewMode
             Modifier.width(340.dp).fillMaxHeight().focusRestorer(firstSite).verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.spacedBy(4.dp),
         ) {
-            Text("Torrent sites", style = MaterialTheme.typography.headlineMedium, modifier = Modifier.padding(start = 12.dp, top = 16.dp, bottom = 20.dp))
+            Text(stringResource(R.string.settings_sites_title), style = MaterialTheme.typography.headlineMedium, modifier = Modifier.padding(start = 12.dp, top = 16.dp, bottom = 20.dp))
             state.items.forEachIndexed { index, item ->
                 val isSelected = item.info.id == selected.info.id
                 Row(
@@ -153,7 +151,7 @@ internal fun SitesTvScreen(state: SitesUiState, viewModel: SitesSettingsViewMode
                 ) {
                     StatusDot(item)
                     Text(item.info.name, style = MaterialTheme.typography.titleSmall, modifier = Modifier.weight(1f))
-                    Text(if (item.enabled) "On" else "Off", style = MaterialTheme.typography.labelMedium, color = JazzyColors.TextSecondary)
+                    Text(stringResource(if (item.enabled) R.string.settings_common_on else R.string.settings_common_off), style = MaterialTheme.typography.labelMedium, color = JazzyColors.TextSecondary)
                 }
             }
         }
@@ -175,7 +173,7 @@ private fun Explainer() {
         horizontalArrangement = Arrangement.spacedBy(12.dp),
     ) {
         Icon(Icons.Filled.Info, null, tint = JazzyColors.Info)
-        Text(EXPLAINER, style = MaterialTheme.typography.bodySmall, color = JazzyColors.TextSecondary)
+        Text(stringResource(R.string.settings_sites_explainer), style = MaterialTheme.typography.bodySmall, color = JazzyColors.TextSecondary)
     }
 }
 
@@ -196,13 +194,13 @@ private fun SiteHeader(item: SiteItem) {
     Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
         Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             Text(item.info.name, style = MaterialTheme.typography.titleMedium)
-            if (item.notResponding && item.enabled) Badge("Not responding", tone = BadgeTone.DANGER)
+            if (item.notResponding && item.enabled) Badge(stringResource(R.string.settings_sites_badge_not_responding), tone = BadgeTone.DANGER)
         }
         FlowRow(horizontalArrangement = Arrangement.spacedBy(6.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
-            Badge(if (item.info.isPublic) "Public" else "Private tracker", tone = if (item.info.isPublic) BadgeTone.NEUTRAL else BadgeTone.INFO)
-            if (item.info.supportsMovies) Badge("Movies", outlined = true)
-            if (item.info.supportsTv) Badge("TV", outlined = true)
-            if (item.hasMirror) Badge("Mirror", tone = BadgeTone.WARNING)
+            Badge(stringResource(if (item.info.isPublic) R.string.settings_sites_badge_public else R.string.settings_sites_badge_private), tone = if (item.info.isPublic) BadgeTone.NEUTRAL else BadgeTone.INFO)
+            if (item.info.supportsMovies) Badge(stringResource(R.string.settings_sites_badge_movies), outlined = true)
+            if (item.info.supportsTv) Badge(stringResource(R.string.settings_sites_badge_tv), outlined = true)
+            if (item.hasMirror) Badge(stringResource(R.string.settings_sites_badge_mirror), tone = BadgeTone.WARNING)
         }
         Text(item.effectiveBaseUrl, style = MaterialTheme.typography.bodySmall, color = JazzyColors.TextTertiary)
     }
@@ -217,13 +215,15 @@ private fun SiteDetail(
 ) {
     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
         SettingsSwitchRow(
-            title = "Enabled",
-            subtitle = when {
-                item.hasAuth && item.settings?.let { !it.username.isNullOrBlank() || !it.cookies.isNullOrBlank() } != true ->
-                    "Needs a login or cookies to search."
-                item.info.enabledByDefault -> "On by default."
-                else -> "Off by default: blocked or offline when this version shipped."
-            },
+            title = stringResource(R.string.settings_sites_enabled_title),
+            subtitle = stringResource(
+                when {
+                    item.hasAuth && item.settings?.let { !it.username.isNullOrBlank() || !it.cookies.isNullOrBlank() } != true ->
+                        R.string.settings_sites_enabled_needs_login
+                    item.info.enabledByDefault -> R.string.settings_sites_enabled_on_by_default
+                    else -> R.string.settings_sites_enabled_off_by_default
+                },
+            ),
             checked = item.enabled,
             onCheckedChange = { viewModel.setEnabled(item.info.id, it) },
             focusRequester = firstFocus,
@@ -231,13 +231,13 @@ private fun SiteDetail(
         HealthBlock(item)
         Row(horizontalArrangement = Arrangement.spacedBy(12.dp), verticalAlignment = Alignment.CenterVertically) {
             PillButton(
-                text = if (item.test == SiteTest.Running) "Testing…" else "Test",
+                text = stringResource(if (item.test == SiteTest.Running) R.string.settings_sites_testing else R.string.settings_sites_test),
                 icon = Icons.Filled.NetworkCheck,
                 onClick = { viewModel.test(item.info.id) },
                 enabled = item.test != SiteTest.Running,
             )
             PillButton(
-                text = if (item.hasAuth) "Mirror & login" else "Mirror URL",
+                text = stringResource(if (item.hasAuth) R.string.settings_sites_mirror_and_login else R.string.settings_sites_mirror_url),
                 icon = if (item.hasAuth) Icons.Filled.Key else Icons.Filled.Link,
                 onClick = { onEditConnection(item.info.id) },
             )
@@ -250,13 +250,18 @@ private fun SiteDetail(
 private fun HealthBlock(item: SiteItem) {
     val h = item.health
     val now = System.currentTimeMillis()
+    val res = LocalResources.current
+    val never = stringResource(R.string.settings_sites_health_never)
     val lines = buildList {
         add(
-            "Last success: " + (h?.lastOkAt?.let { DateUtils.getRelativeTimeSpanString(it, now, DateUtils.MINUTE_IN_MILLIS).toString() } ?: "never"),
+            res.getString(
+                R.string.settings_sites_health_last_success,
+                h?.lastOkAt?.let { DateUtils.getRelativeTimeSpanString(it, now, DateUtils.MINUTE_IN_MILLIS).toString() } ?: never,
+            ),
         )
-        h?.avgLatencyMs?.let { add("Average response: $it ms") }
-        if ((h?.errorCount ?: 0) > 0) add("Failures in a row: ${h?.errorCount}")
-        h?.lastError?.takeIf { it.isNotBlank() }?.let { add("Last error: $it") }
+        h?.avgLatencyMs?.let { add(res.getString(R.string.settings_sites_health_avg_response, it)) }
+        if ((h?.errorCount ?: 0) > 0) add(res.getString(R.string.settings_sites_health_failures, h?.errorCount))
+        h?.lastError?.takeIf { it.isNotBlank() }?.let { add(res.getString(R.string.settings_sites_health_last_error, it)) }
     }
     Column(Modifier.padding(horizontal = 12.dp), verticalArrangement = Arrangement.spacedBy(2.dp)) {
         lines.forEach { Text(it, style = MaterialTheme.typography.bodySmall, color = JazzyColors.TextSecondary) }
@@ -269,41 +274,46 @@ private fun TestResult(test: SiteTest?) {
         null -> Unit
         SiteTest.Running -> Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             CircularProgressIndicator(Modifier.size(16.dp), strokeWidth = 2.dp, color = JazzyColors.Accent)
-            Text("Running a test search…", style = MaterialTheme.typography.bodySmall, color = JazzyColors.TextSecondary)
+            Text(stringResource(R.string.settings_sites_test_running), style = MaterialTheme.typography.bodySmall, color = JazzyColors.TextSecondary)
         }
         is SiteTest.Finished -> {
             val (text, color) = describe(test.status.state)
-            Text("$text · ${test.tookMs} ms", style = MaterialTheme.typography.bodyMedium, color = color, modifier = Modifier.padding(horizontal = 4.dp))
+            Text(stringResource(R.string.settings_sites_test_result, text, test.tookMs), style = MaterialTheme.typography.bodyMedium, color = color, modifier = Modifier.padding(horizontal = 4.dp))
         }
     }
 }
 
+@Composable
 private fun describe(state: ProviderSearchState): Pair<String, Color> = when (state) {
-    is ProviderSearchState.Done -> "Working: ${state.count} results" to JazzyColors.Good
-    ProviderSearchState.Searching -> "Still searching" to JazzyColors.TextSecondary
-    ProviderSearchState.Unsupported -> "This site doesn't support the test search" to JazzyColors.Fair
+    is ProviderSearchState.Done ->
+        pluralStringResource(R.plurals.settings_sites_test_working, state.count, state.count) to JazzyColors.Good
+    ProviderSearchState.Searching -> stringResource(R.string.settings_sites_test_searching) to JazzyColors.TextSecondary
+    ProviderSearchState.Unsupported -> stringResource(R.string.settings_sites_test_unsupported) to JazzyColors.Fair
     is ProviderSearchState.Failed -> {
-        val reason = when (state.reason) {
-            FailureReason.BLOCKED -> "Blocked by the site (CAPTCHA or Cloudflare challenge). Jazzy can't bypass this; try a mirror."
-            FailureReason.TIMEOUT -> "Timed out"
-            FailureReason.UNREACHABLE -> "Couldn't reach the site. The domain may have moved; try a mirror."
-            FailureReason.HTTP_ERROR -> "The site returned an error"
-            FailureReason.PARSE_ERROR -> "Unexpected page layout. The site may have changed."
-            FailureReason.LOGIN_REQUIRED -> "Login required. Add credentials or cookies."
-            FailureReason.OTHER -> "Failed"
-        }
-        (reason + (state.message?.takeIf { it.isNotBlank() }?.let { " ($it)" } ?: "")) to JazzyColors.Poor
+        val reason = stringResource(
+            when (state.reason) {
+                FailureReason.BLOCKED -> R.string.settings_sites_test_blocked
+                FailureReason.TIMEOUT -> R.string.settings_sites_test_timeout
+                FailureReason.UNREACHABLE -> R.string.settings_sites_test_unreachable
+                FailureReason.HTTP_ERROR -> R.string.settings_sites_test_http_error
+                FailureReason.PARSE_ERROR -> R.string.settings_sites_test_parse_error
+                FailureReason.LOGIN_REQUIRED -> R.string.settings_sites_test_login_required
+                FailureReason.OTHER -> R.string.settings_sites_test_failed
+            },
+        )
+        val detail = state.message?.takeIf { it.isNotBlank() }
+        (if (detail == null) reason else stringResource(R.string.settings_sites_test_failure_detail, reason, detail)) to JazzyColors.Poor
     }
 }
 
 /**
  * Mirror URL override (SRC-4) plus login/cookies for private trackers (SRC-3). Blank fields reset to
- * the default URL or remove the stored secret. [onSave] returns an error message to show, or null.
+ * the default URL or remove the stored secret. [onSave] returns an error message (string resource) to show, or null.
  */
 @Composable
 internal fun ConnectionDialog(
     item: SiteItem,
-    onSave: (url: String, username: String, password: String, cookies: String) -> String?,
+    onSave: (url: String, username: String, password: String, cookies: String) -> Int?,
     onDismiss: () -> Unit,
 ) {
     val current = item.settings
@@ -312,7 +322,7 @@ internal fun ConnectionDialog(
     // Secrets stay out of saved instance state.
     var password by remember { mutableStateOf(current?.password.orEmpty()) }
     var cookies by remember { mutableStateOf(current?.cookies.orEmpty()) }
-    var error by remember { mutableStateOf<String?>(null) }
+    var error by remember { mutableStateOf<Int?>(null) }
     val credentials = ProviderAuthKind.CREDENTIALS in item.info.authKinds
     val cookieAuth = ProviderAuthKind.COOKIES in item.info.authKinds
     val fieldColors = OutlinedTextFieldDefaults.colors(focusedBorderColor = JazzyColors.Focus, cursorColor = JazzyColors.Accent)
@@ -325,9 +335,9 @@ internal fun ConnectionDialog(
                 OutlinedTextField(
                     value = url,
                     onValueChange = { url = it; error = null },
-                    label = { Text("Mirror URL") },
+                    label = { Text(stringResource(R.string.settings_sites_mirror_url)) },
                     placeholder = { Text(item.info.defaultBaseUrl) },
-                    supportingText = { Text(error ?: "Leave blank to use ${item.info.defaultBaseUrl}") },
+                    supportingText = { Text(error?.let { stringResource(it) } ?: stringResource(R.string.settings_sites_url_hint, item.info.defaultBaseUrl)) },
                     isError = error != null,
                     singleLine = true,
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Uri),
@@ -335,18 +345,17 @@ internal fun ConnectionDialog(
                     modifier = Modifier.fillMaxWidth(),
                 )
                 Text(
-                    "Check a mirror before using it: some clones return the same unrelated magnet for every result, " +
-                        "have no magnets, or redirect to ads.",
+                    stringResource(R.string.settings_sites_mirror_warning),
                     style = MaterialTheme.typography.bodySmall,
                     color = JazzyColors.TextSecondary,
                 )
                 if (credentials) {
                     OutlinedTextField(
-                        value = username, onValueChange = { username = it }, label = { Text("Username") },
+                        value = username, onValueChange = { username = it }, label = { Text(stringResource(R.string.settings_common_username)) },
                         singleLine = true, colors = fieldColors, modifier = Modifier.fillMaxWidth(),
                     )
                     OutlinedTextField(
-                        value = password, onValueChange = { password = it }, label = { Text("Password") },
+                        value = password, onValueChange = { password = it }, label = { Text(stringResource(R.string.settings_common_password)) },
                         singleLine = true, visualTransformation = PasswordVisualTransformation(),
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                         colors = fieldColors, modifier = Modifier.fillMaxWidth(),
@@ -354,14 +363,14 @@ internal fun ConnectionDialog(
                 }
                 if (cookieAuth) {
                     OutlinedTextField(
-                        value = cookies, onValueChange = { cookies = it }, label = { Text("Cookies") },
-                        placeholder = { Text("name=value; name2=value2") },
+                        value = cookies, onValueChange = { cookies = it }, label = { Text(stringResource(R.string.settings_sites_cookies)) },
+                        placeholder = { Text(stringResource(R.string.settings_sites_cookies_placeholder)) },
                         minLines = 2, maxLines = 4, colors = fieldColors, modifier = Modifier.fillMaxWidth(),
                     )
                 }
                 if (credentials || cookieAuth) {
                     Text(
-                        "Logins and cookies are encrypted with a key kept in this device's Android Keystore.",
+                        stringResource(R.string.settings_sites_secrets_note),
                         style = MaterialTheme.typography.bodySmall,
                         color = JazzyColors.TextTertiary,
                     )
@@ -369,12 +378,12 @@ internal fun ConnectionDialog(
             }
         },
         confirmButton = {
-            TextButton(onClick = { error = onSave(url, username, password, cookies) }) { Text("Save") }
+            TextButton(onClick = { error = onSave(url, username, password, cookies) }) { Text(stringResource(R.string.settings_common_save)) }
         },
         dismissButton = {
             Row {
-                if (url.isNotEmpty()) TextButton(onClick = { url = ""; error = null }) { Text("Use default URL") }
-                TextButton(onClick = onDismiss) { Text("Cancel") }
+                if (url.isNotEmpty()) TextButton(onClick = { url = ""; error = null }) { Text(stringResource(R.string.settings_sites_use_default_url)) }
+                TextButton(onClick = onDismiss) { Text(stringResource(R.string.settings_common_cancel)) }
             }
         },
         containerColor = JazzyColors.SurfaceRaised,

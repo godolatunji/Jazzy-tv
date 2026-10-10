@@ -1,5 +1,6 @@
 package com.nexient.jazzy.feature.settings
 
+import com.nexient.jazzy.core.designsystem.text.genreLabelRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -26,6 +27,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.platform.LocalResources
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -34,6 +37,7 @@ import com.nexient.jazzy.core.designsystem.component.ConfirmDialog
 import com.nexient.jazzy.core.designsystem.component.PinDialog
 import com.nexient.jazzy.core.designsystem.component.PinSetupDialog
 import com.nexient.jazzy.core.designsystem.component.ToggleChipGroup
+import com.nexient.jazzy.core.designsystem.text.asString
 import com.nexient.jazzy.core.designsystem.theme.JazzyColors
 import com.nexient.jazzy.core.designsystem.theme.JazzyTheme
 import com.nexient.jazzy.core.model.SourceSort
@@ -68,8 +72,9 @@ fun SettingsRoute(
     }
 
     LaunchedEffect(viewModel) { viewModel.refresh() }
-    LaunchedEffect(state.message) {
-        state.message?.let {
+    val message = state.message?.asString()
+    LaunchedEffect(message) {
+        message?.let {
             snackbar.showSnackbar(it)
             viewModel.clearMessage()
         }
@@ -85,21 +90,24 @@ fun SettingsRoute(
     state.pinFlow?.let { flow ->
         when (flow) {
             SettingsPinFlow.NewParental -> PinSetupDialog(
-                title = "Choose a 4-digit parental PIN",
+                title = stringResource(R.string.settings_pin_new_parental_title),
                 onDismiss = viewModel::dismissPin,
                 onPinSet = viewModel::submitPin,
             )
             is SettingsPinFlow.VerifyParental -> PinDialog(
-                title = "Enter the current parental PIN",
+                title = stringResource(R.string.settings_pin_verify_parental_title),
                 onDismiss = viewModel::dismissPin,
                 onPinEntered = viewModel::submitPin,
-                error = flow.error,
+                error = flow.error?.let { stringResource(it) },
             )
             is SettingsPinFlow.ProfilePinForHistory -> PinDialog(
-                title = "Enter the PIN for ${state.profile?.name ?: "this profile"}",
+                title = stringResource(
+                    R.string.settings_pin_profile_title,
+                    state.profile?.name ?: stringResource(R.string.settings_common_this_profile),
+                ),
                 onDismiss = viewModel::dismissPin,
                 onPinEntered = viewModel::submitPin,
-                error = flow.error,
+                error = flow.error?.let { stringResource(it) },
             )
         }
     }
@@ -108,26 +116,27 @@ fun SettingsRoute(
 @Composable
 private fun SettingsDialogs(dialog: SettingsDialog?, state: SettingsUiState, viewModel: SettingsViewModel, onDismiss: () -> Unit) {
     val engine = state.settings.engine
-    val profileName = state.profile?.name ?: "this profile"
+    val profileName = state.profile?.name ?: stringResource(R.string.settings_common_this_profile)
+    val resources = LocalResources.current
     when (dialog) {
         SettingsDialog.SORT -> ChoiceDialog(
-            title = "Default Sources sort",
+            title = stringResource(R.string.settings_playback_sort_title),
             options = SourceSort.entries,
             selected = state.settings.defaultSourceSort,
-            label = ::sortLabel,
+            label = { sortLabel(it, resources) },
             onSelect = { viewModel.setSourceSort(it); onDismiss() },
             onDismiss = onDismiss,
         )
         SettingsDialog.UPLOAD -> ChoiceDialog(
-            title = "Upload limit",
+            title = stringResource(R.string.settings_network_upload_title),
             options = (UploadLimitOptions + engine.uploadLimitBps).distinct().sorted(),
             selected = engine.uploadLimitBps,
-            label = ::uploadLabel,
+            label = { uploadLabel(it, resources) },
             onSelect = { viewModel.setUploadLimit(it); onDismiss() },
             onDismiss = onDismiss,
         )
         SettingsDialog.CONNECTIONS -> ChoiceDialog(
-            title = "Max connections",
+            title = stringResource(R.string.settings_network_connections_title),
             options = (MaxConnectionOptions + engine.maxConnections).distinct().sorted(),
             selected = engine.maxConnections,
             label = { it.toString() },
@@ -135,10 +144,10 @@ private fun SettingsDialogs(dialog: SettingsDialog?, state: SettingsUiState, vie
             onDismiss = onDismiss,
         )
         SettingsDialog.CACHE_CAP -> ChoiceDialog(
-            title = "Torrent cache size",
+            title = stringResource(R.string.settings_network_cache_size_title),
             options = (CacheCapOptions + engine.cacheCapBytes).distinct().sorted(),
             selected = engine.cacheCapBytes,
-            label = ::capLabel,
+            label = { capLabel(it, resources) },
             onSelect = { viewModel.setCacheCap(it); onDismiss() },
             onDismiss = onDismiss,
         )
@@ -149,40 +158,37 @@ private fun SettingsDialogs(dialog: SettingsDialog?, state: SettingsUiState, vie
             onDismiss = onDismiss,
         )
         SettingsDialog.CONFIRM_CLEAR_HISTORY -> ConfirmDialog(
-            title = "Clear play history?",
-            message = "This erases every playback session for $profileName and resets their genre affinity, " +
-                "so recommendations start over. Resume points, My List and likes are kept.",
-            confirmLabel = "Clear history",
+            title = stringResource(R.string.settings_history_clear_dialog_title),
+            message = stringResource(R.string.settings_history_clear_dialog_message, profileName),
+            confirmLabel = stringResource(R.string.settings_history_clear_dialog_confirm),
             onConfirm = { onDismiss(); viewModel.requestClearHistory() },
             onDismiss = onDismiss,
         )
         SettingsDialog.CONFIRM_CLEAR_SEARCH -> ConfirmDialog(
-            title = "Clear search history?",
-            message = "Recent searches for $profileName will be removed.",
-            confirmLabel = "Clear",
+            title = stringResource(R.string.settings_history_clear_search_dialog_title),
+            message = stringResource(R.string.settings_history_clear_search_dialog_message, profileName),
+            confirmLabel = stringResource(R.string.settings_history_clear_search_dialog_confirm),
             onConfirm = { onDismiss(); viewModel.clearSearchHistory() },
             onDismiss = onDismiss,
         )
         SettingsDialog.CONFIRM_RESET_RECS -> ConfirmDialog(
-            title = "Reset recommendations?",
-            message = "Genre affinity and saved recommendation rails for $profileName are cleared. " +
-                "They rebuild from history, likes and My List.",
-            confirmLabel = "Reset",
+            title = stringResource(R.string.settings_history_reset_recs_dialog_title),
+            message = stringResource(R.string.settings_history_reset_recs_dialog_message, profileName),
+            confirmLabel = stringResource(R.string.settings_history_reset_recs_dialog_confirm),
             onConfirm = { onDismiss(); viewModel.resetRecommendations() },
             onDismiss = onDismiss,
         )
         SettingsDialog.CONFIRM_CLEAR_TORRENT -> ConfirmDialog(
-            title = "Clear torrent cache?",
-            message = "Downloaded pieces are deleted. Anything playing now may need to buffer again.",
-            confirmLabel = "Clear cache",
+            title = stringResource(R.string.settings_network_clear_torrent_dialog_title),
+            message = stringResource(R.string.settings_network_clear_torrent_dialog_message),
+            confirmLabel = stringResource(R.string.settings_common_clear_cache),
             onConfirm = { onDismiss(); viewModel.clearTorrentCache() },
             onDismiss = onDismiss,
         )
         SettingsDialog.CONFIRM_CLEAR_TMDB -> ConfirmDialog(
-            title = "Clear TMDB cache?",
-            message = "Cached titles, rails, searches, source results and recommendations are removed and reload " +
-                "when needed. History, My List, likes and resume points are kept.",
-            confirmLabel = "Clear cache",
+            title = stringResource(R.string.settings_local_clear_tmdb_dialog_title),
+            message = stringResource(R.string.settings_local_clear_tmdb_dialog_message),
+            confirmLabel = stringResource(R.string.settings_common_clear_cache),
             onConfirm = { onDismiss(); viewModel.clearTmdbCache() },
             onDismiss = onDismiss,
         )
@@ -200,19 +206,19 @@ private fun OpenSubtitlesLoginDialog(onLogin: (String, String) -> Unit, onDismis
     var password by remember { mutableStateOf("") }
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text("OpenSubtitles login") },
+        title = { Text(stringResource(R.string.settings_subtitles_login_dialog_title)) },
         text = {
             androidx.compose.foundation.layout.Column(verticalArrangement = androidx.compose.foundation.layout.Arrangement.spacedBy(8.dp)) {
-                androidx.compose.material3.OutlinedTextField(user, { user = it }, label = { Text("Username") }, singleLine = true)
+                androidx.compose.material3.OutlinedTextField(user, { user = it }, label = { Text(stringResource(R.string.settings_common_username)) }, singleLine = true)
                 androidx.compose.material3.OutlinedTextField(
-                    password, { password = it }, label = { Text("Password") }, singleLine = true,
+                    password, { password = it }, label = { Text(stringResource(R.string.settings_common_password)) }, singleLine = true,
                     visualTransformation = androidx.compose.ui.text.input.PasswordVisualTransformation(),
                 )
-                Text("Your password is sent to OpenSubtitles only; Jazzy stores just the session token, encrypted.", style = androidx.compose.material3.MaterialTheme.typography.bodySmall)
+                Text(stringResource(R.string.settings_subtitles_login_dialog_note), style = androidx.compose.material3.MaterialTheme.typography.bodySmall)
             }
         },
-        confirmButton = { androidx.compose.material3.TextButton(onClick = { onLogin(user, password) }, enabled = user.isNotBlank() && password.isNotBlank()) { Text("Log in") } },
-        dismissButton = { androidx.compose.material3.TextButton(onClick = onDismiss) { Text("Cancel") } },
+        confirmButton = { androidx.compose.material3.TextButton(onClick = { onLogin(user, password) }, enabled = user.isNotBlank() && password.isNotBlank()) { Text(stringResource(R.string.settings_subtitles_login)) } },
+        dismissButton = { androidx.compose.material3.TextButton(onClick = onDismiss) { Text(stringResource(R.string.settings_common_cancel)) } },
     )
 }
 
@@ -223,24 +229,24 @@ private fun GenresDialog(initial: Set<String>, profileName: String, onSave: (Set
     LaunchedEffect(Unit) { runCatching { firstChip.requestFocus() } }
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text("Favourite genres") },
+        title = { Text(stringResource(R.string.settings_profiles_genres_title)) },
         text = {
             Column(Modifier.verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(12.dp)) {
                 Text(
-                    "Pick 3 or more genres $profileName likes. They seed recommendations until there's enough watch history.",
+                    stringResource(R.string.settings_genres_dialog_message, profileName),
                     style = MaterialTheme.typography.bodyMedium,
                     color = JazzyColors.TextSecondary,
                 )
                 ToggleChipGroup(
-                    options = UnifiedGenre.pickable.map { it.id to it.label },
+                    options = UnifiedGenre.pickable.map { it.id to (genreLabelRes(it.id)?.let { r -> stringResource(r) } ?: it.label) },
                     selected = selected,
                     onToggle = { id -> selected = if (id in selected) selected - id else selected + id },
                     firstChipFocusRequester = firstChip,
                 )
             }
         },
-        confirmButton = { TextButton(onClick = { onSave(selected) }) { Text("Save") } },
-        dismissButton = { TextButton(onClick = onDismiss) { Text("Cancel") } },
+        confirmButton = { TextButton(onClick = { onSave(selected) }) { Text(stringResource(R.string.settings_common_save)) } },
+        dismissButton = { TextButton(onClick = onDismiss) { Text(stringResource(R.string.settings_common_cancel)) } },
         containerColor = JazzyColors.SurfaceRaised,
     )
 }

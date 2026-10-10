@@ -20,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.foundation.focusGroup
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
@@ -29,6 +30,7 @@ import com.nexient.jazzy.core.designsystem.theme.JazzyColors
 import com.nexient.jazzy.core.designsystem.theme.JazzyTheme
 import com.nexient.jazzy.core.model.TitleSummary
 import com.nexient.jazzy.feature.discover.DiscoverUiState
+import com.nexient.jazzy.feature.discover.R
 
 /**
  * 10-foot Discover: a scrollable filter column on the left (D-pad Right moves into the grid) and
@@ -58,7 +60,7 @@ internal fun DiscoverTvScreen(
                 .verticalScroll(rememberScrollState())
                 .padding(start = spacing.gutter, end = 24.dp, top = spacing.verticalSafe, bottom = spacing.verticalSafe),
         ) {
-            Text("Discover", style = MaterialTheme.typography.headlineMedium, modifier = Modifier.padding(bottom = 16.dp).semantics { heading() })
+            Text(stringResource(R.string.discover_title), style = MaterialTheme.typography.headlineMedium, modifier = Modifier.padding(bottom = 16.dp).semantics { heading() })
             if (state.restricted) RestrictedNote(Modifier.padding(bottom = 12.dp))
             FilterPanel(state = state, callbacks = callbacks, includeTypeAndSort = true)
         }

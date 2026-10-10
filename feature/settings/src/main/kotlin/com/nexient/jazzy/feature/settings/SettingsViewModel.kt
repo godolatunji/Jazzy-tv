@@ -1,5 +1,6 @@
 package com.nexient.jazzy.feature.settings
 
+import androidx.annotation.StringRes
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nexient.jazzy.core.data.catalog.SearchRepository
@@ -11,6 +12,7 @@ import com.nexient.jazzy.core.data.settings.LocalDataSizes
 import com.nexient.jazzy.core.data.settings.SettingKeys
 import com.nexient.jazzy.core.data.settings.SettingsRepository
 import com.nexient.jazzy.core.data.settings.TmdbCacheCleaner
+import com.nexient.jazzy.core.designsystem.text.UiText
 import com.nexient.jazzy.core.model.Profile
 import com.nexient.jazzy.core.model.SourceSort
 import com.nexient.jazzy.core.torrent.TorrentEngine
@@ -30,16 +32,16 @@ import javax.inject.Inject
 
 /** PIN prompts on the Settings screen. */
 sealed interface SettingsPinFlow {
-    val error: String?
+    @get:StringRes val error: Int?
 
     /** HS-6: clearing play history on a protected profile needs its PIN. */
-    data class ProfilePinForHistory(override val error: String? = null) : SettingsPinFlow
+    data class ProfilePinForHistory(@StringRes override val error: Int? = null) : SettingsPinFlow
 
     /** Changing or removing the parental PIN needs the current one. */
-    data class VerifyParental(val remove: Boolean, override val error: String? = null) : SettingsPinFlow
+    data class VerifyParental(val remove: Boolean, @StringRes override val error: Int? = null) : SettingsPinFlow
 
     data object NewParental : SettingsPinFlow {
-        override val error: String? = null
+        override val error: Int? = null
     }
 }
 
@@ -52,7 +54,7 @@ data class SettingsUiState(
     val torrentCacheBytes: Long? = null,
     val localData: LocalDataSizes? = null,
     val busy: Boolean = false,
-    val message: String? = null,
+    val message: UiText? = null,
     val pinFlow: SettingsPinFlow? = null,
     val openSubtitlesConfigured: Boolean = false,
     val openSubtitlesUser: String? = null,
@@ -78,7 +80,7 @@ class SettingsViewModel @Inject constructor(
         val torrentCacheBytes: Long? = null,
         val localData: LocalDataSizes? = null,
         val busy: Boolean = false,
-        val message: String? = null,
+        val message: UiText? = null,
         val pinFlow: SettingsPinFlow? = null,
     )
 
@@ -140,7 +142,7 @@ class SettingsViewModel @Inject constructor(
                 it.copy(
                     busy = false,
                     openSubtitlesUser = if (result.isSuccess) username.trim() else it.openSubtitlesUser,
-                    message = result.exceptionOrNull()?.message ?: "Logged in to OpenSubtitles",
+                    message = result.exceptionOrNull()?.message?.let(UiText::Raw) ?: UiText.Res(R.string.settings_subtitles_logged_in),
                 )
             }
         }
@@ -149,7 +151,7 @@ class SettingsViewModel @Inject constructor(
     fun logoutOpenSubtitles() {
         viewModelScope.launch {
             subtitles.logout()
-            local.update { it.copy(openSubtitlesUser = null, message = "Logged out of OpenSubtitles") }
+            local.update { it.copy(openSubtitlesUser = null, message = UiText.Res(R.string.settings_subtitles_logged_out)) }
         }
     }
 
@@ -179,7 +181,7 @@ class SettingsViewModel @Inject constructor(
         val p = profile.value ?: return
         viewModelScope.launch {
             profiles.setSeedGenres(p.id, ids.toList())
-            notify("Favourite genres saved")
+            notify(UiText.Res(R.string.settings_genres_saved))
         }
     }
 
@@ -191,7 +193,7 @@ class SettingsViewModel @Inject constructor(
         if (p.hasPin) local.update { it.copy(pinFlow = SettingsPinFlow.ProfilePinForHistory()) } else clearHistory(p.id)
     }
 
-    private fun clearHistory(profileId: Long) = runTask("Play history cleared") {
+    private fun clearHistory(profileId: Long) = runTask(R.string.settings_history_cleared) {
         library.clearHistory(profileId)
         // HS-6: clearing history also resets the profile's genre affinity.
         recommendations.reset(profileId)
@@ -199,22 +201,22 @@ class SettingsViewModel @Inject constructor(
 
     fun clearSearchHistory() {
         val p = profile.value ?: return
-        runTask("Search history cleared") { search.clearRecent(p.id) }
+        runTask(R.string.settings_history_search_cleared) { search.clearRecent(p.id) }
     }
 
     fun resetRecommendations() {
         val p = profile.value ?: return
-        runTask("Recommendations reset") { recommendations.reset(p.id) }
+        runTask(R.string.settings_history_recs_reset) { recommendations.reset(p.id) }
     }
 
     // --- Storage ----------------------------------------------------------------------------
 
-    fun clearTorrentCache() = runTask("Torrent cache cleared") {
+    fun clearTorrentCache() = runTask(R.string.settings_network_torrent_cache_cleared) {
         torrentEngine.clearCache()
         refreshSizes()
     }
 
-    fun clearTmdbCache() = runTask("TMDB cache cleared") {
+    fun clearTmdbCache() = runTask(R.string.settings_local_tmdb_cache_cleared) {
         tmdbCache.clear()
         refreshSizes()
     }
@@ -238,40 +240,40 @@ class SettingsViewModel @Inject constructor(
                         local.update { it.copy(pinFlow = null) }
                         clearHistory(p.id)
                     } else {
-                        local.update { it.copy(pinFlow = flow.copy(error = "Incorrect PIN. Try again.")) }
+                        local.update { it.copy(pinFlow = flow.copy(error = R.string.settings_pin_incorrect)) }
                     }
                 }
                 is SettingsPinFlow.VerifyParental -> {
                     if (!profiles.verifyParentalPin(pin)) {
-                        local.update { it.copy(pinFlow = flow.copy(error = "Incorrect parental PIN. Try again.")) }
+                        local.update { it.copy(pinFlow = flow.copy(error = R.string.settings_pin_parental_incorrect)) }
                     } else if (flow.remove) {
                         profiles.setParentalPin(null)
-                        local.update { it.copy(pinFlow = null, hasParentalPin = false, message = "Parental PIN removed") }
+                        local.update { it.copy(pinFlow = null, hasParentalPin = false, message = UiText.Res(R.string.settings_pin_parental_removed)) }
                     } else {
                         local.update { it.copy(pinFlow = SettingsPinFlow.NewParental) }
                     }
                 }
                 SettingsPinFlow.NewParental -> {
                     profiles.setParentalPin(pin)
-                    local.update { it.copy(pinFlow = null, hasParentalPin = true, message = "Parental PIN saved") }
+                    local.update { it.copy(pinFlow = null, hasParentalPin = true, message = UiText.Res(R.string.settings_pin_parental_saved)) }
                 }
                 null -> Unit
             }
         }
     }
 
-    private fun notify(message: String) = local.update { it.copy(message = message) }
+    private fun notify(message: UiText) = local.update { it.copy(message = message) }
 
-    private fun runTask(success: String, block: suspend () -> Unit) {
+    private fun runTask(@StringRes success: Int, block: suspend () -> Unit) {
         viewModelScope.launch {
             local.update { it.copy(busy = true) }
             val result = try {
                 block()
-                success
+                UiText.Res(success)
             } catch (e: CancellationException) {
                 throw e
             } catch (e: Exception) {
-                "Something went wrong: ${e.message ?: e::class.simpleName}"
+                UiText.Res(R.string.settings_common_error, (e.message ?: e::class.simpleName).toString())
             }
             local.update { it.copy(busy = false, message = result) }
         }

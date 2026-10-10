@@ -39,6 +39,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.nexient.jazzy.core.data.catalog.HomeTab
 import com.nexient.jazzy.core.designsystem.component.AvatarTile
@@ -51,6 +52,7 @@ import com.nexient.jazzy.core.designsystem.theme.JazzyTheme
 import com.nexient.jazzy.feature.home.HomeActions
 import com.nexient.jazzy.feature.home.HomeUiState
 import com.nexient.jazzy.feature.home.HomeViewModel
+import com.nexient.jazzy.feature.home.R
 import com.nexient.jazzy.feature.home.snapshot
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -72,16 +74,16 @@ internal fun HomePhoneScreen(state: HomeUiState, viewModel: HomeViewModel, actio
                             Button(
                                 onClick = { actions.openTitle(hero.summary.ref, null, null, true) },
                                 colors = ButtonDefaults.buttonColors(containerColor = Color.White, contentColor = Color.Black),
-                            ) { Icon(Icons.Filled.PlayArrow, null); Text("Watch") }
+                            ) { Icon(Icons.Filled.PlayArrow, null); Text(stringResource(R.string.home_hero_watch)) }
                             OutlinedButton(onClick = { viewModel.toggleMyList(hero.summary.snapshot()) }) {
                                 Icon(if (inList) Icons.Filled.Check else Icons.Filled.Add, null)
-                                Text("My List")
+                                Text(stringResource(R.string.home_hero_my_list))
                             }
                             IconButton(onClick = { viewModel.toggleLike(hero.summary.snapshot()) }) {
-                                Icon(if (liked) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder, if (liked) "Unlike" else "Like", tint = if (liked) JazzyColors.Accent else Color.White)
+                                Icon(if (liked) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder, stringResource(if (liked) R.string.home_hero_unlike else R.string.home_hero_like), tint = if (liked) JazzyColors.Accent else Color.White)
                             }
                             IconButton(onClick = { actions.openTitle(hero.summary.ref, null, null, false) }) {
-                                Icon(Icons.Filled.Info, "More info", tint = Color.White)
+                                Icon(Icons.Filled.Info, stringResource(R.string.home_hero_more_info_a11y), tint = Color.White)
                             }
                         }
                     } ?: Box(Modifier.fillMaxWidth().heightIn(min = 140.dp))
@@ -105,8 +107,8 @@ private fun TopBar(state: HomeUiState, actions: HomeActions) {
         Modifier.fillMaxWidth().padding(horizontal = JazzyTheme.spacing.gutter, vertical = 8.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Text("JAZZY", style = MaterialTheme.typography.headlineSmall, color = JazzyColors.Accent, modifier = Modifier.weight(1f))
-        IconButton(onClick = actions.openSearch) { Icon(Icons.Filled.Search, "Search", tint = Color.White) }
+        Text(stringResource(R.string.home_brand_wordmark), style = MaterialTheme.typography.headlineSmall, color = JazzyColors.Accent, modifier = Modifier.weight(1f))
+        IconButton(onClick = actions.openSearch) { Icon(Icons.Filled.Search, stringResource(R.string.home_topbar_search), tint = Color.White) }
         state.profile?.let { p ->
             AvatarTile(p.avatarId, Modifier.size(32.dp).jazzyClickable(onClick = actions.openProfiles), size = 32.dp)
         }
@@ -116,8 +118,8 @@ private fun TopBar(state: HomeUiState, actions: HomeActions) {
 @Composable
 private fun TabChips(tab: HomeTab, onSelect: (HomeTab) -> Unit) {
     Row(Modifier.padding(horizontal = JazzyTheme.spacing.gutter), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-        listOf(HomeTab.ALL to "All", HomeTab.MOVIES to "Movies", HomeTab.TV to "TV Shows").forEach { (t, label) ->
-            FilterChip(selected = t == tab, onClick = { onSelect(t) }, label = { Text(label) })
+        listOf(HomeTab.ALL to R.string.home_tab_all, HomeTab.MOVIES to R.string.home_tab_movies, HomeTab.TV to R.string.home_tab_tv).forEach { (t, label) ->
+            FilterChip(selected = t == tab, onClick = { onSelect(t) }, label = { Text(stringResource(label)) })
         }
     }
     Box(Modifier.height(4.dp))

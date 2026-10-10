@@ -38,16 +38,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.focusRestorer
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.nexient.jazzy.core.designsystem.component.AvatarTile
 import com.nexient.jazzy.core.designsystem.component.SettingsSectionHeader
 import com.nexient.jazzy.core.designsystem.component.jazzyClickable
 import com.nexient.jazzy.core.designsystem.theme.JazzyColors
 import com.nexient.jazzy.core.designsystem.theme.JazzyTheme
+import com.nexient.jazzy.feature.settings.R
 import com.nexient.jazzy.feature.settings.SettingsUiState
 import com.nexient.jazzy.feature.settings.SettingsViewModel
-
-private const val FOOTNOTE = "Settings are stored only on this device."
 
 @Composable
 internal fun SettingsPhoneScreen(state: SettingsUiState, viewModel: SettingsViewModel, nav: SettingsNav) {
@@ -56,7 +56,7 @@ internal fun SettingsPhoneScreen(state: SettingsUiState, viewModel: SettingsView
             Modifier.fillMaxWidth().padding(horizontal = JazzyTheme.spacing.gutter, vertical = 12.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            Text("Settings", style = MaterialTheme.typography.headlineMedium, modifier = Modifier.weight(1f))
+            Text(stringResource(R.string.settings_main_title), style = MaterialTheme.typography.headlineMedium, modifier = Modifier.weight(1f))
             state.profile?.let { p ->
                 AvatarTile(p.avatarId, Modifier.jazzyClickable(onClick = nav.manageProfiles), size = 32.dp)
             }
@@ -69,14 +69,14 @@ internal fun SettingsPhoneScreen(state: SettingsUiState, viewModel: SettingsView
             state.visibleSections().forEach { section ->
                 item(key = section.name) {
                     Column {
-                        SettingsSectionHeader(section.title)
+                        SettingsSectionHeader(stringResource(section.title))
                         SettingsSectionContent(section, state, viewModel, nav)
                     }
                 }
             }
             item(key = "footnote") {
                 Text(
-                    FOOTNOTE,
+                    stringResource(R.string.settings_main_footnote),
                     style = MaterialTheme.typography.bodySmall,
                     color = JazzyColors.TextTertiary,
                     modifier = Modifier.padding(top = 24.dp, start = 4.dp),
@@ -109,7 +109,7 @@ internal fun SettingsTvScreen(state: SettingsUiState, viewModel: SettingsViewMod
             verticalArrangement = Arrangement.spacedBy(4.dp),
         ) {
             Row(Modifier.padding(start = 12.dp, top = 16.dp, bottom = 20.dp), verticalAlignment = Alignment.CenterVertically) {
-                Text("Settings", style = MaterialTheme.typography.headlineMedium, modifier = Modifier.weight(1f))
+                Text(stringResource(R.string.settings_main_title), style = MaterialTheme.typography.headlineMedium, modifier = Modifier.weight(1f))
                 state.profile?.let { AvatarTile(it.avatarId, size = 36.dp) }
             }
             sections.forEachIndexed { index, section ->
@@ -123,11 +123,11 @@ internal fun SettingsTvScreen(state: SettingsUiState, viewModel: SettingsViewMod
             }
         }
         Column(Modifier.weight(1f).fillMaxHeight().verticalScroll(rememberScrollState()).padding(top = 16.dp)) {
-            Text(selected.title, style = MaterialTheme.typography.headlineSmall, modifier = Modifier.padding(start = 12.dp, bottom = 12.dp))
+            Text(stringResource(selected.title), style = MaterialTheme.typography.headlineSmall, modifier = Modifier.padding(start = 12.dp, bottom = 12.dp))
             if (state.busy) LinearProgressIndicator(Modifier.fillMaxWidth().padding(bottom = 8.dp), color = JazzyColors.Accent)
             SettingsSectionContent(selected, state, viewModel, nav, firstItemFocus = firstItem)
             Spacer(Modifier.height(24.dp))
-            Text(FOOTNOTE, style = MaterialTheme.typography.bodySmall, color = JazzyColors.TextTertiary, modifier = Modifier.padding(start = 12.dp))
+            Text(stringResource(R.string.settings_main_footnote), style = MaterialTheme.typography.bodySmall, color = JazzyColors.TextTertiary, modifier = Modifier.padding(start = 12.dp))
             Spacer(Modifier.height(48.dp))
         }
     }
@@ -154,7 +154,7 @@ private fun SectionTab(
     ) {
         Icon(section.icon, null, tint = if (selected) JazzyColors.Accent else JazzyColors.TextSecondary, modifier = Modifier.size(24.dp))
         Text(
-            section.title,
+            stringResource(section.title),
             style = MaterialTheme.typography.titleSmall,
             color = if (selected) JazzyColors.OnBackground else JazzyColors.TextSecondary,
         )

@@ -1,5 +1,6 @@
 package com.nexient.jazzy.feature.profiles
 
+import androidx.annotation.StringRes
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nexient.jazzy.core.data.profile.ProfileRepository
@@ -30,10 +31,10 @@ sealed interface GuardedAction {
 }
 
 sealed interface PinPrompt {
-    val error: String?
+    @get:StringRes val error: Int?
 
-    data class ProfilePin(val profile: Profile, override val error: String? = null) : PinPrompt
-    data class Parental(val action: GuardedAction, override val error: String? = null) : PinPrompt
+    data class ProfilePin(val profile: Profile, @StringRes override val error: Int? = null) : PinPrompt
+    data class Parental(val action: GuardedAction, @StringRes override val error: Int? = null) : PinPrompt
 }
 
 sealed interface PickerEvent {
@@ -116,7 +117,7 @@ class ProfilePickerViewModel @Inject constructor(
                     local.update { it.copy(prompt = null) }
                     select(prompt.profile)
                 } else {
-                    local.update { it.copy(prompt = prompt.copy(error = "Incorrect PIN. Try again.")) }
+                    local.update { it.copy(prompt = prompt.copy(error = R.string.profiles_pin_incorrect)) }
                 }
             }
             is PinPrompt.Parental -> {
@@ -125,7 +126,7 @@ class ProfilePickerViewModel @Inject constructor(
                     local.update { it.copy(prompt = null) }
                     perform(prompt.action)
                 } else {
-                    local.update { it.copy(prompt = prompt.copy(error = "Incorrect parental PIN. Try again.")) }
+                    local.update { it.copy(prompt = prompt.copy(error = R.string.profiles_picker_parental_pin_incorrect)) }
                 }
             }
             null -> Unit

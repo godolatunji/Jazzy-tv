@@ -19,6 +19,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.nexient.jazzy.core.designsystem.component.EpisodeRow
 import com.nexient.jazzy.core.designsystem.component.MessageState
@@ -27,6 +28,7 @@ import com.nexient.jazzy.core.model.Episode
 import com.nexient.jazzy.core.model.SeasonSummary
 import com.nexient.jazzy.core.model.WatchRules
 import com.nexient.jazzy.feature.details.DetailsUiState
+import com.nexient.jazzy.feature.details.R
 
 /** Season dropdown (phone). Specials (season 0) are listed last (spec §5.3.3). */
 @Composable
@@ -34,12 +36,12 @@ internal fun SeasonDropdown(seasons: List<SeasonSummary>, selected: Int?, onSele
     var open by remember { mutableStateOf(false) }
     Box(modifier) {
         OutlinedButton(onClick = { open = true }) {
-            Text(seasons.firstOrNull { it.seasonNumber == selected }?.name ?: "Season ${selected ?: 1}")
+            Text(seasons.firstOrNull { it.seasonNumber == selected }?.name ?: stringResource(R.string.details_season_fallback, selected ?: 1))
             Icon(Icons.Filled.ArrowDropDown, null)
         }
         DropdownMenu(expanded = open, onDismissRequest = { open = false }) {
             seasons.forEach { s ->
-                DropdownMenuItem(text = { Text("${s.name} (${s.episodeCount})") }, onClick = { open = false; onSelect(s.seasonNumber) })
+                DropdownMenuItem(text = { Text(stringResource(R.string.details_season_item, s.name, s.episodeCount)) }, onClick = { open = false; onSelect(s.seasonNumber) })
             }
         }
     }
@@ -57,7 +59,7 @@ internal fun EpisodeList(
     Column(modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(4.dp)) {
         when {
             season == null || season.isLoadingWithoutData -> RailSkeleton(backdrop = true)
-            season.isErrorWithoutData -> MessageState("Couldn't load episodes", season.error?.message)
+            season.isErrorWithoutData -> MessageState(stringResource(R.string.details_error_load_episodes), season.error?.message)
             else -> season.data?.episodes?.forEach { ep ->
                 val p = state.episodeProgress[ep.seasonNumber to ep.episodeNumber]
                 EpisodeRow(

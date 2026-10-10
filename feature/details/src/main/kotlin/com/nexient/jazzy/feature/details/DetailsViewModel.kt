@@ -11,6 +11,7 @@ import com.nexient.jazzy.core.data.profile.ProfileRepository
 import com.nexient.jazzy.core.data.settings.SettingsRepository
 import com.nexient.jazzy.core.data.sources.SourceRepository
 import com.nexient.jazzy.core.designsystem.component.SourceRowFlags
+import com.nexient.jazzy.core.designsystem.text.UiText
 import com.nexient.jazzy.core.model.Episode
 import com.nexient.jazzy.core.model.MaturityLevel
 import com.nexient.jazzy.core.model.MediaType
@@ -98,7 +99,7 @@ data class DetailsUiState(
 sealed interface DetailsEvent {
     data class Play(val request: PlaybackRequest) : DetailsEvent
     data class AskResume(val source: TorrentSource, val positionMs: Long) : DetailsEvent
-    data class Message(val text: String) : DetailsEvent
+    data class Message(val text: UiText) : DetailsEvent
     data class OpenTrailer(val youtubeKey: String) : DetailsEvent
 }
 
@@ -267,7 +268,11 @@ class DetailsViewModel @AssistedInject constructor(
                 resolvingKey.value = source.key
                 sourcesRepo.resolveMagnet(source)
             } catch (e: Exception) {
-                _events.send(DetailsEvent.Message("Couldn't get the link from ${source.providerNames.firstOrNull() ?: "the site"}. Try again or pick another row."))
+                _events.send(
+                    DetailsEvent.Message(
+                        UiText.Res(R.string.details_error_resolve_link, source.providerNames.firstOrNull() ?: UiText.Res(R.string.details_error_the_site)),
+                    ),
+                )
                 return@launch
             } finally {
                 resolvingKey.value = null
@@ -298,7 +303,7 @@ class DetailsViewModel @AssistedInject constructor(
                 sourcesRepo.search(query, force).collect { sourceResult.value = it }
             } catch (e: Exception) {
                 if (e is kotlinx.coroutines.CancellationException) throw e
-                _events.send(DetailsEvent.Message("Source search failed: ${e.message ?: "unknown error"}"))
+                _events.send(DetailsEvent.Message(UiText.Res(R.string.details_error_source_search_failed, e.message ?: UiText.Res(R.string.details_error_unknown))))
             } finally {
                 searching.value = false
             }

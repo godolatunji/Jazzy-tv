@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Common -->
+    <string name="details_common_retry">Retry</string>
+    <string name="details_common_back">Back</string>
+
+    <!-- Screen states -->
+    <string name="details_error_load_title">Couldn\'t load this title</string>
+    <string name="details_blocked_title">Not available on this profile</string>
+    <string name="details_blocked_message">This title is above the profile\'s maturity setting.</string>
+
+    <!-- Resume dialog (RS-5) -->
+    <string name="details_resume_dialog_title">Resume where you stopped?</string>
+    <string name="details_resume_dialog_message">You stopped at %1$s. Resume from there with this source, or start over?</string>
+    <string name="details_resume_dialog_resume_from">Resume from %1$s</string>
+    <string name="details_resume_dialog_start_over">Start over</string>
+
+    <!-- Snackbar messages -->
+    <string name="details_error_resolve_link">Couldn\'t get the link from %1$s. Try again or pick another row.</string>
+    <string name="details_error_the_site">the site</string>
+    <string name="details_error_source_search_failed">Source search failed: %1$s</string>
+    <string name="details_error_unknown">unknown error</string>
+
+    <!-- Info header -->
+    <plurals name="details_info_seasons">
+        <item quantity="one">%1$d season</item>
+        <item quantity="other">%1$d seasons</item>
+    </plurals>
+    <string name="details_info_rating">★ %1$s</string>
+    <string name="details_info_cast">Cast: %1$s</string>
+    <string name="details_info_director">Director: %1$s</string>
+    <string name="details_info_created_by">Created by: %1$s</string>
+    <string name="details_action_my_list">" My List"</string>
+    <string name="details_action_like">" Like"</string>
+    <string name="details_action_liked">" Liked"</string>
+    <string name="details_action_trailer">" Trailer"</string>
+    <string name="details_resume_banner_stopped_at">You stopped at %1$s</string>
+    <string name="details_resume_banner_episode">%1$s · %2$s</string>
+    <string name="details_resume_banner_last_used">%1$s · %2$s (last used)</string>
+    <string name="details_more_like_this">More Like This</string>
+
+    <!-- Episodes / seasons -->
+    <string name="details_episodes_title">Episodes</string>
+    <string name="details_back_to_episodes">Back to episodes</string>
+    <string name="details_seasons_title">Seasons</string>
+    <plurals name="details_season_row">
+        <item quantity="one">%1$s  ·  %2$d episode</item>
+        <item quantity="other">%1$s  ·  %2$d episodes</item>
+    </plurals>
+    <string name="details_season_fallback">Season %1$d</string>
+    <string name="details_season_item">%1$s (%2$d)</string>
+    <string name="details_error_load_episodes">Couldn\'t load episodes</string>
+
+    <!-- Sources -->
+    <string name="details_sources_title">Sources</string>
+    <string name="details_sources_episode_title">S%1$d:E%2$d · %3$s</string>
+    <string name="details_sources_refresh">Refresh sources</string>
+    <string name="details_sources_sort">Sort sources</string>
+    <string name="details_sort_seeders">Most seeders</string>
+    <string name="details_sort_quality">Quality</string>
+    <string name="details_sort_size">Size</string>
+    <string name="details_sort_selected">✓ %1$s</string>
+    <string name="details_sources_unreleased">Not released yet — links may be fake or low quality.</string>
+    <string name="details_provider_searching">%1$s …</string>
+    <string name="details_provider_done">%1$s %2$d</string>
+    <string name="details_provider_failed">%1$s ✕</string>
+    <string name="details_sources_hide_errors">Hide site errors</string>
+    <plurals name="details_sources_failures">
+        <item quantity="one">%1$d site failed — details</item>
+        <item quantity="other">%1$d sites failed — details</item>
+    </plurals>
+    <string name="details_provider_failure_line">%1$s: %2$s</string>
+    <string name="details_filter_hide_cam">Hide CAM/TS</string>
+    <string name="details_filter_hide_unsupported">Hide unsupported</string>
+    <string name="details_filter_show_dead">Show dead links</string>
+    <plurals name="details_sources_hidden_count">
+        <item quantity="one">%1$d hidden by filters</item>
+        <item quantity="other">%1$d hidden by filters</item>
+    </plurals>
+    <string name="details_sources_all_off">All sites are turned off</string>
+    <string name="details_sources_no_answer">No site answered</string>
+    <string name="details_sources_no_links">No links found</string>
+    <plurals name="details_sources_hidden_links">
+        <item quantity="one">%1$d link is hidden by your filters.</item>
+        <item quantity="other">%1$d links are hidden by your filters.</item>
+    </plurals>
+    <string name="details_sources_try_again">Try again, or check which sites are working.</string>
+    <string name="details_sources_search_again">Search again</string>
+    <string name="details_sources_check_sites">Check sites</string>
+
+    <!-- Site failure reasons -->
+    <string name="details_failure_timeout">timed out</string>
+    <string name="details_failure_blocked">blocked by the site</string>
+    <string name="details_failure_unreachable">site unreachable</string>
+    <string name="details_failure_http_error">site returned an error</string>
+    <string name="details_failure_parse_error">page layout changed</string>
+    <string name="details_failure_login_required">login required</string>
+    <string name="details_failure_other">failed</string>
+</resources>

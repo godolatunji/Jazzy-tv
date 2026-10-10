@@ -2,12 +2,13 @@ package com.nexient.jazzy.feature.library
 
 import com.google.common.truth.Truth.assertThat
 import com.nexient.jazzy.core.data.library.HistoryDay
+import com.nexient.jazzy.core.designsystem.text.UiText
 import com.nexient.jazzy.core.model.HistoryEntry
 import com.nexient.jazzy.core.model.LibraryItem
 import com.nexient.jazzy.core.model.LibrarySort
 import com.nexient.jazzy.core.model.MediaType
-import com.nexient.jazzy.core.model.PlayableRef
 import com.nexient.jazzy.core.model.PlaySession
+import com.nexient.jazzy.core.model.PlayableRef
 import com.nexient.jazzy.core.model.TitleSnapshot
 import org.junit.Test
 import java.time.LocalDate
@@ -44,11 +45,11 @@ class LibraryModelsTest {
 
     @Test
     fun `day labels follow today, yesterday, weekday, then date`() {
-        assertThat(dayLabel(today, today, Locale.UK)).isEqualTo("Today")
-        assertThat(dayLabel(today.minusDays(1), today, Locale.UK)).isEqualTo("Yesterday")
-        assertThat(dayLabel(today.minusDays(3), today, Locale.UK)).isEqualTo("Wednesday")
-        assertThat(dayLabel(LocalDate.of(2026, 3, 2), today, Locale.UK)).isEqualTo("Monday 2 March")
-        assertThat(dayLabel(LocalDate.of(2024, 3, 2), today, Locale.UK)).isEqualTo("2 March 2024")
+        assertThat(dayLabel(today, today, Locale.UK)).isEqualTo(UiText.Res(R.string.library_history_today))
+        assertThat(dayLabel(today.minusDays(1), today, Locale.UK)).isEqualTo(UiText.Res(R.string.library_history_yesterday))
+        assertThat(dayLabel(today.minusDays(3), today, Locale.UK)).isEqualTo(UiText.Raw("Wednesday"))
+        assertThat(dayLabel(LocalDate.of(2026, 3, 2), today, Locale.UK)).isEqualTo(UiText.Raw("Monday 2 March"))
+        assertThat(dayLabel(LocalDate.of(2024, 3, 2), today, Locale.UK)).isEqualTo(UiText.Raw("2 March 2024"))
     }
 
     @Test
@@ -59,7 +60,7 @@ class LibraryModelsTest {
 
         val all = days.toSections("", today)
         assertThat(all).hasSize(1)
-        assertThat(all[0].label).isEqualTo("Today")
+        assertThat(all[0].label).isEqualTo(UiText.Res(R.string.library_history_today))
         assertThat(all[0].items.map { it.key }).containsExactly(6L, 5L).inOrder()
         assertThat(all[0].items.first { it.key == 5L }.sessionIds).containsExactly(5L, 4L)
 
@@ -71,8 +72,8 @@ class LibraryModelsTest {
     fun `entry lines`() {
         val show = HistoryEntry(snapshot(9, "Dark", MediaType.TV), session(6, 9, 1, 3, "Past and Present"), 1, 1_500_000)
         assertThat(show.episodeLine()).isEqualTo("S1:E3 · Past and Present")
-        assertThat(show.stoppedLine()).isEqualTo("Stopped at 42:13 of 1:58:00")
-        assertThat(formatWatched(1_500_000)).isEqualTo("25m")
-        assertThat(formatWatched(40_000)).isEqualTo("40s")
+        assertThat(show.stoppedLine()).isEqualTo(UiText.Res(R.string.library_history_stopped_at_of, "42:13", "1:58:00"))
+        assertThat(formatWatched(1_500_000)).isEqualTo(UiText.Raw("25m"))
+        assertThat(formatWatched(40_000)).isEqualTo(UiText.Res(R.string.library_history_duration_seconds, 40))
     }
 }

@@ -20,11 +20,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.LiveRegionMode
 import androidx.compose.ui.semantics.liveRegion
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.nexient.jazzy.core.designsystem.R
 import com.nexient.jazzy.core.designsystem.theme.JazzyColors
 
 @Composable
@@ -60,7 +62,7 @@ fun MessageState(
 
 /** "Offline" banner shown over cached content (HM-5). */
 @Composable
-fun OfflineBanner(modifier: Modifier = Modifier, text: String = "You're offline. Showing saved content.") {
+fun OfflineBanner(modifier: Modifier = Modifier, text: String = stringResource(R.string.designsystem_offline_banner)) {
     Row(
         modifier.fillMaxWidth().background(JazzyColors.SurfaceVariant).padding(horizontal = 16.dp, vertical = 8.dp)
             .semantics { liveRegion = LiveRegionMode.Polite },

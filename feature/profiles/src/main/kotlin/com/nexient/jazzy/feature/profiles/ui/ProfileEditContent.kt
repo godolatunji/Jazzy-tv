@@ -1,5 +1,7 @@
 package com.nexient.jazzy.feature.profiles.ui
 
+import com.nexient.jazzy.core.designsystem.text.labelRes
+import com.nexient.jazzy.core.designsystem.text.genreLabelRes
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -46,6 +48,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.res.pluralStringResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.dp
@@ -57,6 +61,7 @@ import com.nexient.jazzy.core.designsystem.component.SettingsSectionHeader
 import com.nexient.jazzy.core.designsystem.component.SettingsSwitchRow
 import com.nexient.jazzy.core.designsystem.component.ToggleChipGroup
 import com.nexient.jazzy.core.designsystem.component.jazzyClickable
+import com.nexient.jazzy.core.designsystem.text.asString
 import com.nexient.jazzy.core.designsystem.theme.JazzyColors
 import com.nexient.jazzy.core.designsystem.theme.JazzyTheme
 import com.nexient.jazzy.core.model.AVATAR_COUNT
@@ -64,15 +69,21 @@ import com.nexient.jazzy.core.recommendations.UnifiedGenre
 import com.nexient.jazzy.feature.profiles.EditDialog
 import com.nexient.jazzy.feature.profiles.ProfileEditUiState
 import com.nexient.jazzy.feature.profiles.ProfileEditViewModel
+import com.nexient.jazzy.feature.profiles.R
 import com.nexient.jazzy.feature.profiles.languageLabel
 
-private fun ProfileEditUiState.title() = when {
-    firstRun -> "Create your profile"
-    isNew -> "Add profile"
-    else -> "Edit profile"
-}
+@Composable
+private fun ProfileEditUiState.title() = stringResource(
+    when {
+        firstRun -> R.string.profiles_edit_title_first_run
+        isNew -> R.string.profiles_edit_title_add
+        else -> R.string.profiles_edit_title_edit
+    },
+)
 
-private fun ProfileEditUiState.primaryLabel() = if (isNew) "Next" else "Save"
+@Composable
+private fun ProfileEditUiState.primaryLabel() =
+    stringResource(if (isNew) R.string.profiles_edit_next else R.string.profiles_common_save)
 
 @Composable
 internal fun ProfileEditPhoneScreen(
@@ -86,7 +97,7 @@ internal fun ProfileEditPhoneScreen(
             Modifier.fillMaxWidth().padding(horizontal = 4.dp, vertical = 4.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            if (!state.firstRun) TextButton(onClick = onCancel) { Text("Cancel") } else Spacer(Modifier.width(16.dp))
+            if (!state.firstRun) TextButton(onClick = onCancel) { Text(stringResource(R.string.profiles_common_cancel)) } else Spacer(Modifier.width(16.dp))
             Text(state.title(), style = MaterialTheme.typography.titleLarge, modifier = Modifier.weight(1f))
             TextButton(onClick = viewModel::onPrimary, enabled = !state.saving) { Text(state.primaryLabel()) }
         }
@@ -97,7 +108,7 @@ internal fun ProfileEditPhoneScreen(
             AvatarButton(state.avatarId, size = 112.dp, onClick = { openDialog(EditDialog.AVATAR) }, modifier = Modifier.align(Alignment.CenterHorizontally))
             Spacer(Modifier.height(20.dp))
             NameField(state, viewModel)
-            ErrorText(state.error)
+            ErrorText(state.error?.asString())
             ProfileFormRows(state, viewModel, openDialog)
             Spacer(Modifier.height(32.dp))
         }
@@ -122,13 +133,13 @@ internal fun ProfileEditTvScreen(
             Text(state.title(), style = MaterialTheme.typography.headlineMedium)
             AvatarButton(state.avatarId, size = 140.dp, onClick = { openDialog(EditDialog.AVATAR) }, focusRequester = avatarFocus)
             NameField(state, viewModel)
-            ErrorText(state.error)
+            ErrorText(state.error?.asString())
             Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                 PillButton(
                     state.primaryLabel(), onClick = viewModel::onPrimary, style = PillButtonStyle.ACCENT,
                     icon = Icons.Filled.Check, enabled = !state.saving,
                 )
-                if (!state.firstRun) PillButton("Cancel", onClick = onCancel, icon = Icons.Filled.Close)
+                if (!state.firstRun) PillButton(stringResource(R.string.profiles_common_cancel), onClick = onCancel, icon = Icons.Filled.Close)
             }
         }
         Column(Modifier.weight(1f).verticalScroll(rememberScrollState()).padding(vertical = 16.dp)) {
@@ -146,7 +157,7 @@ private fun AvatarButton(avatarId: Int, size: androidx.compose.ui.unit.Dp, onCli
         }
         Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(4.dp)) {
             androidx.compose.material3.Icon(Icons.Filled.Edit, null, tint = JazzyColors.TextSecondary, modifier = Modifier.height(14.dp))
-            Text("Change avatar", style = MaterialTheme.typography.labelMedium, color = JazzyColors.TextSecondary)
+            Text(stringResource(R.string.profiles_edit_change_avatar), style = MaterialTheme.typography.labelMedium, color = JazzyColors.TextSecondary)
         }
     }
 }
@@ -157,11 +168,17 @@ private fun NameField(state: ProfileEditUiState, viewModel: ProfileEditViewModel
     OutlinedTextField(
         value = state.name,
         onValueChange = viewModel::setName,
-        label = { Text("Name") },
+        label = { Text(stringResource(R.string.profiles_edit_name_label)) },
         singleLine = true,
         isError = error,
         supportingText = {
-            Text(if (error) "Enter a name of 1–${ProfileEditUiState.MAX_NAME} characters" else "${state.name.length}/${ProfileEditUiState.MAX_NAME}")
+            Text(
+                if (error) {
+                    stringResource(R.string.profiles_edit_name_error, ProfileEditUiState.MAX_NAME)
+                } else {
+                    stringResource(R.string.profiles_edit_name_counter, state.name.length, ProfileEditUiState.MAX_NAME)
+                },
+            )
         },
         keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Words, imeAction = ImeAction.Done),
         colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = JazzyColors.Focus, cursorColor = JazzyColors.Accent),
@@ -176,73 +193,82 @@ private fun ErrorText(error: String?) {
 
 @Composable
 private fun ProfileFormRows(state: ProfileEditUiState, viewModel: ProfileEditViewModel, openDialog: (EditDialog) -> Unit) {
-    SettingsSectionHeader("Viewing")
+    val off = stringResource(R.string.profiles_common_off)
+    SettingsSectionHeader(stringResource(R.string.profiles_edit_section_viewing))
     SettingsSwitchRow(
-        title = "Kids profile",
-        subtitle = "Only shows titles up to the maturity rating below, with a simpler UI and no Sources settings.",
+        title = stringResource(R.string.profiles_edit_kids_title),
+        subtitle = stringResource(R.string.profiles_edit_kids_subtitle),
         checked = state.isKids,
         onCheckedChange = viewModel::setKids,
     )
     SettingsActionRow(
-        title = "Maturity rating",
-        subtitle = "Titles above this rating are hidden everywhere for this profile.",
-        value = state.maturity.label,
+        title = stringResource(R.string.profiles_edit_maturity_title),
+        subtitle = stringResource(R.string.profiles_edit_maturity_subtitle),
+        value = stringResource(state.maturity.labelRes),
         icon = Icons.Filled.Shield,
         onClick = { openDialog(EditDialog.MATURITY) },
     )
     SettingsActionRow(
-        title = "Content language",
-        subtitle = "Titles, overviews and genre names from TMDB.",
-        value = languageLabel(state.language),
+        title = stringResource(R.string.profiles_edit_content_language_title),
+        subtitle = stringResource(R.string.profiles_edit_content_language_subtitle),
+        value = languageLabel(state.language, off),
         icon = Icons.Filled.Language,
         onClick = { openDialog(EditDialog.LANGUAGE) },
     )
     SettingsActionRow(
-        title = "Subtitle language",
-        value = languageLabel(state.subtitleLanguage),
+        title = stringResource(R.string.profiles_edit_subtitle_language_title),
+        value = languageLabel(state.subtitleLanguage, off),
         icon = Icons.Filled.Subtitles,
         onClick = { openDialog(EditDialog.SUBTITLES) },
     )
     SettingsSwitchRow(
-        title = "Autoplay next episode",
+        title = stringResource(R.string.profiles_edit_autoplay_title),
         checked = state.autoplayNext,
         onCheckedChange = viewModel::setAutoplayNext,
     )
     if (!state.isNew) {
         SettingsActionRow(
-            title = "Favourite genres",
-            subtitle = "Seeds recommendations until there's enough watch history.",
-            value = if (state.genres.isEmpty()) "None" else "${state.genres.size} selected",
+            title = stringResource(R.string.profiles_edit_genres_title),
+            subtitle = stringResource(R.string.profiles_edit_genres_subtitle),
+            value = if (state.genres.isEmpty()) {
+                stringResource(R.string.profiles_common_none)
+            } else {
+                pluralStringResource(R.plurals.profiles_genres_selected, state.genres.size, state.genres.size)
+            },
             icon = Icons.Filled.Favorite,
             showChevron = true,
             onClick = viewModel::openGenres,
         )
     }
 
-    SettingsSectionHeader("Profile lock")
+    SettingsSectionHeader(stringResource(R.string.profiles_edit_section_lock))
     if (!state.pinEnabled) {
         SettingsActionRow(
-            title = "Profile PIN",
-            subtitle = "Require a 4-digit PIN to open this profile.",
-            value = "Off",
+            title = stringResource(R.string.profiles_edit_pin_title),
+            subtitle = stringResource(R.string.profiles_edit_pin_subtitle),
+            value = off,
             icon = Icons.Filled.LockOpen,
             onClick = viewModel::startSetPin,
         )
     } else {
         SettingsActionRow(
-            title = "Change PIN",
-            subtitle = if (state.hasPin) "This profile is locked with a PIN." else "The PIN is set when the profile is created.",
+            title = stringResource(R.string.profiles_edit_change_pin_title),
+            subtitle = stringResource(
+                if (state.hasPin) R.string.profiles_edit_change_pin_subtitle_locked else R.string.profiles_edit_change_pin_subtitle_pending,
+            ),
             icon = Icons.Filled.Lock,
             onClick = viewModel::startChangePin,
         )
-        SettingsActionRow(title = "Remove PIN", icon = Icons.Filled.LockOpen, onClick = viewModel::startRemovePin)
+        SettingsActionRow(title = stringResource(R.string.profiles_edit_remove_pin_title), icon = Icons.Filled.LockOpen, onClick = viewModel::startRemovePin)
     }
 
     if (!state.isNew) {
-        SettingsSectionHeader("Delete")
+        SettingsSectionHeader(stringResource(R.string.profiles_edit_section_delete))
         SettingsActionRow(
-            title = "Delete profile",
-            subtitle = if (state.canDelete) "Erases all of this profile's data from this device." else "The last remaining profile can't be deleted.",
+            title = stringResource(R.string.profiles_edit_delete_title),
+            subtitle = stringResource(
+                if (state.canDelete) R.string.profiles_edit_delete_subtitle else R.string.profiles_edit_error_last_profile,
+            ),
             icon = Icons.Filled.Delete,
             destructive = true,
             enabled = state.canDelete,
@@ -259,7 +285,7 @@ internal fun AvatarPickerDialog(selected: Int, onSelect: (Int) -> Unit, onDismis
     val tileSize = if (JazzyTheme.isTv) 64.dp else 56.dp
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text("Choose an avatar") },
+        title = { Text(stringResource(R.string.profiles_edit_avatar_picker_title)) },
         text = {
             LazyVerticalGrid(
                 columns = GridCells.Fixed(if (JazzyTheme.isTv) 6 else 4),
@@ -280,7 +306,7 @@ internal fun AvatarPickerDialog(selected: Int, onSelect: (Int) -> Unit, onDismis
             }
         },
         confirmButton = {},
-        dismissButton = { TextButton(onClick = onDismiss) { Text("Cancel") } },
+        dismissButton = { TextButton(onClick = onDismiss) { Text(stringResource(R.string.profiles_common_cancel)) } },
         containerColor = JazzyColors.SurfaceRaised,
     )
 }
@@ -301,17 +327,21 @@ internal fun GenrePickerStep(state: ProfileEditUiState, viewModel: ProfileEditVi
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
         Text(
-            if (state.isNew) "Pick 3 or more genres you like" else "Favourite genres",
+            if (state.isNew) {
+                stringResource(R.string.profiles_genres_pick_title, ProfileEditUiState.MIN_GENRES)
+            } else {
+                stringResource(R.string.profiles_edit_genres_title)
+            },
             style = if (tv) MaterialTheme.typography.headlineMedium else MaterialTheme.typography.headlineSmall,
         )
         Text(
-            "Jazzy uses these to recommend titles until there's enough watch history. You can change them any time in Settings.",
+            stringResource(R.string.profiles_genres_explainer),
             style = MaterialTheme.typography.bodyMedium,
             color = JazzyColors.TextSecondary,
             modifier = Modifier.widthIn(max = 640.dp),
         )
         ToggleChipGroup(
-            options = UnifiedGenre.pickable.map { it.id to it.label },
+            options = UnifiedGenre.pickable.map { it.id to (genreLabelRes(it.id)?.let { r -> stringResource(r) } ?: it.label) },
             selected = state.genres,
             onToggle = viewModel::toggleGenre,
             firstChipFocusRequester = firstChip,
@@ -319,23 +349,25 @@ internal fun GenrePickerStep(state: ProfileEditUiState, viewModel: ProfileEditVi
         )
         Text(
             when {
-                count == 0 -> "Nothing selected"
-                !enough && state.isNew -> "$count selected · pick ${ProfileEditUiState.MIN_GENRES - count} more"
-                else -> "$count selected"
+                count == 0 -> stringResource(R.string.profiles_genres_nothing_selected)
+                !enough && state.isNew -> (ProfileEditUiState.MIN_GENRES - count).let { more ->
+                    pluralStringResource(R.plurals.profiles_genres_selected_pick_more, more, count, more)
+                }
+                else -> pluralStringResource(R.plurals.profiles_genres_selected, count, count)
             },
             style = MaterialTheme.typography.bodySmall,
             color = JazzyColors.TextTertiary,
         )
         Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
             if (state.isNew) {
-                PillButton("Skip", onClick = { viewModel.finishGenres(skip = true) }, enabled = !state.saving)
+                PillButton(stringResource(R.string.profiles_genres_skip), onClick = { viewModel.finishGenres(skip = true) }, enabled = !state.saving)
                 PillButton(
-                    "Continue", onClick = { viewModel.finishGenres(skip = false) }, style = PillButtonStyle.ACCENT,
+                    stringResource(R.string.profiles_genres_continue), onClick = { viewModel.finishGenres(skip = false) }, style = PillButtonStyle.ACCENT,
                     enabled = enough && !state.saving,
                 )
             } else {
-                PillButton("Cancel", onClick = viewModel::backToForm)
-                PillButton("Save", onClick = { viewModel.finishGenres(skip = false) }, style = PillButtonStyle.ACCENT)
+                PillButton(stringResource(R.string.profiles_common_cancel), onClick = viewModel::backToForm)
+                PillButton(stringResource(R.string.profiles_common_save), onClick = { viewModel.finishGenres(skip = false) }, style = PillButtonStyle.ACCENT)
             }
         }
     }

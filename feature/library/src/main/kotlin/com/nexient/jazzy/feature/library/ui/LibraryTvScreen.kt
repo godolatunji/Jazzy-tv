@@ -15,6 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
@@ -24,6 +25,7 @@ import com.nexient.jazzy.feature.library.LibraryNav
 import com.nexient.jazzy.feature.library.LibraryTab
 import com.nexient.jazzy.feature.library.LibraryUiState
 import com.nexient.jazzy.feature.library.LibraryViewModel
+import com.nexient.jazzy.feature.library.R
 
 /**
  * 10-foot Library: tab chips beside the title (initial focus on the selected tab), then the grid
@@ -42,13 +44,13 @@ internal fun LibraryTvScreen(state: LibraryUiState, viewModel: LibraryViewModel,
             horizontalArrangement = Arrangement.spacedBy(12.dp),
         ) {
             Text(
-                "Library",
+                stringResource(R.string.library_title),
                 style = MaterialTheme.typography.headlineMedium,
                 modifier = Modifier.padding(end = 24.dp).semantics { heading() },
             )
             LibraryTab.entries.forEachIndexed { index, tab ->
                 JazzyChip(
-                    tab.label,
+                    stringResource(tab.label),
                     selected = index == nav.tab,
                     onClick = { nav.onTab(index) },
                     modifier = if (index == nav.tab) Modifier.focusRequester(tabFocus) else Modifier,

@@ -30,6 +30,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.nexient.jazzy.core.designsystem.component.FullScreenLoading
@@ -39,15 +40,20 @@ import com.nexient.jazzy.core.designsystem.theme.JazzyColors
 import com.nexient.jazzy.core.designsystem.theme.JazzyTheme
 import com.nexient.jazzy.feature.profiles.ProfilePickerUiState
 import com.nexient.jazzy.feature.profiles.ProfilePickerViewModel
+import com.nexient.jazzy.feature.profiles.R
 
-private const val REMEMBER_TITLE = "Remember my profile on this device"
-private const val REMEMBER_SUBTITLE = "Skip \"Who's watching?\" and open the last profile at launch."
+@Composable
+private fun ProfilePickerUiState.heading() = stringResource(
+    when {
+        editMode -> R.string.profiles_picker_heading_manage
+        profiles.isEmpty() -> R.string.profiles_picker_heading_empty
+        else -> R.string.profiles_picker_heading
+    },
+)
 
-private fun ProfilePickerUiState.heading() = when {
-    editMode -> "Manage profiles"
-    profiles.isEmpty() -> "Create a profile to get started"
-    else -> "Who's watching?"
-}
+@Composable
+private fun manageLabel(editMode: Boolean) =
+    stringResource(if (editMode) R.string.profiles_picker_done else R.string.profiles_picker_manage)
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
@@ -65,7 +71,7 @@ internal fun ProfilePickerPhoneScreen(state: ProfilePickerUiState, viewModel: Pr
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Row(Modifier.fillMaxWidth().padding(vertical = 12.dp), verticalAlignment = Alignment.CenterVertically) {
-            Text("JAZZY", style = MaterialTheme.typography.headlineSmall, color = JazzyColors.Accent, modifier = Modifier.weight(1f))
+            Text(stringResource(R.string.profiles_picker_brand), style = MaterialTheme.typography.headlineSmall, color = JazzyColors.Accent, modifier = Modifier.weight(1f))
         }
         Spacer(Modifier.height(40.dp))
         Text(state.heading(), style = MaterialTheme.typography.headlineMedium, textAlign = TextAlign.Center)
@@ -84,14 +90,14 @@ internal fun ProfilePickerPhoneScreen(state: ProfilePickerUiState, viewModel: Pr
         Spacer(Modifier.height(32.dp))
         if (state.profiles.isNotEmpty()) {
             PillButton(
-                text = if (state.editMode) "Done" else "Manage profiles",
+                text = manageLabel(state.editMode),
                 icon = if (state.editMode) Icons.Filled.Check else Icons.Filled.Edit,
                 onClick = viewModel::toggleManage,
             )
             Spacer(Modifier.height(24.dp))
             SettingsSwitchRow(
-                title = REMEMBER_TITLE,
-                subtitle = REMEMBER_SUBTITLE,
+                title = stringResource(R.string.profiles_picker_remember_title),
+                subtitle = stringResource(R.string.profiles_picker_remember_subtitle),
                 checked = state.rememberProfile,
                 onCheckedChange = viewModel::setRememberProfile,
                 modifier = Modifier.widthIn(max = 480.dp),
@@ -142,14 +148,14 @@ internal fun ProfilePickerTvScreen(state: ProfilePickerUiState, viewModel: Profi
             Spacer(Modifier.height(36.dp))
             if (state.profiles.isNotEmpty()) {
                 PillButton(
-                    text = if (state.editMode) "Done" else "Manage profiles",
+                    text = manageLabel(state.editMode),
                     icon = if (state.editMode) Icons.Filled.Check else Icons.Filled.Edit,
                     onClick = viewModel::toggleManage,
                 )
                 Spacer(Modifier.height(16.dp))
                 SettingsSwitchRow(
-                    title = REMEMBER_TITLE,
-                    subtitle = REMEMBER_SUBTITLE,
+                    title = stringResource(R.string.profiles_picker_remember_title),
+                    subtitle = stringResource(R.string.profiles_picker_remember_subtitle),
                     checked = state.rememberProfile,
                     onCheckedChange = viewModel::setRememberProfile,
                     modifier = Modifier.widthIn(max = 560.dp),

@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Shared -->
+    <string name="settings_common_cancel">Cancel</string>
+    <string name="settings_common_save">Save</string>
+    <string name="settings_common_back">Back</string>
+    <string name="settings_common_on">On</string>
+    <string name="settings_common_off">Off</string>
+    <string name="settings_common_none">None</string>
+    <string name="settings_common_this_profile">this profile</string>
+    <string name="settings_common_clear_cache">Clear cache</string>
+    <!-- Shown while a size is still being measured. -->
+    <string name="settings_common_size_pending">…</string>
+    <string name="settings_common_error">Something went wrong: %1$s</string>
+    <string name="settings_common_username">Username</string>
+    <string name="settings_common_password">Password</string>
+    <plurals name="settings_common_genres_selected">
+        <item quantity="one">%1$d selected</item>
+        <item quantity="other">%1$d selected</item>
+    </plurals>
+
+    <!-- Settings screen -->
+    <string name="settings_main_title">Settings</string>
+    <string name="settings_main_footnote">Settings are stored only on this device.</string>
+    <string name="settings_section_profiles">Profiles &amp; parental controls</string>
+    <string name="settings_section_playback">Playback</string>
+    <string name="settings_section_subtitles">Subtitles</string>
+    <string name="settings_section_sources">Sources</string>
+    <string name="settings_section_history">History &amp; recommendations</string>
+    <string name="settings_section_network">Network &amp; storage</string>
+    <string name="settings_section_local_data">Local data</string>
+    <string name="settings_section_privacy">Privacy</string>
+    <string name="settings_section_about">About</string>
+
+    <!-- Profiles & parental controls -->
+    <string name="settings_profiles_manage_title">Manage profiles</string>
+    <string name="settings_profiles_manage_subtitle">Add, edit or delete profiles, Kids profiles and maturity ratings.</string>
+    <string name="settings_profiles_parental_pin_title">Parental PIN</string>
+    <string name="settings_profiles_parental_pin_subtitle">Protects adding, editing and deleting profiles, and leaving a Kids profile.</string>
+    <string name="settings_profiles_change_parental_pin_title">Change parental PIN</string>
+    <string name="settings_profiles_change_parental_pin_subtitle">Protects profile management and leaving a Kids profile.</string>
+    <string name="settings_profiles_remove_parental_pin_title">Remove parental PIN</string>
+    <string name="settings_profiles_genres_title">Favourite genres</string>
+    <string name="settings_profiles_genres_subtitle">For %1$s. Seeds recommendations until there\'s enough watch history.</string>
+
+    <!-- PIN prompts -->
+    <string name="settings_pin_new_parental_title">Choose a 4-digit parental PIN</string>
+    <string name="settings_pin_verify_parental_title">Enter the current parental PIN</string>
+    <string name="settings_pin_profile_title">Enter the PIN for %1$s</string>
+    <string name="settings_pin_incorrect">Incorrect PIN. Try again.</string>
+    <string name="settings_pin_parental_incorrect">Incorrect parental PIN. Try again.</string>
+    <string name="settings_pin_parental_removed">Parental PIN removed</string>
+    <string name="settings_pin_parental_saved">Parental PIN saved</string>
+
+    <!-- Favourite genres dialog -->
+    <string name="settings_genres_dialog_message">Pick 3 or more genres %1$s likes. They seed recommendations until there\'s enough watch history.</string>
+    <string name="settings_genres_saved">Favourite genres saved</string>
+
+    <!-- Playback -->
+    <string name="settings_playback_autoplay_title">Autoplay next episode</string>
+    <string name="settings_playback_autoplay_subtitle">Default for new profiles. Each profile can change it in its own settings.</string>
+    <string name="settings_playback_sort_title">Default Sources sort</string>
+    <string name="settings_playback_sort_seeders">Seeders (most first)</string>
+    <string name="settings_playback_sort_size">Size</string>
+    <string name="settings_playback_sort_quality">Quality</string>
+    <string name="settings_playback_hide_cam_title">Hide CAM, TS and TC releases</string>
+    <string name="settings_playback_hide_cam_subtitle">Low-quality camera recordings are hidden from the Sources list by default.</string>
+    <string name="settings_playback_hide_unsupported_title">Hide releases that may not play</string>
+    <string name="settings_playback_hide_unsupported_subtitle">Codecs or HDR formats this device can\'t decode.</string>
+
+    <!-- Sources -->
+    <string name="settings_sources_sites_title">Torrent sites</string>
+    <string name="settings_sources_sites_subtitle">Enable or disable sites, mirror URLs, logins, health and Test.</string>
+    <string name="settings_sources_show_dead_title">Show dead links</string>
+    <string name="settings_sources_show_dead_subtitle">Include sources with no seeders in the Sources list by default.</string>
+
+    <!-- Subtitles (OpenSubtitles) -->
+    <string name="settings_subtitles_online_title">Online subtitles</string>
+    <string name="settings_subtitles_online_not_set_up">Not set up. Add OPENSUBTITLES_API_KEY to local.properties and rebuild to search OpenSubtitles from the player.</string>
+    <string name="settings_subtitles_login_title">Log in to OpenSubtitles</string>
+    <string name="settings_subtitles_login_subtitle">Optional. Logged-in accounts get a higher daily download limit.</string>
+    <string name="settings_subtitles_logout_title">Log out of OpenSubtitles</string>
+    <string name="settings_subtitles_logged_in_as">Logged in as %1$s.</string>
+    <string name="settings_subtitles_note">Subtitle language and style are set per profile (profile settings) and by the system caption settings.</string>
+    <string name="settings_subtitles_login_dialog_title">OpenSubtitles login</string>
+    <string name="settings_subtitles_login_dialog_note">Your password is sent to OpenSubtitles only; Jazzy stores just the session token, encrypted.</string>
+    <string name="settings_subtitles_login">Log in</string>
+    <string name="settings_subtitles_logged_in">Logged in to OpenSubtitles</string>
+    <string name="settings_subtitles_logged_out">Logged out of OpenSubtitles</string>
+
+    <!-- History & recommendations -->
+    <string name="settings_history_remove_watched_title">Remove from My List when watched</string>
+    <string name="settings_history_remove_watched_subtitle">Movies leave My List once watched; shows after their last aired episode.</string>
+    <string name="settings_history_edit_genres_title">Edit favourite genres</string>
+    <string name="settings_history_clear_title">Clear play history</string>
+    <string name="settings_history_clear_subtitle">Erases %1$s\'s history and resets genre affinity.</string>
+    <string name="settings_history_clear_subtitle_pin">Erases %1$s\'s history and resets genre affinity. Needs the profile PIN.</string>
+    <string name="settings_history_clear_search_title">Clear search history</string>
+    <string name="settings_history_reset_recs_title">Reset recommendations</string>
+    <string name="settings_history_reset_recs_subtitle">Clears genre affinity and saved recommendations. Watch history is kept.</string>
+    <string name="settings_history_clear_dialog_title">Clear play history?</string>
+    <string name="settings_history_clear_dialog_message">This erases every playback session for %1$s and resets their genre affinity, so recommendations start over. Resume points, My List and likes are kept.</string>
+    <string name="settings_history_clear_dialog_confirm">Clear history</string>
+    <string name="settings_history_clear_search_dialog_title">Clear search history?</string>
+    <string name="settings_history_clear_search_dialog_message">Recent searches for %1$s will be removed.</string>
+    <string name="settings_history_clear_search_dialog_confirm">Clear</string>
+    <string name="settings_history_reset_recs_dialog_title">Reset recommendations?</string>
+    <string name="settings_history_reset_recs_dialog_message">Genre affinity and saved recommendation rails for %1$s are cleared. They rebuild from history, likes and My List.</string>
+    <string name="settings_history_reset_recs_dialog_confirm">Reset</string>
+    <string name="settings_history_cleared">Play history cleared</string>
+    <string name="settings_history_search_cleared">Search history cleared</string>
+    <string name="settings_history_recs_reset">Recommendations reset</string>
+
+    <!-- Network & storage -->
+    <string name="settings_network_wifi_only_title">Stream on Wi-Fi only</string>
+    <string name="settings_network_wifi_only_subtitle">Never use mobile data for torrent streaming.</string>
+    <string name="settings_network_upload_title">Upload limit</string>
+    <string name="settings_network_upload_minimal">Minimal</string>
+    <string name="settings_network_upload_mbps">%1$d MB/s</string>
+    <string name="settings_network_upload_kbps">%1$d KB/s</string>
+    <string name="settings_network_upload_per_second">%1$s/s</string>
+    <string name="settings_network_stop_seeding_title">Stop seeding when playback stops</string>
+    <string name="settings_network_stop_seeding_subtitle">No torrent activity after you close the player.</string>
+    <string name="settings_network_connections_title">Max connections</string>
+    <string name="settings_network_cache_size_title">Torrent cache size</string>
+    <string name="settings_network_cache_size_subtitle">Using %1$s. Oldest data is removed first.</string>
+    <string name="settings_network_cache_gb">%1$d GB</string>
+    <string name="settings_network_clear_torrent_title">Clear torrent cache</string>
+    <string name="settings_network_clear_torrent_subtitle">Deletes downloaded pieces (%1$s).</string>
+    <string name="settings_network_clear_torrent_dialog_title">Clear torrent cache?</string>
+    <string name="settings_network_clear_torrent_dialog_message">Downloaded pieces are deleted. Anything playing now may need to buffer again.</string>
+    <string name="settings_network_torrent_cache_cleared">Torrent cache cleared</string>
+
+    <!-- Local data -->
+    <string name="settings_local_clear_tmdb_title">Clear TMDB cache</string>
+    <string name="settings_local_clear_tmdb_subtitle">Keeps history, My List, likes and resume points. Titles and artwork info reload from TMDB.</string>
+    <string name="settings_local_app_data">App data (profiles, lists, history)</string>
+    <string name="settings_local_tmdb_cache">TMDB &amp; search cache</string>
+    <string name="settings_local_clear_tmdb_dialog_title">Clear TMDB cache?</string>
+    <string name="settings_local_clear_tmdb_dialog_message">Cached titles, rails, searches, source results and recommendations are removed and reload when needed. History, My List, likes and resume points are kept.</string>
+    <string name="settings_local_tmdb_cache_cleared">TMDB cache cleared</string>
+
+    <!-- Privacy -->
+    <string name="settings_privacy_crash_title">Send crash reports</string>
+    <string name="settings_privacy_crash_subtitle">Off by default. Crash details only, no viewing data.</string>
+    <string name="settings_privacy_metrics_title">Share anonymous usage metrics</string>
+    <string name="settings_privacy_metrics_subtitle">Aggregate counts only. History, likes and recommendations never leave this device.</string>
+
+    <!-- About row -->
+    <string name="settings_about_row_title">About Jazzy</string>
+    <string name="settings_about_row_subtitle">Version, TMDB attribution, open-source licences, privacy and disclaimer.</string>
+
+    <!-- Torrent sites (SRC-2…SRC-6) -->
+    <string name="settings_sites_title">Torrent sites</string>
+    <string name="settings_sites_kids_title">Not available on Kids profiles</string>
+    <string name="settings_sites_kids_message">Switch to another profile to change torrent site settings.</string>
+    <string name="settings_sites_explainer">Torrent sites change domains often. If a site stops answering, try a mirror URL, but check a mirror before you rely on it: some clones return the same unrelated file for every search or redirect to ads. Sites that show a CAPTCHA or Cloudflare challenge are reported as \"Blocked by the site\" and skipped; Jazzy never tries to bypass them.</string>
+    <string name="settings_sites_empty">No sites available</string>
+    <string name="settings_sites_badge_not_responding">Not responding</string>
+    <string name="settings_sites_badge_public">Public</string>
+    <string name="settings_sites_badge_private">Private tracker</string>
+    <string name="settings_sites_badge_movies">Movies</string>
+    <string name="settings_sites_badge_tv">TV</string>
+    <string name="settings_sites_badge_mirror">Mirror</string>
+    <string name="settings_sites_enabled_title">Enabled</string>
+    <string name="settings_sites_enabled_needs_login">Needs a login or cookies to search.</string>
+    <string name="settings_sites_enabled_on_by_default">On by default.</string>
+    <string name="settings_sites_enabled_off_by_default">Off by default: blocked or offline when this version shipped.</string>
+    <string name="settings_sites_test">Test</string>
+    <string name="settings_sites_testing">Testing…</string>
+    <string name="settings_sites_mirror_and_login">Mirror &amp; login</string>
+    <string name="settings_sites_mirror_url">Mirror URL</string>
+    <string name="settings_sites_health_last_success">Last success: %1$s</string>
+    <string name="settings_sites_health_never">never</string>
+    <string name="settings_sites_health_avg_response">Average response: %1$d ms</string>
+    <string name="settings_sites_health_failures">Failures in a row: %1$d</string>
+    <string name="settings_sites_health_last_error">Last error: %1$s</string>
+    <string name="settings_sites_test_running">Running a test search…</string>
+    <string name="settings_sites_test_result">%1$s · %2$d ms</string>
+    <plurals name="settings_sites_test_working">
+        <item quantity="one">Working: %1$d results</item>
+        <item quantity="other">Working: %1$d results</item>
+    </plurals>
+    <string name="settings_sites_test_searching">Still searching</string>
+    <string name="settings_sites_test_unsupported">This site doesn\'t support the test search</string>
+    <string name="settings_sites_test_blocked">Blocked by the site (CAPTCHA or Cloudflare challenge). Jazzy can\'t bypass this; try a mirror.</string>
+    <string name="settings_sites_test_timeout">Timed out</string>
+    <string name="settings_sites_test_unreachable">Couldn\'t reach the site. The domain may have moved; try a mirror.</string>
+    <string name="settings_sites_test_http_error">The site returned an error</string>
+    <string name="settings_sites_test_parse_error">Unexpected page layout. The site may have changed.</string>
+    <string name="settings_sites_test_login_required">Login required. Add credentials or cookies.</string>
+    <string name="settings_sites_test_failed">Failed</string>
+    <!-- A failure reason followed by the site's own error message. -->
+    <string name="settings_sites_test_failure_detail">%1$s (%2$s)</string>
+    <string name="settings_sites_url_hint">Leave blank to use %1$s</string>
+    <string name="settings_sites_mirror_warning">Check a mirror before using it: some clones return the same unrelated magnet for every result, have no magnets, or redirect to ads.</string>
+    <string name="settings_sites_cookies">Cookies</string>
+    <string name="settings_sites_cookies_placeholder" translatable="false">name=value; name2=value2</string>
+    <string name="settings_sites_secrets_note">Logins and cookies are encrypted with a key kept in this device\'s Android Keystore.</string>
+    <string name="settings_sites_use_default_url">Use default URL</string>
+    <string name="settings_sites_invalid_url">Enter a full URL starting with https:// (or http://)</string>
+    <string name="settings_sites_saved">%1$s settings saved</string>
+    <string name="settings_sites_saved_fallback_name">Site</string>
+
+    <!-- About -->
+    <string name="settings_about_title">About</string>
+    <string name="settings_about_brand" translatable="false">JAZZY</string>
+    <string name="settings_about_version">Version %1$s</string>
+    <string name="settings_about_version_unknown">Unknown</string>
+    <string name="settings_about_tmdb_wordmark" translatable="false">TMDB</string>
+    <string name="settings_about_tmdb_attribution">This product uses the TMDB API but is not endorsed or certified by TMDB.</string>
+    <string name="settings_about_tmdb_detail">Film and TV information and artwork come from The Movie Database (themoviedb.org).</string>
+    <string name="settings_about_disclaimer_title">Disclaimer</string>
+    <string name="settings_about_disclaimer">Jazzy doesn\'t host, upload or store any films or TV shows. It searches third-party torrent sites and streams the file you choose directly from other people\'s computers (peer to peer), which also shares pieces of that file with them while you watch. You are responsible for what you search for, stream and share, and for following the copyright law where you live. Only watch content you have the right to watch.</string>
+    <string name="settings_about_privacy_title">Privacy</string>
+    <string name="settings_about_privacy">Jazzy has no account and no servers. Profiles, play history, likes, My List, search history and recommendations are stored only in a local database on this device and never leave it. TMDB receives the look-ups needed to show title information, torrent sites receive the searches Jazzy runs for you, and other peers in a torrent swarm can see your IP address. Crash reports and usage metrics stay off unless you turn them on in Settings → Privacy.</string>
+    <string name="settings_about_licences_header">Open-source licences</string>
+    <!-- Open-source licence notes; the library and licence names stay in code. -->
+    <string name="settings_about_licence_libtorrent">Copyright Arvid Norberg. BitTorrent engine.</string>
+    <string name="settings_about_licence_libtorrent4j">Java bindings for libtorrent.</string>
+    <string name="settings_about_licence_torrent_search_api">Copyright Jimmy Laurent. Torrent-site search engine, ported to Kotlin through the TorrentSearch project.</string>
+    <string name="settings_about_licence_androidx_media3">Copyright The Android Open Source Project.</string>
+    <string name="settings_about_licence_ffmpeg">Copyright the FFmpeg developers. Decodes DTS and Dolby TrueHD audio (plus AC-3/E-AC-3, AAC, MP3, FLAC, ALAC, Opus and Vorbis) in software. Built in an LGPL-only configuration (no GPL or non-free parts) as separate shared libraries linked dynamically, so they can be replaced. Source: git.ffmpeg.org/ffmpeg.git, tag n7.1.5; the build script is in core/ffmpeg/build-ffmpeg of Jazzy\'s source. Licence text: gnu.org/licenses/old-licenses/lgpl-2.1.html.</string>
+    <string name="settings_about_licence_okhttp">Copyright Square, Inc.</string>
+    <string name="settings_about_licence_retrofit">Copyright Square, Inc.</string>
+    <string name="settings_about_licence_jsoup">Copyright Jonathan Hedley.</string>
+    <string name="settings_about_licence_nanohttpd">Copyright Paul S. Hawke, Jarno Elonen and contributors.</string>
+    <string name="settings_about_licence_coil">Copyright Coil Contributors.</string>
+    <string name="settings_about_licence_jetpack_compose">Copyright The Android Open Source Project.</string>
+    <string name="settings_about_licence_dagger">Copyright The Dagger Authors.</string>
+    <string name="settings_about_licence_kotlin">Copyright JetBrains s.r.o. and contributors.</string>
+</resources>

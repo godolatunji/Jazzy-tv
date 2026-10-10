@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.ui.res.stringResource
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.nexient.jazzy.core.designsystem.component.PinDialog
@@ -43,15 +44,15 @@ fun ProfilePickerRoute(
     state.prompt?.let { prompt ->
         PinDialog(
             title = when (prompt) {
-                is PinPrompt.ProfilePin -> "Enter the PIN for ${prompt.profile.name}"
+                is PinPrompt.ProfilePin -> stringResource(R.string.profiles_picker_pin_profile, prompt.profile.name)
                 is PinPrompt.Parental -> when (prompt.action) {
-                    is GuardedAction.LeaveKids -> "Enter the parental PIN to leave this Kids profile"
-                    else -> "Enter the parental PIN"
+                    is GuardedAction.LeaveKids -> stringResource(R.string.profiles_picker_pin_leave_kids)
+                    else -> stringResource(R.string.profiles_picker_pin_parental)
                 }
             },
             onDismiss = viewModel::dismissPrompt,
             onPinEntered = viewModel::submitPin,
-            error = prompt.error,
+            error = prompt.error?.let { stringResource(it) },
         )
     }
 }

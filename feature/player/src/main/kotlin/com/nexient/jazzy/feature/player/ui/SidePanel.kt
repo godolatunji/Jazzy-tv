@@ -28,6 +28,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.media3.common.C
 import androidx.media3.common.Player
@@ -40,6 +41,7 @@ import com.nexient.jazzy.core.player.TrackHelper
 import com.nexient.jazzy.feature.player.PlayerPanel
 import com.nexient.jazzy.feature.player.PlayerUiState
 import com.nexient.jazzy.feature.player.PlayerViewModel
+import com.nexient.jazzy.feature.player.R
 
 /** Right-hand panel: Sources (PL-4), Episodes (PL-5) or Tracks (PL-8). Playback continues behind it. */
 @Composable
@@ -54,19 +56,20 @@ internal fun SidePanel(state: PlayerUiState, viewModel: PlayerViewModel, modifie
         item {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 if (state.panel == PlayerPanel.EPISODES && state.episodes.chosen != null) {
-                    IconButton(onClick = viewModel::backToEpisodeList) { Icon(Icons.AutoMirrored.Filled.ArrowBack, "Back to episodes") }
+                    IconButton(onClick = viewModel::backToEpisodeList) { Icon(Icons.AutoMirrored.Filled.ArrowBack, stringResource(R.string.player_panel_back_to_episodes)) }
                 }
                 Text(
                     when (state.panel) {
-                        PlayerPanel.SOURCES -> "Sources"
-                        PlayerPanel.EPISODES -> state.episodes.chosen?.let { "S${it.seasonNumber}:E${it.episodeNumber} · ${it.name}" } ?: "Episodes"
-                        PlayerPanel.TRACKS -> "Audio & subtitles"
+                        PlayerPanel.SOURCES -> stringResource(R.string.player_panel_sources)
+                        PlayerPanel.EPISODES -> state.episodes.chosen?.let { stringResource(R.string.player_panel_episode_title, it.seasonNumber, it.episodeNumber, it.name) }
+                            ?: stringResource(R.string.player_panel_episodes)
+                        PlayerPanel.TRACKS -> stringResource(R.string.player_panel_tracks)
                         PlayerPanel.NONE -> ""
                     },
                     style = MaterialTheme.typography.titleLarge,
                     modifier = Modifier.weight(1f),
                 )
-                IconButton(onClick = viewModel::closePanel) { Icon(Icons.Filled.Close, "Close panel") }
+                IconButton(onClick = viewModel::closePanel) { Icon(Icons.Filled.Close, stringResource(R.string.player_panel_close)) }
             }
         }
         when (state.panel) {
@@ -88,7 +91,7 @@ internal fun SidePanel(state: PlayerUiState, viewModel: PlayerViewModel, modifie
                     item {
                         LazyRow(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                             items(ep.seasonNumbers) { n ->
-                                FilterChip(selected = n == ep.season, onClick = { viewModel.selectPanelSeason(n) }, label = { Text(if (n == 0) "Specials" else "Season $n") })
+                                FilterChip(selected = n == ep.season, onClick = { viewModel.selectPanelSeason(n) }, label = { Text(if (n == 0) stringResource(R.string.player_panel_specials) else stringResource(R.string.player_panel_season, n)) })
                             }
                         }
                     }
@@ -105,8 +108,8 @@ internal fun SidePanel(state: PlayerUiState, viewModel: PlayerViewModel, modifie
                 }
             }
             PlayerPanel.TRACKS -> {
-                item { TrackSection("Audio", viewModel.player, C.TRACK_TYPE_AUDIO) }
-                item { TrackSection("Subtitles", viewModel.player, C.TRACK_TYPE_TEXT) }
+                item { TrackSection(stringResource(R.string.player_tracks_audio), viewModel.player, C.TRACK_TYPE_AUDIO) }
+                item { TrackSection(stringResource(R.string.player_tracks_subtitles), viewModel.player, C.TRACK_TYPE_TEXT) }
                 item { OnlineSubtitlesSection(state, viewModel) }
             }
             PlayerPanel.NONE -> Unit
@@ -121,11 +124,11 @@ private fun TrackSection(title: String, player: Player, type: Int) {
     androidx.compose.foundation.layout.Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
         Text(title, style = MaterialTheme.typography.titleMedium, color = JazzyColors.TextSecondary)
         if (options.isEmpty() || (type == C.TRACK_TYPE_TEXT && options.size == 1)) {
-            Text(if (type == C.TRACK_TYPE_TEXT) "No subtitles in this file" else "No alternative audio", style = MaterialTheme.typography.bodySmall, color = JazzyColors.TextTertiary)
+            Text(stringResource(if (type == C.TRACK_TYPE_TEXT) R.string.player_tracks_no_subtitles else R.string.player_tracks_no_audio), style = MaterialTheme.typography.bodySmall, color = JazzyColors.TextTertiary)
         }
         options.forEach { o ->
             Text(
-                (if (o.selected) "✓ " else "   ") + o.label,
+                stringResource(if (o.selected) R.string.player_tracks_selected else R.string.player_tracks_unselected, o.label),
                 style = MaterialTheme.typography.bodyLarge,
                 modifier = Modifier.fillMaxWidth().jazzyClickable(focusScale = 1.02f) { TrackHelper.select(player, type, o); version++ }.padding(10.dp),
             )

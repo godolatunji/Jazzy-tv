@@ -13,6 +13,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
@@ -24,12 +25,14 @@ import com.nexient.jazzy.core.designsystem.component.Rail
 import com.nexient.jazzy.core.designsystem.component.RailError
 import com.nexient.jazzy.core.designsystem.component.RailSkeleton
 import com.nexient.jazzy.core.designsystem.component.TopTenCard
+import com.nexient.jazzy.core.designsystem.text.asString
 import com.nexient.jazzy.core.model.ContinueWatchingItem
 import com.nexient.jazzy.core.model.TitleSummary
 import com.nexient.jazzy.feature.home.HomeActions
 import com.nexient.jazzy.feature.home.HomeRail
 import com.nexient.jazzy.feature.home.HomeUiState
 import com.nexient.jazzy.feature.home.HomeViewModel
+import com.nexient.jazzy.feature.home.R
 import com.nexient.jazzy.feature.home.snapshot
 
 /** Renders one Home rail; shared by phone and TV layouts. */
@@ -42,17 +45,17 @@ internal fun HomeRailContent(
     onFocusTitle: ((TitleSummary) -> Unit)? = null,
 ) {
     when (rail) {
-        is HomeRail.ContinueWatching -> Rail(rail.title) {
+        is HomeRail.ContinueWatching -> Rail(rail.title.asString()) {
             itemsIndexed(rail.items, key = { _, it -> "${it.snapshot.tmdbId}:${it.snapshot.mediaType}" }) { _, item ->
                 ContinueWatchingCard(item, viewModel, actions)
             }
         }
-        is HomeRail.Fixed -> Rail(rail.title) {
+        is HomeRail.Fixed -> Rail(rail.title.asString()) {
             itemsIndexed(rail.items, key = { _, it -> "${it.tmdbId}:${it.mediaType.apiValue}" }) { _, item ->
                 TitlePoster(item, state, viewModel, actions, onFocusTitle)
             }
         }
-        is HomeRail.Library -> Rail(rail.title) {
+        is HomeRail.Library -> Rail(rail.title.asString()) {
             itemsIndexed(rail.items, key = { _, it -> "${it.snapshot.tmdbId}:${it.snapshot.mediaType.apiValue}" }) { _, item ->
                 val s = item.snapshot
                 PosterCard(
@@ -80,9 +83,9 @@ private fun PagedRail(
     val refresh = items.loadState.refresh
     when {
         items.itemCount == 0 && refresh is LoadState.Loading -> RailSkeleton()
-        items.itemCount == 0 && refresh is LoadState.Error -> RailError(rail.title, onRetry = items::retry)
+        items.itemCount == 0 && refresh is LoadState.Error -> RailError(rail.title.asString(), onRetry = items::retry)
         items.itemCount == 0 -> Unit // empty rails are hidden (HM-1)
-        else -> Rail(rail.title) {
+        else -> Rail(rail.title.asString()) {
             items(items.itemCount, key = items.itemKey { "${it.tmdbId}:${it.mediaType.apiValue}" }) { index ->
                 val item = items[index] ?: return@items
                 if (rail.style == RailStyle.TOP_TEN) {
@@ -117,11 +120,11 @@ private fun TitlePoster(
         )
         DropdownMenu(expanded = menu, onDismissRequest = { menu = false }) {
             DropdownMenuItem(
-                text = { Text(if (item.ref in state.myList) "Remove from My List" else "Add to My List") },
+                text = { Text(stringResource(if (item.ref in state.myList) R.string.home_menu_remove_from_my_list else R.string.home_menu_add_to_my_list)) },
                 onClick = { menu = false; viewModel.toggleMyList(item.snapshot()) },
             )
             DropdownMenuItem(
-                text = { Text(if (item.ref in state.liked) "Unlike" else "Like") },
+                text = { Text(stringResource(if (item.ref in state.liked) R.string.home_menu_unlike else R.string.home_menu_like)) },
                 onClick = { menu = false; viewModel.toggleLike(item.snapshot()) },
             )
         }
@@ -142,14 +145,14 @@ private fun ContinueWatchingCard(item: ContinueWatchingItem, viewModel: HomeView
             onMenu = { menu = true },
         )
         DropdownMenu(expanded = menu, onDismissRequest = { menu = false }) {
-            DropdownMenuItem(text = { Text("Resume") }, onClick = {
+            DropdownMenuItem(text = { Text(stringResource(R.string.home_menu_resume)) }, onClick = {
                 menu = false
                 actions.openTitle(item.snapshot.ref, p.season.takeIf { p.isEpisode }, p.episode.takeIf { p.isEpisode }, true)
             })
-            DropdownMenuItem(text = { Text("Episodes & info") }, onClick = { menu = false; actions.openTitle(item.snapshot.ref, null, null, false) })
-            DropdownMenuItem(text = { Text("Like") }, onClick = { menu = false; viewModel.toggleLike(item.snapshot) })
-            DropdownMenuItem(text = { Text("Mark as watched") }, onClick = { menu = false; viewModel.markWatched(item) })
-            DropdownMenuItem(text = { Text("Remove from row") }, onClick = { menu = false; viewModel.removeFromContinueWatching(item.snapshot.ref) })
+            DropdownMenuItem(text = { Text(stringResource(R.string.home_menu_episodes_info)) }, onClick = { menu = false; actions.openTitle(item.snapshot.ref, null, null, false) })
+            DropdownMenuItem(text = { Text(stringResource(R.string.home_menu_like)) }, onClick = { menu = false; viewModel.toggleLike(item.snapshot) })
+            DropdownMenuItem(text = { Text(stringResource(R.string.home_menu_mark_watched)) }, onClick = { menu = false; viewModel.markWatched(item) })
+            DropdownMenuItem(text = { Text(stringResource(R.string.home_menu_remove_from_row)) }, onClick = { menu = false; viewModel.removeFromContinueWatching(item.snapshot.ref) })
         }
     }
     Spacer(Modifier.height(0.dp))

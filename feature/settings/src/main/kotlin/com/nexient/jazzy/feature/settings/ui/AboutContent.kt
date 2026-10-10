@@ -36,6 +36,7 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.nexient.jazzy.core.designsystem.component.Badge
@@ -44,6 +45,7 @@ import com.nexient.jazzy.core.designsystem.theme.JazzyColors
 import com.nexient.jazzy.core.designsystem.theme.JazzyTheme
 import com.nexient.jazzy.feature.settings.AboutText
 import com.nexient.jazzy.feature.settings.Licence
+import com.nexient.jazzy.feature.settings.R
 
 private val BlockShape = RoundedCornerShape(12.dp)
 
@@ -51,8 +53,8 @@ private val BlockShape = RoundedCornerShape(12.dp)
 internal fun AboutPhoneScreen(version: String, onBack: () -> Unit, modifier: Modifier = Modifier) {
     Column(modifier.windowInsetsPadding(WindowInsets.statusBars)) {
         Row(Modifier.fillMaxWidth().padding(4.dp), verticalAlignment = Alignment.CenterVertically) {
-            IconButton(onClick = onBack) { Icon(Icons.AutoMirrored.Filled.ArrowBack, "Back") }
-            Text("About", style = MaterialTheme.typography.titleLarge)
+            IconButton(onClick = onBack) { Icon(Icons.AutoMirrored.Filled.ArrowBack, stringResource(R.string.settings_common_back)) }
+            Text(stringResource(R.string.settings_about_title), style = MaterialTheme.typography.titleLarge)
         }
         LazyColumn(
             contentPadding = PaddingValues(start = JazzyTheme.spacing.gutter, end = JazzyTheme.spacing.gutter, bottom = 32.dp),
@@ -88,30 +90,30 @@ internal fun AboutTvScreen(version: String, modifier: Modifier = Modifier) {
 private fun LazyListScope.aboutItems(version: String, focusFirst: FocusRequester?) {
     item(key = "app") {
         Block(focusRequester = focusFirst) {
-            Text("JAZZY", style = MaterialTheme.typography.displaySmall, color = JazzyColors.Accent)
-            Text("Version $version", style = MaterialTheme.typography.bodyMedium, color = JazzyColors.TextSecondary)
+            Text(stringResource(R.string.settings_about_brand), style = MaterialTheme.typography.displaySmall, color = JazzyColors.Accent)
+            Text(stringResource(R.string.settings_about_version, version), style = MaterialTheme.typography.bodyMedium, color = JazzyColors.TextSecondary)
         }
     }
     item(key = "tmdb") {
         Block {
             TmdbWordmark()
-            Text(AboutText.TMDB_ATTRIBUTION, style = MaterialTheme.typography.bodyLarge)
-            Text(AboutText.TMDB_DETAIL, style = MaterialTheme.typography.bodySmall, color = JazzyColors.TextSecondary)
+            Text(stringResource(R.string.settings_about_tmdb_attribution), style = MaterialTheme.typography.bodyLarge)
+            Text(stringResource(R.string.settings_about_tmdb_detail), style = MaterialTheme.typography.bodySmall, color = JazzyColors.TextSecondary)
         }
     }
     item(key = "disclaimer") {
         Block {
-            Text("Disclaimer", style = MaterialTheme.typography.titleMedium)
-            Text(AboutText.DISCLAIMER, style = MaterialTheme.typography.bodyMedium, color = JazzyColors.TextSecondary)
+            Text(stringResource(R.string.settings_about_disclaimer_title), style = MaterialTheme.typography.titleMedium)
+            Text(stringResource(R.string.settings_about_disclaimer), style = MaterialTheme.typography.bodyMedium, color = JazzyColors.TextSecondary)
         }
     }
     item(key = "privacy") {
         Block {
-            Text("Privacy", style = MaterialTheme.typography.titleMedium)
-            Text(AboutText.PRIVACY, style = MaterialTheme.typography.bodyMedium, color = JazzyColors.TextSecondary)
+            Text(stringResource(R.string.settings_about_privacy_title), style = MaterialTheme.typography.titleMedium)
+            Text(stringResource(R.string.settings_about_privacy), style = MaterialTheme.typography.bodyMedium, color = JazzyColors.TextSecondary)
         }
     }
-    item(key = "licences-header") { SettingsSectionHeader("Open-source licences") }
+    item(key = "licences-header") { SettingsSectionHeader(stringResource(R.string.settings_about_licences_header)) }
     items(AboutText.LICENCES, key = { "licence:" + it.name }) { LicenceBlock(it) }
 }
 
@@ -122,7 +124,7 @@ private fun LicenceBlock(licence: Licence) {
             Text(licence.name, style = MaterialTheme.typography.titleSmall, modifier = Modifier.weight(1f, fill = false))
             Badge(licence.licence, outlined = true)
         }
-        Text(licence.note, style = MaterialTheme.typography.bodySmall, color = JazzyColors.TextSecondary)
+        Text(stringResource(licence.note), style = MaterialTheme.typography.bodySmall, color = JazzyColors.TextSecondary)
     }
 }
 
@@ -133,7 +135,7 @@ private fun TmdbWordmark() {
         Modifier.background(Brush.horizontalGradient(listOf(Color(0xFF90CEA1), Color(0xFF01B4E4))), RoundedCornerShape(6.dp))
             .padding(horizontal = 12.dp, vertical = 4.dp),
     ) {
-        Text("TMDB", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Black, color = Color(0xFF0D253F))
+        Text(stringResource(R.string.settings_about_tmdb_wordmark), style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Black, color = Color(0xFF0D253F))
     }
 }
 

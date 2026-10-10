@@ -1,5 +1,6 @@
 package com.nexient.jazzy.feature.profiles
 
+import com.nexient.jazzy.core.designsystem.text.labelRes
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -19,6 +20,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.nexient.jazzy.core.designsystem.component.ChoiceDialog
@@ -26,6 +28,7 @@ import com.nexient.jazzy.core.designsystem.component.ConfirmDialog
 import com.nexient.jazzy.core.designsystem.component.FullScreenLoading
 import com.nexient.jazzy.core.designsystem.component.PinDialog
 import com.nexient.jazzy.core.designsystem.component.PinSetupDialog
+import com.nexient.jazzy.core.designsystem.text.asString
 import com.nexient.jazzy.core.designsystem.theme.JazzyColors
 import com.nexient.jazzy.core.designsystem.theme.JazzyTheme
 import com.nexient.jazzy.feature.profiles.ui.AvatarPickerDialog
@@ -58,8 +61,9 @@ fun ProfileEditRoute(
     LaunchedEffect(viewModel) {
         viewModel.events.collect { if (it == EditEvent.Done) done() }
     }
-    LaunchedEffect(state.message) {
-        state.message?.let {
+    val message = state.message?.asString()
+    LaunchedEffect(message) {
+        message?.let {
             snackbar.showSnackbar(it)
             viewModel.clearMessage()
         }
@@ -76,41 +80,47 @@ fun ProfileEditRoute(
         SnackbarHost(snackbar, Modifier.align(Alignment.BottomCenter).windowInsetsPadding(WindowInsets.navigationBars))
     }
 
+    val off = stringResource(R.string.profiles_common_off)
     when (dialog) {
         EditDialog.AVATAR -> AvatarPickerDialog(
             selected = state.avatarId,
             onSelect = { viewModel.setAvatar(it); dialog = null },
             onDismiss = { dialog = null },
         )
-        EditDialog.MATURITY -> ChoiceDialog(
-            title = "Maturity rating",
+        EditDialog.MATURITY -> {
+            val maturityLabels = state.maturityOptions.associateWith { stringResource(it.labelRes) }
+            ChoiceDialog(
+            title = stringResource(R.string.profiles_edit_maturity_title),
             options = state.maturityOptions,
             selected = state.maturity,
-            label = { it.label },
+            label = { maturityLabels.getValue(it) },
             onSelect = { viewModel.setMaturity(it); dialog = null },
             onDismiss = { dialog = null },
         )
+        }
         EditDialog.LANGUAGE -> ChoiceDialog(
-            title = "Content language",
+            title = stringResource(R.string.profiles_edit_content_language_title),
             options = ContentLanguages.withCurrent(state.language),
             selected = state.language,
-            label = ::languageLabel,
+            label = { languageLabel(it, off) },
             onSelect = { viewModel.setLanguage(it); dialog = null },
             onDismiss = { dialog = null },
         )
         EditDialog.SUBTITLES -> ChoiceDialog(
-            title = "Subtitle language",
+            title = stringResource(R.string.profiles_edit_subtitle_language_title),
             options = SubtitleLanguages.withCurrent(state.subtitleLanguage),
             selected = state.subtitleLanguage,
-            label = ::languageLabel,
+            label = { languageLabel(it, off) },
             onSelect = { viewModel.setSubtitleLanguage(it); dialog = null },
             onDismiss = { dialog = null },
         )
         EditDialog.DELETE -> ConfirmDialog(
-            title = "Delete ${state.trimmedName.ifEmpty { "this profile" }}?",
-            message = "This permanently erases this profile's My List, likes, play history, resume points, " +
-                "search history and recommendations from this device.",
-            confirmLabel = "Delete profile",
+            title = stringResource(
+                R.string.profiles_edit_delete_dialog_title,
+                state.trimmedName.ifEmpty { stringResource(R.string.profiles_edit_delete_dialog_this_profile) },
+            ),
+            message = stringResource(R.string.profiles_edit_delete_dialog_message),
+            confirmLabel = stringResource(R.string.profiles_edit_delete_title),
             onConfirm = { dialog = null; viewModel.delete() },
             onDismiss = { dialog = null },
         )
@@ -119,13 +129,13 @@ fun ProfileEditRoute(
 
     when (val flow = state.pinFlow) {
         is PinFlow.VerifyCurrent -> PinDialog(
-            title = "Enter the current PIN",
+            title = stringResource(R.string.profiles_edit_pin_verify_title),
             onDismiss = viewModel::dismissPinFlow,
             onPinEntered = viewModel::verifyCurrentPin,
-            error = flow.error,
+            error = flow.error?.let { stringResource(it) },
         )
         PinFlow.SetNew -> PinSetupDialog(
-            title = "Choose a 4-digit PIN",
+            title = stringResource(R.string.profiles_edit_pin_new_title),
             onDismiss = viewModel::dismissPinFlow,
             onPinSet = viewModel::setNewPin,
         )

@@ -11,6 +11,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
+import com.nexient.jazzy.feature.search.R
 
 /**
  * Voice input for Search (SR-2): launches the system recognizer (`ACTION_RECOGNIZE_SPEECH`) and
@@ -21,6 +23,8 @@ import androidx.compose.ui.platform.LocalContext
 internal fun rememberVoiceSearch(onResult: (String) -> Unit): (() -> Unit)? {
     val context = LocalContext.current
     val callback = rememberUpdatedState(onResult)
+    val prompt = stringResource(R.string.search_voice_prompt)
+    val unavailable = stringResource(R.string.search_voice_unavailable)
     val launcher = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode != Activity.RESULT_OK) return@rememberLauncherForActivityResult
         result.data?.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)?.firstOrNull()?.takeIf { it.isNotBlank() }?.let {
@@ -28,20 +32,20 @@ internal fun rememberVoiceSearch(onResult: (String) -> Unit): (() -> Unit)? {
         }
     }
     val available = remember(context) {
-        runCatching { context.packageManager.resolveActivity(speechIntent(), 0) != null }.getOrDefault(false)
+        runCatching { context.packageManager.resolveActivity(speechIntent(prompt), 0) != null }.getOrDefault(false)
     }
     if (!available) return null
     return {
         try {
-            launcher.launch(speechIntent())
+            launcher.launch(speechIntent(prompt))
         } catch (_: ActivityNotFoundException) {
-            Toast.makeText(context, "Voice search isn't available on this device", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, unavailable, Toast.LENGTH_SHORT).show()
         }
     }
 }
 
-private fun speechIntent() = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH).apply {
+private fun speechIntent(prompt: String) = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH).apply {
     putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_WEB_SEARCH)
-    putExtra(RecognizerIntent.EXTRA_PROMPT, "Search movies, shows and people")
+    putExtra(RecognizerIntent.EXTRA_PROMPT, prompt)
     putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 1)
 }

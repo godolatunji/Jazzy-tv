@@ -1,5 +1,6 @@
 package com.nexient.jazzy.feature.discover
 
+import androidx.annotation.StringRes
 import com.nexient.jazzy.core.data.catalog.RailDefinition
 import com.nexient.jazzy.core.data.catalog.RailSource
 import com.nexient.jazzy.core.model.MediaType
@@ -11,12 +12,12 @@ const val DEFAULT_MIN_VOTES = 100
 /** TMDB caps discover at 500 pages; 50 × 20 = 1,000 results is plenty for a grid. */
 const val DISCOVER_MAX_PAGES = 50
 
-enum class DiscoverSort(val label: String) {
-    POPULARITY("Popularity"),
-    RATING("Rating"),
-    RELEASE_DATE("Release date"),
-    REVENUE("Revenue"),
-    TITLE("Title");
+enum class DiscoverSort(@StringRes val labelRes: Int) {
+    POPULARITY(R.string.discover_sort_popularity),
+    RATING(R.string.discover_sort_rating),
+    RELEASE_DATE(R.string.discover_sort_release_date),
+    REVENUE(R.string.discover_sort_revenue),
+    TITLE(R.string.discover_sort_title);
 
     /** Revenue only exists for movies on TMDB. */
     fun supports(type: MediaType): Boolean = this != REVENUE || type == MediaType.MOVIE
@@ -31,35 +32,35 @@ enum class DiscoverSort(val label: String) {
 }
 
 /** A runtime preset in minutes; null bounds are open. */
-data class RuntimeRange(val label: String, val min: Int?, val max: Int?)
+data class RuntimeRange(@StringRes val labelRes: Int, val min: Int?, val max: Int?)
 
 fun runtimePresets(type: MediaType): List<RuntimeRange> = when (type) {
     MediaType.MOVIE -> listOf(
-        RuntimeRange("Under 90 min", null, 89),
-        RuntimeRange("90 min – 2 h", 90, 120),
-        RuntimeRange("2 – 2½ h", 120, 150),
-        RuntimeRange("Over 2½ h", 150, null),
+        RuntimeRange(R.string.discover_runtime_movie_under_90, null, 89),
+        RuntimeRange(R.string.discover_runtime_movie_90_120, 90, 120),
+        RuntimeRange(R.string.discover_runtime_movie_120_150, 120, 150),
+        RuntimeRange(R.string.discover_runtime_movie_over_150, 150, null),
     )
     MediaType.TV -> listOf(
-        RuntimeRange("Under 30 min", null, 29),
-        RuntimeRange("30 – 60 min", 30, 60),
-        RuntimeRange("Over 1 h", 60, null),
+        RuntimeRange(R.string.discover_runtime_tv_under_30, null, 29),
+        RuntimeRange(R.string.discover_runtime_tv_30_60, 30, 60),
+        RuntimeRange(R.string.discover_runtime_tv_over_60, 60, null),
     )
 }
 
-/** Original-language shortlist (ISO 639-1 → label). */
+/** Original-language shortlist (ISO 639-1 → label resource). */
 val DiscoverLanguages = listOf(
-    "en" to "English",
-    "es" to "Spanish",
-    "fr" to "French",
-    "de" to "German",
-    "it" to "Italian",
-    "ja" to "Japanese",
-    "ko" to "Korean",
-    "zh" to "Chinese",
-    "hi" to "Hindi",
-    "pt" to "Portuguese",
-    "tr" to "Turkish",
+    "en" to R.string.discover_language_en,
+    "es" to R.string.discover_language_es,
+    "fr" to R.string.discover_language_fr,
+    "de" to R.string.discover_language_de,
+    "it" to R.string.discover_language_it,
+    "ja" to R.string.discover_language_ja,
+    "ko" to R.string.discover_language_ko,
+    "zh" to R.string.discover_language_zh,
+    "hi" to R.string.discover_language_hi,
+    "pt" to R.string.discover_language_pt,
+    "tr" to R.string.discover_language_tr,
 )
 
 val RatingOptions = listOf(5, 6, 7, 8)

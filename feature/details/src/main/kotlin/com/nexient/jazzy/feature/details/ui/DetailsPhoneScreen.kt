@@ -37,6 +37,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.nexient.jazzy.core.designsystem.component.FullScreenLoading
 import com.nexient.jazzy.core.designsystem.component.HeroBackdrop
@@ -50,6 +51,7 @@ import com.nexient.jazzy.core.model.TitleDetails
 import com.nexient.jazzy.feature.details.DetailsActions
 import com.nexient.jazzy.feature.details.DetailsUiState
 import com.nexient.jazzy.feature.details.DetailsViewModel
+import com.nexient.jazzy.feature.details.R
 
 /**
  * Phone Details. Portrait: header, then the Sources list (movie) or season + episodes with an
@@ -62,11 +64,14 @@ internal fun DetailsPhoneScreen(state: DetailsUiState, viewModel: DetailsViewMod
         val details = state.details.data
         when {
             details == null && state.details.isErrorWithoutData -> MessageState(
-                "Couldn't load this title", state.details.error?.message, Modifier.padding(padding),
-                actionLabel = "Retry", onAction = viewModel::retryDetails,
+                stringResource(R.string.details_error_load_title), state.details.error?.message, Modifier.padding(padding),
+                actionLabel = stringResource(R.string.details_common_retry), onAction = viewModel::retryDetails,
             )
             details == null -> FullScreenLoading()
-            state.blockedByMaturity -> MessageState("Not available on this profile", "This title is above the profile's maturity setting.", Modifier.padding(padding), actionLabel = "Back", onAction = actions.back)
+            state.blockedByMaturity -> MessageState(
+                stringResource(R.string.details_blocked_title), stringResource(R.string.details_blocked_message), Modifier.padding(padding),
+                actionLabel = stringResource(R.string.details_common_back), onAction = actions.back,
+            )
             else -> BoxWithConstraints(Modifier.fillMaxSize()) {
                 if (maxWidth >= 840.dp) ExpandedLayout(details, state, viewModel, actions)
                 else PortraitLayout(details, state, viewModel, actions)
@@ -81,7 +86,7 @@ private fun BackButton(onBack: () -> Unit, modifier: Modifier = Modifier) {
         onClick = onBack,
         modifier = modifier.windowInsetsPadding(WindowInsets.statusBars).padding(8.dp),
         colors = IconButtonDefaults.iconButtonColors(containerColor = JazzyColors.Scrim),
-    ) { Icon(Icons.AutoMirrored.Filled.ArrowBack, "Back") }
+    ) { Icon(Icons.AutoMirrored.Filled.ArrowBack, stringResource(R.string.details_common_back)) }
 }
 
 internal fun TitleDetails.toHeroContent() = HeroContent(
@@ -116,7 +121,7 @@ private fun PortraitLayout(details: TitleDetails, state: DetailsUiState, viewMod
             }
             if (!isShow) {
                 item(key = "sources_header") {
-                    SourcesHeader(state.sources, "Sources", viewModel::setFilters, viewModel::refreshSources, Modifier.padding(horizontal = gutter))
+                    SourcesHeader(state.sources, stringResource(R.string.details_sources_title), viewModel::setFilters, viewModel::refreshSources, Modifier.padding(horizontal = gutter))
                 }
                 items(state.sources.rows, key = { it.source.key }) { row ->
                     SourceRow(
@@ -130,7 +135,7 @@ private fun PortraitLayout(details: TitleDetails, state: DetailsUiState, viewMod
             } else {
                 item(key = "seasons") {
                     Row(Modifier.padding(horizontal = gutter), verticalAlignment = Alignment.CenterVertically) {
-                        SectionTitle("Episodes", Modifier.weight(1f))
+                        SectionTitle(stringResource(R.string.details_episodes_title), Modifier.weight(1f))
                         SeasonDropdown(details.seasons, state.selectedSeason, viewModel::selectSeason)
                     }
                 }
@@ -159,7 +164,8 @@ internal fun EpisodeSources(state: DetailsUiState, viewModel: DetailsViewModel, 
         item(key = "h") {
             SourcesHeader(
                 state.sources,
-                title = ep?.let { "S${it.seasonNumber}:E${it.episodeNumber} · ${it.name}" } ?: "Sources",
+                title = ep?.let { stringResource(R.string.details_sources_episode_title, it.seasonNumber, it.episodeNumber, it.name) }
+                    ?: stringResource(R.string.details_sources_title),
                 onFilters = viewModel::setFilters,
                 onRefresh = viewModel::refreshSources,
             )
@@ -192,13 +198,13 @@ private fun ExpandedLayout(details: TitleDetails, state: DetailsUiState, viewMod
             Box(Modifier.weight(0.58f).fillMaxHeight()) {
                 if (details.mediaType == MediaType.TV && !showSources) {
                     LazyColumn(contentPadding = PaddingValues(gutter)) {
-                        item { SectionTitle("Episodes") }
+                        item { SectionTitle(stringResource(R.string.details_episodes_title)) }
                         item { EpisodeList(state, onEpisode = { viewModel.selectEpisode(it); showSources = true }) }
                     }
                 } else {
                     Column {
                         if (details.mediaType == MediaType.TV) {
-                            IconButton(onClick = { showSources = false }) { Icon(Icons.AutoMirrored.Filled.ArrowBack, "Back to episodes") }
+                            IconButton(onClick = { showSources = false }) { Icon(Icons.AutoMirrored.Filled.ArrowBack, stringResource(R.string.details_back_to_episodes)) }
                         }
                         EpisodeSources(state, viewModel, actions)
                     }

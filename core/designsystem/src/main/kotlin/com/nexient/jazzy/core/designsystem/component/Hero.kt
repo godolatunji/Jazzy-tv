@@ -22,8 +22,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.nexient.jazzy.core.designsystem.R
 import com.nexient.jazzy.core.designsystem.theme.JazzyColors
 import com.nexient.jazzy.core.designsystem.theme.JazzyTheme
 import com.nexient.jazzy.core.model.TmdbImages
@@ -69,7 +71,7 @@ fun HeroText(content: HeroContent, modifier: Modifier = Modifier, actions: @Comp
         FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
             content.certification?.let { MaturityBadge(it) }
             content.meta?.let { Text(it, style = MaterialTheme.typography.labelLarge, color = JazzyColors.TextSecondary) }
-            content.genres.take(3).forEach { Text("• $it", style = MaterialTheme.typography.labelLarge, color = JazzyColors.TextSecondary) }
+            content.genres.take(3).forEach { Text(stringResource(R.string.designsystem_hero_genre, it), style = MaterialTheme.typography.labelLarge, color = JazzyColors.TextSecondary) }
         }
         if (content.overview.isNotBlank()) {
             Text(content.overview, style = MaterialTheme.typography.bodyMedium, color = JazzyColors.TextSecondary, maxLines = 2, overflow = TextOverflow.Ellipsis)

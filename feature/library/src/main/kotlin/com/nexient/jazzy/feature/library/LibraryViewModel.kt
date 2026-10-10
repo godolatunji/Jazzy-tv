@@ -1,5 +1,6 @@
 package com.nexient.jazzy.feature.library
 
+import androidx.annotation.StringRes
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -9,6 +10,7 @@ import androidx.lifecycle.viewModelScope
 import com.nexient.jazzy.core.common.Clock
 import com.nexient.jazzy.core.data.library.LibraryRepository
 import com.nexient.jazzy.core.data.profile.ProfileRepository
+import com.nexient.jazzy.core.designsystem.text.UiText
 import com.nexient.jazzy.core.model.LibraryItem
 import com.nexient.jazzy.core.model.LibrarySort
 import com.nexient.jazzy.core.model.Profile
@@ -60,13 +62,13 @@ data class LibraryUiState(
     val myListKeys: Set<TitleRef> = emptySet(),
     val likedKeys: Set<TitleRef> = emptySet(),
     val clearStep: ClearHistoryStep = ClearHistoryStep.HIDDEN,
-    val pinError: String? = null,
+    @StringRes val pinError: Int? = null,
 ) {
     fun collection(kind: CollectionKind) = if (kind == CollectionKind.MY_LIST) myList else liked
 }
 
 /** One-off snackbar messages. [undo] re-adds the removed title with the same snapshot (ML-4, LK-4). */
-data class LibraryMessage(val text: String, val undo: Undo? = null) {
+data class LibraryMessage(val text: UiText, val undo: Undo? = null) {
     data class Undo(val kind: CollectionKind, val snapshot: TitleSnapshot, val addedAt: Long? = null)
 }
 
@@ -85,7 +87,7 @@ class LibraryViewModel @Inject constructor(
     private val myListOptions = MutableStateFlow(CollectionOptions())
     private val likedOptions = MutableStateFlow(CollectionOptions())
     private val clearStep = MutableStateFlow(ClearHistoryStep.HIDDEN)
-    private val pinError = MutableStateFlow<String?>(null)
+    private val pinError = MutableStateFlow<Int?>(null)
     private val _messages = Channel<LibraryMessage>(Channel.BUFFERED)
     val messages: Flow<LibraryMessage> = _messages.receiveAsFlow()
 
@@ -149,7 +151,10 @@ class LibraryViewModel @Inject constructor(
         val p = profile.value ?: return
         viewModelScope.launch {
             set(kind, p.id, item.snapshot, false)
-            val text = if (kind == CollectionKind.MY_LIST) "Removed ${item.snapshot.title} from My List" else "Unliked ${item.snapshot.title}"
+            val text = UiText.Res(
+                if (kind == CollectionKind.MY_LIST) R.string.library_collection_removed_from_my_list else R.string.library_collection_unliked,
+                item.snapshot.title,
+            )
             _messages.send(LibraryMessage(text, LibraryMessage.Undo(kind, item.snapshot, item.addedAt)))
         }
     }
@@ -181,7 +186,7 @@ class LibraryViewModel @Inject constructor(
     fun removeHistoryItem(item: HistoryItem) {
         viewModelScope.launch {
             library.deleteSessions(item.sessionIds)
-            _messages.send(LibraryMessage("Removed ${item.snapshot.title} from history"))
+            _messages.send(LibraryMessage(UiText.Res(R.string.library_history_removed, item.snapshot.title)))
         }
     }
 
@@ -194,7 +199,7 @@ class LibraryViewModel @Inject constructor(
         val p = profile.value ?: return
         viewModelScope.launch {
             library.deleteHistoryForTitle(p.id, item.snapshot.ref)
-            _messages.send(LibraryMessage("Removed all history for ${item.snapshot.title}"))
+            _messages.send(LibraryMessage(UiText.Res(R.string.library_history_removed_all, item.snapshot.title)))
         }
     }
 
@@ -217,7 +222,7 @@ class LibraryViewModel @Inject constructor(
     fun submitPin(pin: String) {
         val p = profile.value ?: return
         viewModelScope.launch {
-            if (profiles.verifyPin(p.id, pin)) clearNow(p) else pinError.value = "Wrong PIN. Try again."
+            if (profiles.verifyPin(p.id, pin)) clearNow(p) else pinError.value = R.string.library_history_pin_wrong
         }
     }
 
@@ -232,7 +237,7 @@ class LibraryViewModel @Inject constructor(
         viewModelScope.launch {
             library.clearHistory(p.id)
             historyQuery = ""
-            _messages.send(LibraryMessage("History cleared"))
+            _messages.send(LibraryMessage(UiText.Res(R.string.library_history_cleared)))
         }
     }
 }

@@ -22,10 +22,13 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.nexient.jazzy.core.designsystem.component.PinDialog
+import com.nexient.jazzy.core.designsystem.text.asString
 import com.nexient.jazzy.core.designsystem.theme.JazzyColors
 import com.nexient.jazzy.core.designsystem.theme.JazzyTheme
 import com.nexient.jazzy.core.model.TitleRef
@@ -58,17 +61,19 @@ fun LibraryRoute(
     val state by viewModel.state.collectAsStateWithLifecycle()
     var tab by rememberSaveable(initialTab) { mutableIntStateOf(initialTab.coerceIn(0, LibraryTab.entries.lastIndex)) }
     val snackbar = remember { SnackbarHostState() }
+    val context = LocalContext.current
 
     LaunchedEffect(viewModel, snackbar) {
         viewModel.messages.collectLatest { message ->
             snackbar.currentSnackbarData?.dismiss()
             val undo = message.undo
+            val text = message.text.asString(context)
             if (undo == null) {
-                snackbar.showSnackbar(message.text, duration = SnackbarDuration.Short)
+                snackbar.showSnackbar(text, duration = SnackbarDuration.Short)
             } else {
                 // Material's durations are 4 s / 10 s; the spec asks for exactly 5 s.
                 val result = withTimeoutOrNull(UNDO_WINDOW_MS) {
-                    snackbar.showSnackbar(message.text, actionLabel = "Undo", duration = SnackbarDuration.Indefinite)
+                    snackbar.showSnackbar(text, actionLabel = context.getString(R.string.library_common_undo), duration = SnackbarDuration.Indefinite)
                 }
                 if (result == SnackbarResult.ActionPerformed) viewModel.undo(undo)
             }
@@ -105,22 +110,32 @@ private fun ClearHistoryDialogs(state: LibraryUiState, viewModel: LibraryViewMod
         ClearHistoryStep.HIDDEN -> Unit
         ClearHistoryStep.CONFIRM -> AlertDialog(
             onDismissRequest = viewModel::dismissClearHistory,
-            title = { Text("Clear all history?") },
+            title = { Text(stringResource(R.string.library_history_clear_dialog_title)) },
             text = {
                 Text(
-                    "This removes everything ${name ?: "this profile"} has watched from History and resets the " +
-                        "recommendations based on it. Resume points are kept. This can't be undone.",
+                    stringResource(
+                        R.string.library_history_clear_dialog_message,
+                        name ?: stringResource(R.string.library_history_clear_dialog_this_profile),
+                    ),
                 )
             },
-            confirmButton = { TextButton(onClick = viewModel::confirmClearHistory) { Text("Clear history", color = JazzyColors.Poor) } },
-            dismissButton = { TextButton(onClick = viewModel::dismissClearHistory) { Text("Cancel") } },
+            confirmButton = {
+                TextButton(onClick = viewModel::confirmClearHistory) {
+                    Text(stringResource(R.string.library_history_clear_dialog_confirm), color = JazzyColors.Poor)
+                }
+            },
+            dismissButton = { TextButton(onClick = viewModel::dismissClearHistory) { Text(stringResource(R.string.library_common_cancel)) } },
             containerColor = JazzyColors.SurfaceRaised,
         )
         ClearHistoryStep.PIN -> PinDialog(
-            title = "Enter ${name?.let { "$it's" } ?: "the profile"} PIN to clear history",
+            title = if (name != null) {
+                stringResource(R.string.library_history_pin_title, name)
+            } else {
+                stringResource(R.string.library_history_pin_title_no_name)
+            },
             onDismiss = viewModel::dismissClearHistory,
             onPinEntered = viewModel::submitPin,
-            error = state.pinError,
+            error = state.pinError?.let { stringResource(it) },
         )
     }
 }

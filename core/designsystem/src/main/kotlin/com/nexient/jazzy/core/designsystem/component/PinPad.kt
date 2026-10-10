@@ -23,7 +23,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.nexient.jazzy.core.designsystem.R
 import com.nexient.jazzy.core.designsystem.theme.JazzyColors
 
 /** 4-digit PIN entry that works by touch and D-pad (PR-5). */
@@ -69,7 +71,7 @@ fun PinDialog(
                                 ),
                                 contentAlignment = Alignment.Center,
                             ) {
-                                if (key == "⌫") Icon(Icons.AutoMirrored.Filled.Backspace, "Delete digit")
+                                if (key == "⌫") Icon(Icons.AutoMirrored.Filled.Backspace, stringResource(R.string.designsystem_pin_delete_digit))
                                 else Text(key, style = MaterialTheme.typography.titleLarge)
                             }
                         }
@@ -78,7 +80,7 @@ fun PinDialog(
             }
         },
         confirmButton = {},
-        dismissButton = { TextButton(onClick = onDismiss) { Text("Cancel") } },
+        dismissButton = { TextButton(onClick = onDismiss) { Text(stringResource(R.string.designsystem_common_cancel)) } },
         containerColor = JazzyColors.SurfaceRaised,
     )
 }

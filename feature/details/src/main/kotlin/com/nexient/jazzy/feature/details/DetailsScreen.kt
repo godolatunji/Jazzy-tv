@@ -14,9 +14,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.nexient.jazzy.core.common.formatDuration
+import com.nexient.jazzy.core.designsystem.text.asString
 import com.nexient.jazzy.core.designsystem.theme.JazzyTheme
 import com.nexient.jazzy.core.model.PlaybackRequest
 import com.nexient.jazzy.core.model.TitleRef
@@ -38,6 +40,7 @@ fun DetailsRoute(args: DetailsArgs, actions: DetailsActions) {
         creationCallback = { it.create(args) },
     )
     val state by viewModel.state.collectAsStateWithLifecycle()
+    if (state.sources.rows.isNotEmpty() && android.os.Build.VERSION.SDK_INT >= 29) LaunchedEffect(Unit) { android.os.Trace.endAsyncSection("SourcesFirstRow", 0) } // E16-02 marker, begun in app Navigator.push
     val snackbar = remember { SnackbarHostState() }
     val context = LocalContext.current
     var askResume by remember { mutableStateOf<Pair<TorrentSource, Long>?>(null) }
@@ -47,7 +50,7 @@ fun DetailsRoute(args: DetailsArgs, actions: DetailsActions) {
             when (event) {
                 is DetailsEvent.Play -> actions.play(event.request)
                 is DetailsEvent.AskResume -> askResume = event.source to event.positionMs
-                is DetailsEvent.Message -> snackbar.showSnackbar(event.text)
+                is DetailsEvent.Message -> snackbar.showSnackbar(event.text.asString(context))
                 is DetailsEvent.OpenTrailer -> {
                     val app = Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:${event.youtubeKey}"))
                     val web = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.youtube.com/watch?v=${event.youtubeKey}"))
@@ -62,10 +65,10 @@ fun DetailsRoute(args: DetailsArgs, actions: DetailsActions) {
     askResume?.let { (source, position) ->
         AlertDialog(
             onDismissRequest = { askResume = null },
-            title = { Text("Resume where you stopped?") },
-            text = { Text("You stopped at ${formatDuration(position)}. Resume from there with this source, or start over?") },
-            confirmButton = { TextButton(onClick = { askResume = null; viewModel.launchPlayback(source, position) }) { Text("Resume from ${formatDuration(position)}") } },
-            dismissButton = { TextButton(onClick = { askResume = null; viewModel.launchPlayback(source, 0) }) { Text("Start over") } },
+            title = { Text(stringResource(R.string.details_resume_dialog_title)) },
+            text = { Text(stringResource(R.string.details_resume_dialog_message, formatDuration(position))) },
+            confirmButton = { TextButton(onClick = { askResume = null; viewModel.launchPlayback(source, position) }) { Text(stringResource(R.string.details_resume_dialog_resume_from, formatDuration(position))) } },
+            dismissButton = { TextButton(onClick = { askResume = null; viewModel.launchPlayback(source, 0) }) { Text(stringResource(R.string.details_resume_dialog_start_over)) } },
         )
     }
 

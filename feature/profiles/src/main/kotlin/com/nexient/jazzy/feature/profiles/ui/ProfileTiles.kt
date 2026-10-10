@@ -27,6 +27,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextAlign
@@ -39,6 +40,7 @@ import com.nexient.jazzy.core.designsystem.component.BadgeTone
 import com.nexient.jazzy.core.designsystem.component.jazzyClickable
 import com.nexient.jazzy.core.designsystem.theme.JazzyColors
 import com.nexient.jazzy.core.model.Profile
+import com.nexient.jazzy.feature.profiles.R
 
 /** Avatar + name; in manage mode a pencil overlay shows that selecting edits the profile. */
 @Composable
@@ -52,11 +54,14 @@ internal fun ProfileTile(
 ) {
     var focused by remember { mutableStateOf(false) }
     val shape = RoundedCornerShape(size / 8)
+    val kidsSuffix = stringResource(R.string.profiles_picker_tile_a11y_kids)
+    val pinSuffix = stringResource(R.string.profiles_picker_tile_a11y_pin)
+    val editSuffix = stringResource(R.string.profiles_picker_tile_a11y_edit)
     val description = buildString {
         append(profile.name)
-        if (profile.isKids) append(", Kids profile")
-        if (profile.hasPin) append(", PIN protected")
-        if (editMode) append(", edit")
+        if (profile.isKids) append(kidsSuffix)
+        if (profile.hasPin) append(pinSuffix)
+        if (editMode) append(editSuffix)
     }
     Column(
         modifier.width(size + 16.dp).semantics(mergeDescendants = true) { contentDescription = description },
@@ -80,7 +85,7 @@ internal fun ProfileTile(
             textAlign = TextAlign.Center,
         )
         Row(horizontalArrangement = Arrangement.spacedBy(6.dp), verticalAlignment = Alignment.CenterVertically) {
-            if (profile.isKids) Badge("KIDS", tone = BadgeTone.INFO)
+            if (profile.isKids) Badge(stringResource(R.string.profiles_picker_kids_badge), tone = BadgeTone.INFO)
             if (profile.hasPin) Icon(Icons.Filled.Lock, null, tint = JazzyColors.TextTertiary, modifier = Modifier.size(14.dp))
         }
     }
@@ -102,10 +107,10 @@ internal fun AddProfileTile(size: Dp, onClick: () -> Unit, modifier: Modifier = 
                 .jazzyClickable(shape, onFocused = { focused = it }, onClick = onClick),
             contentAlignment = Alignment.Center,
         ) {
-            Icon(Icons.Filled.Add, "Add profile", tint = JazzyColors.TextSecondary, modifier = Modifier.size(size * 0.4f))
+            Icon(Icons.Filled.Add, stringResource(R.string.profiles_picker_add_profile), tint = JazzyColors.TextSecondary, modifier = Modifier.size(size * 0.4f))
         }
         Text(
-            "Add profile",
+            stringResource(R.string.profiles_picker_add_profile),
             style = MaterialTheme.typography.titleSmall,
             color = if (focused) JazzyColors.OnBackground else JazzyColors.TextSecondary,
             modifier = Modifier.padding(bottom = 4.dp),

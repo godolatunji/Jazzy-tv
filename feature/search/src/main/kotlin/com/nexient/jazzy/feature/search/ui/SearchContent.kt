@@ -42,6 +42,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.input.ImeAction
@@ -66,6 +67,7 @@ import com.nexient.jazzy.core.model.SearchResult
 import com.nexient.jazzy.core.model.TitleSummary
 import com.nexient.jazzy.core.model.TmdbImages
 import com.nexient.jazzy.feature.search.MIN_QUERY_LENGTH
+import com.nexient.jazzy.feature.search.R
 import com.nexient.jazzy.feature.search.SearchUiState
 
 /** Callbacks shared by the phone and TV search layouts. */
@@ -97,15 +99,15 @@ internal fun SearchField(
         value = query,
         onValueChange = callbacks.onQueryChange,
         modifier = modifier.then(if (focusRequester != null) Modifier.focusRequester(focusRequester) else Modifier),
-        placeholder = { Text("Search movies, shows, people", maxLines = 1, overflow = TextOverflow.Ellipsis) },
+        placeholder = { Text(stringResource(R.string.search_field_placeholder), maxLines = 1, overflow = TextOverflow.Ellipsis) },
         leadingIcon = { Icon(Icons.Filled.Search, null) },
         trailingIcon = {
             Row {
                 if (query.isNotEmpty()) {
-                    IconButton(onClick = callbacks.onClear) { Icon(Icons.Filled.Close, "Clear search") }
+                    IconButton(onClick = callbacks.onClear) { Icon(Icons.Filled.Close, stringResource(R.string.search_field_clear)) }
                 }
                 if (showVoiceInside && callbacks.onVoice != null) {
-                    IconButton(onClick = callbacks.onVoice) { Icon(Icons.Filled.Mic, "Search by voice") }
+                    IconButton(onClick = callbacks.onVoice) { Icon(Icons.Filled.Mic, stringResource(R.string.search_voice_button)) }
                 }
             }
         },
@@ -126,12 +128,13 @@ internal fun SearchField(
 /** Round mic button used beside the field on TV (the remote's mic launches the same recognizer). */
 @Composable
 internal fun VoiceButton(onVoice: () -> Unit, modifier: Modifier = Modifier) {
+    val label = stringResource(R.string.search_voice_button)
     Box(
         modifier
             .size(56.dp)
             .jazzyClickable(CircleShape, onClick = onVoice)
             .background(JazzyColors.SurfaceRaised, CircleShape)
-            .semantics { contentDescription = "Search by voice" },
+            .semantics { contentDescription = label },
         contentAlignment = Alignment.Center,
     ) {
         Icon(Icons.Filled.Mic, null, tint = JazzyColors.OnBackground, modifier = Modifier.size(28.dp))
@@ -141,8 +144,12 @@ internal fun VoiceButton(onVoice: () -> Unit, modifier: Modifier = Modifier) {
 @Composable
 internal fun SearchFilterRow(selected: SearchFilter, onSelect: (SearchFilter) -> Unit, modifier: Modifier = Modifier) {
     Row(modifier, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-        listOf(SearchFilter.ALL to "All", SearchFilter.MOVIES to "Movies", SearchFilter.TV to "TV", SearchFilter.PEOPLE to "People")
-            .forEach { (filter, label) -> JazzyChip(label, filter == selected, onClick = { onSelect(filter) }) }
+        listOf(
+            SearchFilter.ALL to R.string.search_filter_all,
+            SearchFilter.MOVIES to R.string.search_filter_movies,
+            SearchFilter.TV to R.string.search_filter_tv,
+            SearchFilter.PEOPLE to R.string.search_filter_people,
+        ).forEach { (filter, label) -> JazzyChip(stringResource(label), filter == selected, onClick = { onSelect(filter) }) }
     }
 }
 
@@ -173,18 +180,18 @@ internal fun SearchBody(
     val pending = isPending(query, state)
     when {
         !pending && results.itemCount == 0 && refresh is LoadState.Error -> MessageState(
-            title = if (state.offline) "You're offline" else "Search isn't working right now",
-            message = if (state.offline) "Connect to the internet to search." else "Check your connection and try again.",
+            title = stringResource(if (state.offline) R.string.search_error_offline_title else R.string.search_error_title),
+            message = stringResource(if (state.offline) R.string.search_error_offline_message else R.string.search_common_check_connection),
             icon = Icons.Filled.WifiOff,
-            actionLabel = "Retry",
+            actionLabel = stringResource(R.string.search_common_retry),
             onAction = results::retry,
             modifier = modifier.padding(contentPadding),
         )
         !pending && results.itemCount == 0 && refresh is LoadState.NotLoading -> MessageState(
-            title = "No results for “${query.trim()}”",
-            message = if (state.filter == SearchFilter.ALL) "Check the spelling, or try a title, actor or director." else "Try another spelling, or switch the filter to All.",
+            title = stringResource(R.string.search_empty_title, query.trim()),
+            message = stringResource(if (state.filter == SearchFilter.ALL) R.string.search_empty_message_all else R.string.search_empty_message_filtered),
             icon = Icons.Filled.SearchOff,
-            actionLabel = if (state.filter == SearchFilter.ALL) null else "Show all results",
+            actionLabel = if (state.filter == SearchFilter.ALL) null else stringResource(R.string.search_empty_show_all),
             onAction = { callbacks.onFilter(SearchFilter.ALL) },
             modifier = modifier.padding(contentPadding),
         )
@@ -239,12 +246,13 @@ private fun ResultsGrid(
 @Composable
 internal fun PersonCell(person: PersonSummary, onClick: () -> Unit, modifier: Modifier = Modifier) {
     val shape = RoundedCornerShape(8.dp)
+    val a11y = stringResource(R.string.search_result_person, person.name)
     Column(
         modifier
             .fillMaxWidth()
             .aspectRatio(2f / 3f)
             .jazzyClickable(shape, onClick = onClick)
-            .semantics(mergeDescendants = true) { contentDescription = "${person.name}, person" }
+            .semantics(mergeDescendants = true) { contentDescription = a11y }
             .padding(6.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(6.dp, Alignment.CenterVertically),
@@ -266,6 +274,8 @@ internal fun PersonCell(person: PersonSummary, onClick: () -> Unit, modifier: Mo
 private fun IdleGrid(state: SearchUiState, callbacks: SearchCallbacks, contentPadding: PaddingValues, modifier: Modifier) {
     val spacing = JazzyTheme.spacing
     val gap = if (JazzyTheme.isTv) 20.dp else 8.dp
+    val recentTitle = stringResource(R.string.search_recent_title)
+    val popularTitle = stringResource(R.string.search_popular_title)
     LazyVerticalGrid(
         columns = GridCells.Adaptive(spacing.posterWidth),
         modifier = modifier.fillMaxSize(),
@@ -274,25 +284,25 @@ private fun IdleGrid(state: SearchUiState, callbacks: SearchCallbacks, contentPa
         verticalArrangement = Arrangement.spacedBy(gap),
     ) {
         if (state.recent.isNotEmpty()) {
-            gridHeader("recent_header", "Recent searches") {
-                TextButton(onClick = callbacks.onClearRecent) { Text("Clear all") }
+            gridHeader("recent_header", recentTitle) {
+                TextButton(onClick = callbacks.onClearRecent) { Text(stringResource(R.string.search_recent_clear_all)) }
             }
             items(state.recent, key = { "recent:$it" }, span = { GridItemSpan(maxLineSpan) }, contentType = { "recent" }) { q ->
                 RecentRow(q, onClick = { callbacks.onRecent(q) }, onRemove = { callbacks.onRemoveRecent(q) })
             }
         }
-        gridHeader("popular_header", "Popular searches")
+        gridHeader("popular_header", popularTitle)
         val popular = state.popular
         when {
             popular.items.isEmpty() && popular.loading -> posterSkeletonItems(12, "popular_skeleton")
             popular.items.isEmpty() && popular.failed -> item(key = "popular_error", span = { GridItemSpan(maxLineSpan) }) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(
-                        if (state.offline) "You're offline." else "Couldn't load popular searches.",
+                        stringResource(if (state.offline) R.string.search_popular_offline else R.string.search_popular_error),
                         color = JazzyColors.TextSecondary,
                         style = MaterialTheme.typography.bodyMedium,
                     )
-                    TextButton(onClick = callbacks.onRetryPopular) { Text("Retry") }
+                    TextButton(onClick = callbacks.onRetryPopular) { Text(stringResource(R.string.search_common_retry)) }
                 }
             }
             else -> items(popular.items, key = { "popular:${it.tmdbId}:${it.mediaType.apiValue}" }, contentType = { "title" }) { item ->
@@ -323,6 +333,6 @@ private fun RecentRow(query: String, onClick: () -> Unit, onRemove: () -> Unit) 
             Icon(Icons.Filled.History, null, tint = JazzyColors.TextSecondary)
             Text(query, style = MaterialTheme.typography.bodyLarge, maxLines = 1, overflow = TextOverflow.Ellipsis)
         }
-        IconButton(onClick = onRemove) { Icon(Icons.Filled.Close, "Remove “$query” from recent searches", tint = JazzyColors.TextSecondary) }
+        IconButton(onClick = onRemove) { Icon(Icons.Filled.Close, stringResource(R.string.search_recent_remove, query), tint = JazzyColors.TextSecondary) }
     }
 }

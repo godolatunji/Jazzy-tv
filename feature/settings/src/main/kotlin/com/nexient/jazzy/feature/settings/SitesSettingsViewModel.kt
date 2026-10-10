@@ -1,10 +1,12 @@
 package com.nexient.jazzy.feature.settings
 
+import androidx.annotation.StringRes
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nexient.jazzy.core.data.profile.ProfileRepository
 import com.nexient.jazzy.core.data.sources.DbProviderSettingsStore
 import com.nexient.jazzy.core.data.sources.SourceRepository
+import com.nexient.jazzy.core.designsystem.text.UiText
 import com.nexient.jazzy.core.model.FailureReason
 import com.nexient.jazzy.core.model.ProviderHealth
 import com.nexient.jazzy.core.model.ProviderInfo
@@ -53,7 +55,7 @@ data class SitesUiState(
     val loading: Boolean = true,
     val items: List<SiteItem> = emptyList(),
     val isKids: Boolean = false,
-    val message: String? = null,
+    val message: UiText? = null,
 )
 
 @HiltViewModel
@@ -63,7 +65,7 @@ class SitesSettingsViewModel @Inject constructor(
     profiles: ProfileRepository,
 ) : ViewModel() {
     private val tests = MutableStateFlow<Map<String, SiteTest>>(emptyMap())
-    private val message = MutableStateFlow<String?>(null)
+    private val message = MutableStateFlow<UiText?>(null)
     private val providers: List<ProviderInfo> by lazy { runCatching { sources.providers }.getOrDefault(emptyList()) }
 
     val state: StateFlow<SitesUiState> = combine(
@@ -98,11 +100,12 @@ class SitesSettingsViewModel @Inject constructor(
 
     /**
      * Saves the mirror URL and login/cookies. Blank values reset to the default / remove the secret.
-     * @return an error message when the URL isn't valid, else null.
+     * @return an error message (string resource) when the URL isn't valid, else null.
      */
-    fun saveConnection(providerId: String, baseUrl: String, username: String, password: String, cookies: String): String? {
+    @StringRes
+    fun saveConnection(providerId: String, baseUrl: String, username: String, password: String, cookies: String): Int? {
         val url = baseUrl.trim()
-        if (url.isNotEmpty() && !isValidBaseUrl(url)) return "Enter a full URL starting with https:// (or http://)"
+        if (url.isNotEmpty() && !isValidBaseUrl(url)) return R.string.settings_sites_invalid_url
         val current = state.value.items.firstOrNull { it.info.id == providerId }
         viewModelScope.launch {
             // Rows without an explicit enable flag are ignored by the store, so pin it first.
@@ -114,7 +117,10 @@ class SitesSettingsViewModel @Inject constructor(
                 password = password.ifEmpty { null },
                 cookies = cookies.ifBlank { null },
             )
-            message.value = "${current?.info?.name ?: "Site"} settings saved"
+            message.value = UiText.Res(
+                R.string.settings_sites_saved,
+                current?.info?.name ?: UiText.Res(R.string.settings_sites_saved_fallback_name),
+            )
         }
         return null
     }

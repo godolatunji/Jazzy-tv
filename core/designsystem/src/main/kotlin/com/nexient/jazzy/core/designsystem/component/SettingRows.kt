@@ -31,8 +31,10 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
+import com.nexient.jazzy.core.designsystem.R
 import com.nexient.jazzy.core.designsystem.theme.JazzyColors
 import com.nexient.jazzy.core.designsystem.theme.JazzyTheme
 
@@ -162,7 +164,7 @@ fun <T> ChoiceDialog(
             }
         },
         confirmButton = {},
-        dismissButton = { TextButton(onClick = onDismiss) { Text("Cancel") } },
+        dismissButton = { TextButton(onClick = onDismiss) { Text(stringResource(R.string.designsystem_common_cancel)) } },
         containerColor = JazzyColors.SurfaceRaised,
     )
 }
@@ -186,7 +188,7 @@ fun ConfirmDialog(
         confirmButton = {
             TextButton(onClick = onConfirm) { Text(confirmLabel, color = if (destructive) JazzyColors.Poor else JazzyColors.Accent) }
         },
-        dismissButton = { TextButton(onClick = onDismiss, modifier = Modifier.focusRequester(focus)) { Text("Cancel") } },
+        dismissButton = { TextButton(onClick = onDismiss, modifier = Modifier.focusRequester(focus)) { Text(stringResource(R.string.designsystem_common_cancel)) } },
         containerColor = JazzyColors.SurfaceRaised,
     )
 }

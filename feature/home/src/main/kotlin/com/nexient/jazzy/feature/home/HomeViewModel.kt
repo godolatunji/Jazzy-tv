@@ -17,6 +17,8 @@ import com.nexient.jazzy.core.data.profile.ProfileRepository
 import com.nexient.jazzy.core.data.recommendations.RecommendationRail
 import com.nexient.jazzy.core.data.recommendations.RecommendationRepository
 import com.nexient.jazzy.core.designsystem.component.HeroContent
+import com.nexient.jazzy.core.designsystem.text.UiText
+import com.nexient.jazzy.core.designsystem.text.railTitle
 import com.nexient.jazzy.core.model.ContinueWatchingItem
 import com.nexient.jazzy.core.model.LibraryItem
 import com.nexient.jazzy.core.model.Profile
@@ -46,20 +48,20 @@ import kotlin.random.Random
 /** A Home rail, in spec HM-3 order. */
 sealed interface HomeRail {
     val key: String
-    val title: String
+    val title: UiText
 
     data class ContinueWatching(val items: List<ContinueWatchingItem>) : HomeRail {
         override val key = "continue"
-        override val title = "Continue Watching"
+        override val title: UiText = UiText.Res(R.string.home_rail_continue_watching)
     }
 
-    data class Fixed(override val key: String, override val title: String, val items: List<TitleSummary>) : HomeRail
+    data class Fixed(override val key: String, override val title: UiText, val items: List<TitleSummary>) : HomeRail
 
-    data class Library(override val key: String, override val title: String, val items: List<LibraryItem>) : HomeRail
+    data class Library(override val key: String, override val title: UiText, val items: List<LibraryItem>) : HomeRail
 
     data class Paged(val definition: RailDefinition, val items: Flow<PagingData<TitleSummary>>) : HomeRail {
         override val key get() = definition.key
-        override val title get() = definition.title
+        override val title: UiText get() = railTitle(definition.key, definition.title, definition.title.removeSuffix(" Originals").takeIf { definition.key.startsWith("originals_") })
         val style: RailStyle get() = definition.style
     }
 }
@@ -198,10 +200,10 @@ class HomeViewModel @Inject constructor(
         val rails = mutableListOf<HomeRail>()
         local.continueWatching.forTab { it.snapshot.mediaType }.takeIf { it.isNotEmpty() }?.let { rails += HomeRail.ContinueWatching(it) }
         local.recommendations.forEach { r ->
-            r.items.forTab { it.mediaType }.takeIf { it.isNotEmpty() }?.let { rails += HomeRail.Fixed(r.key, r.title, it) }
+            r.items.forTab { it.mediaType }.takeIf { it.isNotEmpty() }?.let { rails += HomeRail.Fixed(r.key, railTitle(r.key, r.title), it) }
         }
-        local.myList.forTab { it.snapshot.mediaType }.takeIf { it.isNotEmpty() }?.let { rails += HomeRail.Library("my_list", "My List", it) }
-        local.liked.forTab { it.snapshot.mediaType }.takeIf { it.isNotEmpty() }?.let { rails += HomeRail.Library("liked", "Liked", it) }
+        local.myList.forTab { it.snapshot.mediaType }.takeIf { it.isNotEmpty() }?.let { rails += HomeRail.Library("my_list", UiText.Res(R.string.home_rail_my_list), it) }
+        local.liked.forTab { it.snapshot.mediaType }.takeIf { it.isNotEmpty() }?.let { rails += HomeRail.Library("liked", UiText.Res(R.string.home_rail_liked), it) }
         rails += paged
         return rails
     }

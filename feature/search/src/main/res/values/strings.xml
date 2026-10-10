@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Common -->
+    <string name="search_common_retry">Retry</string>
+    <string name="search_common_back">Back</string>
+    <string name="search_common_check_connection">Check your connection and try again.</string>
+
+    <!-- Search box and voice (SR-2) -->
+    <string name="search_field_placeholder">Search movies, shows, people</string>
+    <string name="search_field_clear">Clear search</string>
+    <string name="search_voice_button">Search by voice</string>
+    <string name="search_voice_prompt">Search movies, shows and people</string>
+    <string name="search_voice_unavailable">Voice search isn\'t available on this device</string>
+
+    <!-- Filters -->
+    <string name="search_filter_all">All</string>
+    <string name="search_filter_movies">Movies</string>
+    <string name="search_filter_tv">TV</string>
+    <string name="search_filter_people">People</string>
+
+    <!-- Results states -->
+    <string name="search_error_offline_title">You\'re offline</string>
+    <string name="search_error_title">Search isn\'t working right now</string>
+    <string name="search_error_offline_message">Connect to the internet to search.</string>
+    <string name="search_empty_title">No results for “%1$s”</string>
+    <string name="search_empty_message_all">Check the spelling, or try a title, actor or director.</string>
+    <string name="search_empty_message_filtered">Try another spelling, or switch the filter to All.</string>
+    <string name="search_empty_show_all">Show all results</string>
+    <string name="search_result_person">%1$s, person</string>
+
+    <!-- Idle: recent and popular (SR-3) -->
+    <string name="search_recent_title">Recent searches</string>
+    <string name="search_recent_clear_all">Clear all</string>
+    <string name="search_recent_remove">Remove “%1$s” from recent searches</string>
+    <string name="search_popular_title">Popular searches</string>
+    <string name="search_popular_offline">You\'re offline.</string>
+    <string name="search_popular_error">Couldn\'t load popular searches.</string>
+
+    <!-- Person filmography -->
+    <plurals name="search_person_title_count">
+        <item quantity="one">%1$d title</item>
+        <item quantity="other">%1$d titles</item>
+    </plurals>
+    <string name="search_person_error_title">Couldn\'t load %1$s\'s titles</string>
+    <string name="search_person_empty_title">No titles to show</string>
+    <string name="search_person_empty_message">There\'s nothing from %1$s available on this profile.</string>
+</resources>

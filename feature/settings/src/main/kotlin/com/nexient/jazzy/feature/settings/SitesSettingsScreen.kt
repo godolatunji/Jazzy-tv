@@ -19,10 +19,12 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.nexient.jazzy.core.designsystem.component.FullScreenLoading
 import com.nexient.jazzy.core.designsystem.component.MessageState
+import com.nexient.jazzy.core.designsystem.text.asString
 import com.nexient.jazzy.core.designsystem.theme.JazzyColors
 import com.nexient.jazzy.core.designsystem.theme.JazzyTheme
 import com.nexient.jazzy.feature.settings.ui.ConnectionDialog
@@ -42,8 +44,9 @@ fun SitesSettingsRoute(
     var editing by rememberSaveable { mutableStateOf<String?>(null) }
     val snackbar = remember { SnackbarHostState() }
 
-    LaunchedEffect(state.message) {
-        state.message?.let {
+    val message = state.message?.asString()
+    LaunchedEffect(message) {
+        message?.let {
             snackbar.showSnackbar(it)
             viewModel.clearMessage()
         }
@@ -53,10 +56,10 @@ fun SitesSettingsRoute(
         when {
             state.loading -> FullScreenLoading()
             state.isKids -> MessageState(
-                title = "Not available on Kids profiles",
-                message = "Switch to another profile to change torrent site settings.",
+                title = stringResource(R.string.settings_sites_kids_title),
+                message = stringResource(R.string.settings_sites_kids_message),
                 icon = Icons.Filled.ChildCare,
-                actionLabel = "Back",
+                actionLabel = stringResource(R.string.settings_common_back),
                 onAction = onBack,
                 modifier = Modifier.align(Alignment.Center),
             )

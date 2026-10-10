@@ -21,9 +21,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
+import com.nexient.jazzy.core.designsystem.R
 import com.nexient.jazzy.core.designsystem.theme.JazzyColors
 import com.nexient.jazzy.core.designsystem.theme.JazzyTheme
 
@@ -80,8 +82,8 @@ fun RailError(title: String, onRetry: () -> Unit, modifier: Modifier = Modifier)
     Column(modifier.fillMaxWidth().padding(horizontal = spacing.gutter, vertical = spacing.sm)) {
         Text(title, style = MaterialTheme.typography.titleLarge)
         Row(verticalAlignment = Alignment.CenterVertically) {
-            Text("Couldn't load", color = JazzyColors.TextSecondary, style = MaterialTheme.typography.bodyMedium)
-            TextButton(onClick = onRetry) { Text("Retry") }
+            Text(stringResource(R.string.designsystem_rail_error), color = JazzyColors.TextSecondary, style = MaterialTheme.typography.bodyMedium)
+            TextButton(onClick = onRetry) { Text(stringResource(R.string.designsystem_common_retry)) }
         }
     }
 }

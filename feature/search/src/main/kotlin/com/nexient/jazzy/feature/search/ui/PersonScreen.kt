@@ -28,6 +28,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.res.pluralStringResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextOverflow
@@ -39,6 +41,7 @@ import com.nexient.jazzy.core.designsystem.theme.JazzyColors
 import com.nexient.jazzy.core.designsystem.theme.JazzyTheme
 import com.nexient.jazzy.core.model.TitleSummary
 import com.nexient.jazzy.feature.search.PersonUiState
+import com.nexient.jazzy.feature.search.R
 
 /** Filmography grid for a person; phone gets a back button, TV relies on the remote's Back. */
 @Composable
@@ -65,7 +68,7 @@ internal fun PersonScreen(
             Modifier.fillMaxWidth().padding(horizontal = if (tv) spacing.gutter else 4.dp, vertical = 8.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            if (!tv) IconButton(onClick = onBack) { Icon(Icons.AutoMirrored.Filled.ArrowBack, "Back") }
+            if (!tv) IconButton(onClick = onBack) { Icon(Icons.AutoMirrored.Filled.ArrowBack, stringResource(R.string.search_common_back)) }
             Column(Modifier.weight(1f)) {
                 Text(
                     name,
@@ -75,21 +78,21 @@ internal fun PersonScreen(
                     modifier = Modifier.semantics { heading() },
                 )
                 if (state.credits.isNotEmpty()) {
-                    Text("${state.credits.size} titles", style = MaterialTheme.typography.bodyMedium, color = JazzyColors.TextSecondary)
+                    Text(pluralStringResource(R.plurals.search_person_title_count, state.credits.size, state.credits.size), style = MaterialTheme.typography.bodyMedium, color = JazzyColors.TextSecondary)
                 }
             }
         }
         when {
             state.error -> MessageState(
-                title = "Couldn't load $name's titles",
-                message = "Check your connection and try again.",
+                title = stringResource(R.string.search_person_error_title, name),
+                message = stringResource(R.string.search_common_check_connection),
                 icon = Icons.Filled.WifiOff,
-                actionLabel = "Retry",
+                actionLabel = stringResource(R.string.search_common_retry),
                 onAction = onRetry,
             )
             !state.loading && state.credits.isEmpty() -> MessageState(
-                title = "No titles to show",
-                message = "There's nothing from $name available on this profile.",
+                title = stringResource(R.string.search_person_empty_title),
+                message = stringResource(R.string.search_person_empty_message, name),
                 icon = Icons.Filled.Movie,
             )
             else -> {

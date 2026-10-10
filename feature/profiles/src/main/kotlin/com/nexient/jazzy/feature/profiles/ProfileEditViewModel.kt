@@ -1,5 +1,6 @@
 package com.nexient.jazzy.feature.profiles
 
+import androidx.annotation.StringRes
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nexient.jazzy.core.data.profile.LastProfileDeletion
@@ -8,6 +9,7 @@ import com.nexient.jazzy.core.data.profile.ProfileLimitReached
 import com.nexient.jazzy.core.data.profile.ProfileRepository
 import com.nexient.jazzy.core.data.profile.defaultLanguage
 import com.nexient.jazzy.core.data.settings.SettingsRepository
+import com.nexient.jazzy.core.designsystem.text.UiText
 import com.nexient.jazzy.core.model.AVATAR_COUNT
 import com.nexient.jazzy.core.model.MaturityLevel
 import dagger.assisted.Assisted
@@ -29,7 +31,7 @@ enum class EditStep { FORM, GENRES }
 
 /** PIN changes on an existing profile need the current PIN first. */
 sealed interface PinFlow {
-    data class VerifyCurrent(val thenClear: Boolean, val error: String? = null) : PinFlow
+    data class VerifyCurrent(val thenClear: Boolean, @StringRes val error: Int? = null) : PinFlow
     data object SetNew : PinFlow
 }
 
@@ -54,8 +56,8 @@ data class ProfileEditUiState(
     val profileCount: Int = 0,
     val saving: Boolean = false,
     val showNameError: Boolean = false,
-    val error: String? = null,
-    val message: String? = null,
+    val error: UiText? = null,
+    val message: UiText? = null,
     val pinFlow: PinFlow? = null,
 ) {
     val trimmedName: String get() = name.trim()
@@ -120,7 +122,7 @@ class ProfileEditViewModel @AssistedInject constructor(
                     loading = false, isNew = true,
                     avatarId = (0 until AVATAR_COUNT).firstOrNull { id -> id !in used } ?: 0,
                     autoplayNext = autoplay, profileCount = all.size,
-                    error = if (profileId != null) "That profile no longer exists." else null,
+                    error = if (profileId != null) UiText.Res(R.string.profiles_edit_error_missing) else null,
                 )
             }
         }
@@ -177,7 +179,7 @@ class ProfileEditViewModel @AssistedInject constructor(
             val id = profileId ?: return
             viewModelScope.launch {
                 repository.setSeedGenres(id, s.genres.toList())
-                _state.update { it.copy(step = EditStep.FORM, message = "Favourite genres saved") }
+                _state.update { it.copy(step = EditStep.FORM, message = UiText.Res(R.string.profiles_edit_message_genres_saved)) }
             }
         }
     }
@@ -203,11 +205,11 @@ class ProfileEditViewModel @AssistedInject constructor(
                 }
                 _events.send(EditEvent.Done)
             } catch (e: ProfileLimitReached) {
-                _state.update { it.copy(saving = false, step = EditStep.FORM, error = "This device already has the maximum number of profiles.") }
+                _state.update { it.copy(saving = false, step = EditStep.FORM, error = UiText.Res(R.string.profiles_edit_error_limit)) }
             } catch (e: CancellationException) {
                 throw e
             } catch (e: Exception) {
-                _state.update { it.copy(saving = false, step = EditStep.FORM, error = "Couldn't save the profile. ${e.message.orEmpty()}".trim()) }
+                _state.update { it.copy(saving = false, step = EditStep.FORM, error = saveError(e)) }
             }
         }
     }
@@ -219,7 +221,7 @@ class ProfileEditViewModel @AssistedInject constructor(
                 repository.delete(id)
                 _events.send(EditEvent.Done)
             } catch (e: LastProfileDeletion) {
-                _state.update { it.copy(error = "The last remaining profile can't be deleted.") }
+                _state.update { it.copy(error = UiText.Res(R.string.profiles_edit_error_last_profile)) }
             }
         }
     }
@@ -246,10 +248,10 @@ class ProfileEditViewModel @AssistedInject constructor(
         val id = profileId ?: return
         viewModelScope.launch {
             if (!repository.verifyPin(id, pin)) {
-                _state.update { it.copy(pinFlow = flow.copy(error = "Incorrect PIN. Try again.")) }
+                _state.update { it.copy(pinFlow = flow.copy(error = R.string.profiles_pin_incorrect)) }
             } else if (flow.thenClear) {
                 repository.setPin(id, null)
-                _state.update { it.copy(pinFlow = null, hasPin = false, message = "Profile PIN removed") }
+                _state.update { it.copy(pinFlow = null, hasPin = false, message = UiText.Res(R.string.profiles_edit_message_pin_removed)) }
             } else {
                 _state.update { it.copy(pinFlow = PinFlow.SetNew) }
             }
@@ -263,8 +265,14 @@ class ProfileEditViewModel @AssistedInject constructor(
         } else {
             viewModelScope.launch {
                 repository.setPin(id, pin)
-                _state.update { it.copy(pinFlow = null, hasPin = true, message = "Profile PIN saved") }
+                _state.update { it.copy(pinFlow = null, hasPin = true, message = UiText.Res(R.string.profiles_edit_message_pin_saved)) }
             }
         }
     }
+}
+
+/** "Couldn't save the profile." plus the exception's message, when there is one. */
+private fun saveError(e: Exception): UiText {
+    val detail = e.message?.trim().orEmpty()
+    return if (detail.isEmpty()) UiText.Res(R.string.profiles_edit_error_save) else UiText.Res(R.string.profiles_edit_error_save_detail, detail)
 }

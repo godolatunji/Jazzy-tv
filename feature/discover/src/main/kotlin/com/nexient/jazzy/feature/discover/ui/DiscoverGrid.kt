@@ -16,6 +16,7 @@ import androidx.compose.material.icons.filled.FilterAltOff
 import androidx.compose.material.icons.filled.WifiOff
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
@@ -26,6 +27,7 @@ import com.nexient.jazzy.core.designsystem.component.posterSkeletonItems
 import com.nexient.jazzy.core.designsystem.theme.JazzyTheme
 import com.nexient.jazzy.core.model.TitleSummary
 import com.nexient.jazzy.feature.discover.DiscoverUiState
+import com.nexient.jazzy.feature.discover.R
 
 /** Infinite results grid with loading, empty and error states (spec §5.5). */
 @Composable
@@ -41,18 +43,18 @@ internal fun DiscoverResultsGrid(
     val refresh = items.loadState.refresh
     when {
         items.itemCount == 0 && refresh is LoadState.Error -> MessageState(
-            title = if (state.offline) "You're offline" else "Couldn't load titles",
-            message = if (state.offline) "Connect to the internet to discover titles." else "Check your connection and try again.",
+            title = stringResource(if (state.offline) R.string.discover_error_offline_title else R.string.discover_error_title),
+            message = stringResource(if (state.offline) R.string.discover_error_offline_message else R.string.discover_error_message),
             icon = Icons.Filled.WifiOff,
-            actionLabel = "Retry",
+            actionLabel = stringResource(R.string.discover_common_retry),
             onAction = items::retry,
             modifier = modifier.padding(contentPadding),
         )
         items.itemCount == 0 && refresh is LoadState.NotLoading -> MessageState(
-            title = "Nothing matches these filters",
-            message = "Try fewer genres, a wider year range or a lower rating.",
+            title = stringResource(R.string.discover_empty_title),
+            message = stringResource(R.string.discover_empty_message),
             icon = Icons.Filled.FilterAltOff,
-            actionLabel = if (state.filters.activeCount > 0) "Reset filters" else null,
+            actionLabel = if (state.filters.activeCount > 0) stringResource(R.string.discover_empty_reset) else null,
             onAction = onReset,
             modifier = modifier.padding(contentPadding),
         )

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Common -->
+    <string name="discover_title">Discover</string>
+    <string name="discover_common_retry">Retry</string>
+    <string name="discover_common_any">Any</string>
+    <string name="discover_common_selected">✓  %1$s</string>
+
+    <!-- Sort orders -->
+    <string name="discover_sort_popularity">Popularity</string>
+    <string name="discover_sort_rating">Rating</string>
+    <string name="discover_sort_release_date">Release date</string>
+    <string name="discover_sort_revenue">Revenue</string>
+    <string name="discover_sort_title">Title</string>
+    <string name="discover_sort_chip">Sort: %1$s</string>
+
+    <!-- Runtime presets -->
+    <string name="discover_runtime_movie_under_90">Under 90 min</string>
+    <string name="discover_runtime_movie_90_120">90 min – 2 h</string>
+    <string name="discover_runtime_movie_120_150">2 – 2½ h</string>
+    <string name="discover_runtime_movie_over_150">Over 2½ h</string>
+    <string name="discover_runtime_tv_under_30">Under 30 min</string>
+    <string name="discover_runtime_tv_30_60">30 – 60 min</string>
+    <string name="discover_runtime_tv_over_60">Over 1 h</string>
+
+    <!-- Original languages -->
+    <string name="discover_language_en">English</string>
+    <string name="discover_language_es">Spanish</string>
+    <string name="discover_language_fr">French</string>
+    <string name="discover_language_de">German</string>
+    <string name="discover_language_it">Italian</string>
+    <string name="discover_language_ja">Japanese</string>
+    <string name="discover_language_ko">Korean</string>
+    <string name="discover_language_zh">Chinese</string>
+    <string name="discover_language_hi">Hindi</string>
+    <string name="discover_language_pt">Portuguese</string>
+    <string name="discover_language_tr">Turkish</string>
+
+    <!-- Results grid states -->
+    <string name="discover_error_offline_title">You\'re offline</string>
+    <string name="discover_error_title">Couldn\'t load titles</string>
+    <string name="discover_error_offline_message">Connect to the internet to discover titles.</string>
+    <string name="discover_error_message">Check your connection and try again.</string>
+    <string name="discover_empty_title">Nothing matches these filters</string>
+    <string name="discover_empty_message">Try fewer genres, a wider year range or a lower rating.</string>
+    <string name="discover_empty_reset">Reset filters</string>
+
+    <!-- Phone header and filter sheet -->
+    <string name="discover_filters_chip">Filters</string>
+    <string name="discover_filters_chip_count">Filters · %1$d</string>
+    <string name="discover_filters_title">Filters</string>
+    <string name="discover_filters_reset">Reset</string>
+    <string name="discover_filters_show_results">Show results</string>
+    <string name="discover_restricted_note">Results follow this profile\'s maturity setting.</string>
+
+    <!-- Filter panel -->
+    <string name="discover_section_type">Type</string>
+    <string name="discover_section_sort">Sort by</string>
+    <string name="discover_section_genres">Genres</string>
+    <string name="discover_genres_clear">Clear</string>
+    <string name="discover_genres_error">Couldn\'t load genres.</string>
+    <string name="discover_genres_all_selected">Showing titles with all selected genres</string>
+    <string name="discover_section_year">Release year</string>
+    <string name="discover_section_rating">Minimum rating</string>
+    <string name="discover_rating_option">★ %1$d+</string>
+    <string name="discover_section_votes">Minimum votes</string>
+    <string name="discover_votes_option">%1$s+</string>
+    <string name="discover_section_language">Original language</string>
+    <string name="discover_section_runtime">Runtime</string>
+    <string name="discover_section_episode_runtime">Episode runtime</string>
+    <string name="discover_reset_all">Reset all filters</string>
+    <string name="discover_type_movies">Movies</string>
+    <string name="discover_type_tv">TV Shows</string>
+
+    <!-- Year filter -->
+    <string name="discover_year_this">This year</string>
+    <string name="discover_year_last_5">Last 5 years</string>
+    <string name="discover_year_decade">%1$ds</string>
+    <string name="discover_year_before">Before %1$d</string>
+    <string name="discover_year_from">From</string>
+    <string name="discover_year_to">To</string>
+    <string name="discover_year_dropdown">%1$s: %2$s</string>
+</resources>

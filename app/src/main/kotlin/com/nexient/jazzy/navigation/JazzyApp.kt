@@ -9,10 +9,12 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation3.runtime.NavKey
 import com.nexient.jazzy.AppViewModel
+import com.nexient.jazzy.R
 import com.nexient.jazzy.StartDestination
 import com.nexient.jazzy.core.designsystem.component.FullScreenLoading
 import com.nexient.jazzy.core.designsystem.theme.JazzyColors
@@ -40,15 +42,11 @@ fun JazzyApp(
         if (!launch.disclaimerAccepted && start != null) {
             AlertDialog(
                 onDismissRequest = {},
-                title = { Text("Before you start") },
+                title = { Text(stringResource(R.string.app_disclaimer_title)) },
                 text = {
-                    Text(
-                        "Jazzy finds titles on TMDB and searches public torrent sites for links. Jazzy hosts no content. " +
-                            "Streaming a torrent also shares pieces of it with other people. You're responsible for what you " +
-                            "stream and for following the laws where you live.",
-                    )
+                    Text(stringResource(R.string.app_disclaimer_message))
                 },
-                confirmButton = { TextButton(onClick = appViewModel::acceptDisclaimer) { Text("I understand") } },
+                confirmButton = { TextButton(onClick = appViewModel::acceptDisclaimer) { Text(stringResource(R.string.app_disclaimer_accept)) } },
             )
         }
     }

@@ -15,9 +15,9 @@ internal val SubtitleLanguages = listOf<String?>(
     "ar", "hi", "ja", "ko", "zh", "id", "th", "yo", "ha", "ig", "sw",
 )
 
-/** "English (United States)" for "en-US", "English" for "en". */
-internal fun languageLabel(tag: String?): String {
-    if (tag.isNullOrBlank()) return "Off"
+/** "English (United States)" for "en-US", "English" for "en"; [off] when there's no language. */
+internal fun languageLabel(tag: String?, off: String): String {
+    if (tag.isNullOrBlank()) return off
     val locale = Locale.forLanguageTag(tag)
     return locale.getDisplayName(Locale.ENGLISH).ifBlank { tag }
 }

@@ -24,7 +24,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
 import androidx.navigation3.runtime.NavBackStack
@@ -34,6 +36,7 @@ import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
 import com.nexient.jazzy.AppViewModel
+import com.nexient.jazzy.R
 import com.nexient.jazzy.core.data.catalog.HomeTab
 import com.nexient.jazzy.core.designsystem.theme.JazzyColors
 import com.nexient.jazzy.core.designsystem.theme.JazzyTheme
@@ -43,6 +46,7 @@ import com.nexient.jazzy.feature.details.DetailsArgs
 import com.nexient.jazzy.feature.details.DetailsRoute as DetailsScreenRoute
 import com.nexient.jazzy.feature.discover.DiscoverRoute as DiscoverScreenRoute
 import com.nexient.jazzy.feature.home.HomeActions
+import com.nexient.jazzy.feature.home.HomeViewModel
 import com.nexient.jazzy.feature.home.HomeRoute as HomeScreenRoute
 import com.nexient.jazzy.feature.library.LibraryRoute as LibraryScreenRoute
 import com.nexient.jazzy.feature.player.PlayerRoute as PlayerScreenRoute
@@ -53,6 +57,9 @@ import com.nexient.jazzy.feature.search.SearchRoute as SearchScreenRoute
 import com.nexient.jazzy.feature.settings.AboutRoute as AboutScreenRoute
 import com.nexient.jazzy.feature.settings.SettingsRoute as SettingsScreenRoute
 import com.nexient.jazzy.feature.settings.SitesSettingsRoute as SitesSettingsScreenRoute
+import com.nexient.jazzy.perf.HomeReadyMarker
+import com.nexient.jazzy.perf.PerfTrace
+import com.nexient.jazzy.perf.PlayerFirstFrameMarker
 
 @Composable
 fun JazzyNavHost(startKey: NavKey, appViewModel: AppViewModel, pendingLink: DetailsRoute?, onLinkConsumed: () -> Unit) {
@@ -93,7 +100,12 @@ fun JazzyNavHost(startKey: NavKey, appViewModel: AppViewModel, pendingLink: Deta
                         onCancel = { nav.back() },
                     )
                 }
-                entry<HomeRoute> { HomeScreenRoute(homeActions(nav) { profileMenu = true }) }
+                entry<HomeRoute> {
+                    // Same key HomeRoute uses by default; shared so the perf marker can watch Home's state.
+                    val homeViewModel = hiltViewModel<HomeViewModel>(key = "home_all")
+                    HomeReadyMarker(homeViewModel)
+                    HomeScreenRoute(homeActions(nav) { profileMenu = true }, viewModel = homeViewModel)
+                }
                 entry<HomeTabRoute> { key -> HomeScreenRoute(homeActions(nav) { profileMenu = true }, tab = HomeTab.valueOf(key.tab)) }
                 entry<SearchRoute> {
                     SearchScreenRoute(
@@ -119,7 +131,10 @@ fun JazzyNavHost(startKey: NavKey, appViewModel: AppViewModel, pendingLink: Deta
                         ),
                     )
                 }
-                entry<PlayerRoute> { key -> PlayerScreenRoute(key.request, onBack = { nav.back() }) }
+                entry<PlayerRoute> { key ->
+                    PlayerFirstFrameMarker()
+                    PlayerScreenRoute(key.request, onBack = { nav.back() })
+                }
                 entry<SettingsRoute> {
                     SettingsScreenRoute(
                         onOpenSites = { nav.push(SitesSettingsRoute) },
@@ -151,6 +166,11 @@ private fun homeActions(nav: Navigator, openProfileMenu: () -> Unit) = HomeActio
 /** Thin wrapper over the Navigation 3 back stack. */
 class Navigator(private val backStack: NavBackStack<NavKey>) {
     fun push(key: NavKey) {
+        // Macrobenchmark markers (E16-02): ended when the first source row / first video frame shows.
+        when (key) {
+            is DetailsRoute -> PerfTrace.begin(PerfTrace.SOURCES_FIRST_ROW)
+            is PlayerRoute -> PerfTrace.begin(PerfTrace.PLAYER_FIRST_FRAME)
+        }
         backStack.add(key)
     }
 
@@ -181,13 +201,13 @@ private fun PhoneShell(current: NavKey?, nav: Navigator, content: @Composable (M
             if (showBar) {
                 NavigationBar(containerColor = JazzyColors.Surface) {
                     listOf(
-                        Triple<NavKey, String, androidx.compose.ui.graphics.vector.ImageVector>(HomeRoute, "Home", Icons.Filled.Home),
-                        Triple(SearchRoute, "Search", Icons.Filled.Search),
-                        Triple(DiscoverRoute, "Discover", Icons.Filled.Explore),
-                        Triple(LibraryRoute(), "Library", Icons.Filled.VideoLibrary),
+                        Triple<NavKey, Int, androidx.compose.ui.graphics.vector.ImageVector>(HomeRoute, R.string.app_nav_home, Icons.Filled.Home),
+                        Triple(SearchRoute, R.string.app_nav_search, Icons.Filled.Search),
+                        Triple(DiscoverRoute, R.string.app_nav_discover, Icons.Filled.Explore),
+                        Triple(LibraryRoute(), R.string.app_nav_library, Icons.Filled.VideoLibrary),
                     ).forEach { (key, label, icon) ->
                         val selected = current == key || (key is LibraryRoute && current is LibraryRoute)
-                        NavigationBarItem(selected = selected, onClick = { nav.navigateTopLevel(key) }, icon = { Icon(icon, null) }, label = { Text(label) })
+                        NavigationBarItem(selected = selected, onClick = { nav.navigateTopLevel(key) }, icon = { Icon(icon, null) }, label = { Text(stringResource(label)) })
                     }
                 }
             }
@@ -202,9 +222,9 @@ private fun PhoneShell(current: NavKey?, nav: Navigator, content: @Composable (M
 private fun ProfileMenu(onDismiss: () -> Unit, nav: Navigator) {
     ModalBottomSheet(onDismissRequest = onDismiss, containerColor = JazzyColors.Surface) {
         Column(Modifier.padding(bottom = 24.dp)) {
-            ListItem(headlineContent = { Text("Switch profile") }, modifier = Modifier.clickable { onDismiss(); nav.resetTo(ProfilePickerRoute) })
-            ListItem(headlineContent = { Text("Settings") }, modifier = Modifier.clickable { onDismiss(); nav.navigateTopLevel(SettingsRoute) })
-            ListItem(headlineContent = { Text("My List · Liked · History") }, modifier = Modifier.clickable { onDismiss(); nav.navigateTopLevel(LibraryRoute()) })
+            ListItem(headlineContent = { Text(stringResource(R.string.app_profile_menu_switch)) }, modifier = Modifier.clickable { onDismiss(); nav.resetTo(ProfilePickerRoute) })
+            ListItem(headlineContent = { Text(stringResource(R.string.app_profile_menu_settings)) }, modifier = Modifier.clickable { onDismiss(); nav.navigateTopLevel(SettingsRoute) })
+            ListItem(headlineContent = { Text(stringResource(R.string.app_profile_menu_library)) }, modifier = Modifier.clickable { onDismiss(); nav.navigateTopLevel(LibraryRoute()) })
         }
     }
 }

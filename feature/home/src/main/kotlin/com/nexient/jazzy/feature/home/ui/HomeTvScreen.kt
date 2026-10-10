@@ -31,6 +31,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.nexient.jazzy.core.designsystem.component.HeroBackdrop
 import com.nexient.jazzy.core.designsystem.component.HeroText
@@ -40,6 +41,7 @@ import com.nexient.jazzy.core.designsystem.theme.JazzyTheme
 import com.nexient.jazzy.feature.home.HomeActions
 import com.nexient.jazzy.feature.home.HomeUiState
 import com.nexient.jazzy.feature.home.HomeViewModel
+import com.nexient.jazzy.feature.home.R
 import com.nexient.jazzy.feature.home.snapshot
 import kotlinx.coroutines.launch
 
@@ -71,15 +73,15 @@ internal fun HomeTvScreen(state: HomeUiState, viewModel: HomeViewModel, actions:
                             Button(
                                 onClick = { actions.openTitle(hero.summary.ref, null, null, true) },
                                 colors = ButtonDefaults.buttonColors(containerColor = Color.White, contentColor = Color.Black),
-                            ) { Icon(Icons.Filled.PlayArrow, null); Text("Watch") }
+                            ) { Icon(Icons.Filled.PlayArrow, null); Text(stringResource(R.string.home_hero_watch)) }
                             OutlinedButton(onClick = { viewModel.toggleMyList(hero.summary.snapshot()) }) {
-                                Icon(if (inList) Icons.Filled.Check else Icons.Filled.Add, null); Text("My List")
+                                Icon(if (inList) Icons.Filled.Check else Icons.Filled.Add, null); Text(stringResource(R.string.home_hero_my_list))
                             }
                             OutlinedButton(onClick = { viewModel.toggleLike(hero.summary.snapshot()) }) {
                                 Icon(if (liked) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder, null, tint = if (liked) JazzyColors.Accent else Color.White)
-                                Text(if (liked) "Liked" else "Like")
+                                Text(stringResource(if (liked) R.string.home_hero_liked else R.string.home_hero_like))
                             }
-                            OutlinedButton(onClick = { actions.openTitle(hero.summary.ref, null, null, false) }) { Text("More Info") }
+                            OutlinedButton(onClick = { actions.openTitle(hero.summary.ref, null, null, false) }) { Text(stringResource(R.string.home_hero_more_info)) }
                         }
                     }
                 }

@@ -11,6 +11,7 @@ import com.nexient.jazzy.core.designsystem.theme.JazzyTheme
 import com.nexient.jazzy.navigation.DeepLinks
 import com.nexient.jazzy.navigation.DetailsRoute
 import com.nexient.jazzy.navigation.JazzyApp
+import com.nexient.jazzy.perf.PerfTrace
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -21,7 +22,10 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
-        if (savedInstanceState == null) pendingLink.value = DeepLinks.parse(intent?.data)
+        if (savedInstanceState == null) {
+            PerfTrace.begin(PerfTrace.HOME_FIRST_RAIL)
+            pendingLink.value = DeepLinks.parse(intent?.data)
+        }
         setContent {
             val formFactor = FormFactors.current(this, LocalConfiguration.current.screenWidthDp)
             JazzyTheme(formFactor) {

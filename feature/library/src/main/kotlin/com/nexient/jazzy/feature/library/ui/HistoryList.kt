@@ -54,6 +54,8 @@ import androidx.compose.ui.input.key.KeyEventType
 import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.onPreviewKeyEvent
 import androidx.compose.ui.input.key.type
+import androidx.compose.ui.res.pluralStringResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.CustomAccessibilityAction
 import androidx.compose.ui.semantics.customActions
 import androidx.compose.ui.semantics.heading
@@ -65,12 +67,14 @@ import com.nexient.jazzy.core.designsystem.component.FullScreenLoading
 import com.nexient.jazzy.core.designsystem.component.JazzyImage
 import com.nexient.jazzy.core.designsystem.component.MessageState
 import com.nexient.jazzy.core.designsystem.component.jazzyClickable
+import com.nexient.jazzy.core.designsystem.text.asString
 import com.nexient.jazzy.core.designsystem.theme.JazzyColors
 import com.nexient.jazzy.core.designsystem.theme.JazzyTheme
 import com.nexient.jazzy.core.model.TmdbImages
 import com.nexient.jazzy.feature.library.HistoryItem
 import com.nexient.jazzy.feature.library.LibraryUiState
 import com.nexient.jazzy.feature.library.LibraryViewModel
+import com.nexient.jazzy.feature.library.R
 import com.nexient.jazzy.feature.library.episodeLine
 import com.nexient.jazzy.feature.library.metaLine
 import com.nexient.jazzy.feature.library.progress
@@ -113,22 +117,22 @@ internal fun HistoryList(
             history.loading -> item(key = "loading") { FullScreenLoading(Modifier.height(240.dp)) }
             history.totalEntries == 0 -> item(key = "empty") {
                 MessageState(
-                    title = "No watch history yet",
-                    message = "Everything you play shows up here with where you stopped, so you can pick it up again.",
+                    title = stringResource(R.string.library_history_empty_title),
+                    message = stringResource(R.string.library_history_empty_message),
                     icon = Icons.Filled.History,
                 )
             }
             history.sections.isEmpty() -> item(key = "no_match") {
                 MessageState(
-                    title = "No history matches “${viewModel.historyQuery.trim()}”",
-                    message = "Try another title.",
+                    title = stringResource(R.string.library_history_no_match_title, viewModel.historyQuery.trim()),
+                    message = stringResource(R.string.library_history_no_match_message),
                     icon = Icons.Filled.SearchOff,
                 )
             }
             else -> history.sections.forEach { section ->
                 item(key = "day:${section.date}", contentType = "header") {
                     Text(
-                        section.label,
+                        section.label.asString(),
                         style = MaterialTheme.typography.titleMedium,
                         color = JazzyColors.TextSecondary,
                         modifier = Modifier.padding(top = 16.dp, bottom = 4.dp).semantics { heading() },
@@ -167,11 +171,11 @@ private fun HistoryToolbar(
         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.End), verticalAlignment = Alignment.CenterVertically) {
             OutlinedButton(onClick = onToggleSearch) {
                 Icon(if (searchOpen) Icons.Filled.Close else Icons.Filled.Search, null, Modifier.size(18.dp))
-                Text(if (searchOpen) "Close search" else "Search", Modifier.padding(start = 6.dp))
+                Text(stringResource(if (searchOpen) R.string.library_history_close_search else R.string.library_history_search), Modifier.padding(start = 6.dp))
             }
             OutlinedButton(onClick = onClearAll) {
                 Icon(Icons.Filled.DeleteSweep, null, Modifier.size(18.dp))
-                Text("Clear all history", Modifier.padding(start = 6.dp))
+                Text(stringResource(R.string.library_history_clear_all), Modifier.padding(start = 6.dp))
             }
         }
         if (searchOpen) {
@@ -179,9 +183,9 @@ private fun HistoryToolbar(
                 value = query,
                 onValueChange = onQueryChange,
                 modifier = Modifier.fillMaxWidth(),
-                placeholder = { Text("Search history by title") },
+                placeholder = { Text(stringResource(R.string.library_history_search_placeholder)) },
                 leadingIcon = { Icon(Icons.Filled.Search, null) },
-                trailingIcon = if (query.isNotEmpty()) ({ IconButton(onClick = { onQueryChange("") }) { Icon(Icons.Filled.Close, "Clear search") } }) else null,
+                trailingIcon = if (query.isNotEmpty()) ({ IconButton(onClick = { onQueryChange("") }) { Icon(Icons.Filled.Close, stringResource(R.string.library_history_clear_search)) } }) else null,
                 singleLine = true,
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
             )
@@ -202,7 +206,7 @@ private fun SwipeToRemove(onRemove: () -> Unit, content: @Composable () -> Unit)
                 Modifier.fillMaxSize().clip(RoundedCornerShape(8.dp)).background(JazzyColors.Poor).padding(horizontal = 20.dp),
                 contentAlignment = Alignment.CenterEnd,
             ) {
-                Icon(Icons.Filled.Delete, "Remove", tint = Color.White)
+                Icon(Icons.Filled.Delete, stringResource(R.string.library_history_remove), tint = Color.White)
             }
         },
     ) { content() }
@@ -223,6 +227,8 @@ private fun HistoryRow(
     val s = entry.snapshot
     var menu by remember { mutableStateOf(false) }
     val shape = RoundedCornerShape(8.dp)
+    val removeLabel = stringResource(R.string.library_history_remove_from_history)
+    val removeAllLabel = stringResource(R.string.library_history_remove_all_for_title)
     Column(Modifier.fillMaxWidth().background(JazzyColors.Background)) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Box(
@@ -240,8 +246,8 @@ private fun HistoryRow(
                         .jazzyClickable(shape, focusScale = 1.02f, onLongClick = { menu = true }, onClick = onOpen)
                         .semantics {
                             customActions = listOf(
-                                CustomAccessibilityAction("Remove from history") { onRemove(); true },
-                                CustomAccessibilityAction("Remove all for this title") { onRemoveAll(); true },
+                                CustomAccessibilityAction(removeLabel) { onRemove(); true },
+                                CustomAccessibilityAction(removeAllLabel) { onRemoveAll(); true },
                             )
                         }
                         .padding(vertical = 6.dp, horizontal = 4.dp),
@@ -268,36 +274,48 @@ private fun HistoryRow(
                         entry.episodeLine()?.let {
                             Text(it, style = MaterialTheme.typography.bodySmall, color = JazzyColors.TextSecondary, maxLines = 1, overflow = TextOverflow.Ellipsis)
                         }
-                        Text(entry.stoppedLine(), style = MaterialTheme.typography.bodySmall)
-                        Text(entry.metaLine(), style = MaterialTheme.typography.bodySmall, color = JazzyColors.TextTertiary, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                        Text(entry.stoppedLine().asString(), style = MaterialTheme.typography.bodySmall)
+                        Text(entry.metaLine().asString(), style = MaterialTheme.typography.bodySmall, color = JazzyColors.TextTertiary, maxLines = 1, overflow = TextOverflow.Ellipsis)
                         if (item.folded) {
-                            Text("Watched ${entry.sessionCount} times", style = MaterialTheme.typography.labelMedium, color = JazzyColors.Accent)
+                            Text(pluralStringResource(R.plurals.library_history_watched_times, entry.sessionCount, entry.sessionCount), style = MaterialTheme.typography.labelMedium, color = JazzyColors.Accent)
                         }
                     }
                 }
                 DropdownMenu(expanded = menu, onDismissRequest = { menu = false }) {
-                    DropdownMenuItem(text = { Text("Resume") }, onClick = { menu = false; onOpen() })
+                    DropdownMenuItem(text = { Text(stringResource(R.string.library_history_resume)) }, onClick = { menu = false; onOpen() })
                     if (item.folded) {
-                        DropdownMenuItem(text = { Text(if (expanded) "Hide sessions" else "Show sessions") }, onClick = { menu = false; onToggleExpand() })
+                        DropdownMenuItem(text = { Text(stringResource(if (expanded) R.string.library_history_hide_sessions else R.string.library_history_show_sessions)) }, onClick = { menu = false; onToggleExpand() })
                     }
                     DropdownMenuItem(
-                        text = { Text(if (item.folded) "Remove these ${entry.sessionCount} sessions" else "Remove from history") },
+                        text = {
+                            Text(
+                                if (item.folded) {
+                                    pluralStringResource(R.plurals.library_history_remove_sessions, entry.sessionCount, entry.sessionCount)
+                                } else {
+                                    removeLabel
+                                },
+                            )
+                        },
                         onClick = { menu = false; onRemove() },
                     )
-                    DropdownMenuItem(text = { Text("Remove all for this title") }, onClick = { menu = false; onRemoveAll() })
+                    DropdownMenuItem(text = { Text(removeAllLabel) }, onClick = { menu = false; onRemoveAll() })
                 }
             }
             if (item.folded) {
                 IconButton(onClick = onToggleExpand) {
                     Icon(
                         if (expanded) Icons.Filled.ExpandLess else Icons.Filled.ExpandMore,
-                        if (expanded) "Hide sessions" else "Show ${entry.sessionCount} sessions",
+                        if (expanded) {
+                            stringResource(R.string.library_history_hide_sessions)
+                        } else {
+                            pluralStringResource(R.plurals.library_history_show_n_sessions, entry.sessionCount, entry.sessionCount)
+                        },
                         tint = JazzyColors.TextSecondary,
                     )
                 }
             }
             if (!tv) {
-                IconButton(onClick = { menu = true }) { Icon(Icons.Filled.MoreVert, "More options for ${s.title}", tint = JazzyColors.TextSecondary) }
+                IconButton(onClick = { menu = true }) { Icon(Icons.Filled.MoreVert, stringResource(R.string.library_history_more_options, s.title), tint = JazzyColors.TextSecondary) }
             }
         }
         if (expanded && item.folded) SessionList(item, onRemoveSession)
@@ -312,16 +330,17 @@ private fun SessionList(item: HistoryItem, onRemoveSession: (Long) -> Unit) {
         item.sessions.forEach { session ->
             val started = java.time.Instant.ofEpochMilli(session.startedAt).atZone(java.time.ZoneId.systemDefault()).format(time)
             Row(verticalAlignment = Alignment.CenterVertically) {
+                val stopped = com.nexient.jazzy.core.common.formatDuration(session.stopPositionMs)
+                val watched = com.nexient.jazzy.core.common.formatDuration(session.watchedMs)
                 Text(
-                    "$started · stopped at ${com.nexient.jazzy.core.common.formatDuration(session.stopPositionMs)}" +
-                        " · watched ${com.nexient.jazzy.core.common.formatDuration(session.watchedMs)}" +
-                        (session.quality?.let { " · $it" } ?: ""),
+                    session.quality?.let { stringResource(R.string.library_history_session_quality, started, stopped, watched, it) }
+                        ?: stringResource(R.string.library_history_session, started, stopped, watched),
                     style = MaterialTheme.typography.bodySmall,
                     color = JazzyColors.TextSecondary,
                     modifier = Modifier.weight(1f),
                 )
                 IconButton(onClick = { onRemoveSession(session.id) }) {
-                    Icon(Icons.Filled.Close, "Remove this session", tint = JazzyColors.TextTertiary, modifier = Modifier.size(18.dp))
+                    Icon(Icons.Filled.Close, stringResource(R.string.library_history_remove_session), tint = JazzyColors.TextTertiary, modifier = Modifier.size(18.dp))
                 }
             }
         }

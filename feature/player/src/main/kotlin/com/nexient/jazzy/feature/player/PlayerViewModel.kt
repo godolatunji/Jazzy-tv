@@ -17,6 +17,7 @@ import com.nexient.jazzy.core.data.library.NextEpisodeResolver
 import com.nexient.jazzy.core.data.library.SourceRef
 import com.nexient.jazzy.core.data.profile.ProfileRepository
 import com.nexient.jazzy.core.data.sources.SourceRepository
+import com.nexient.jazzy.core.designsystem.text.UiText
 import com.nexient.jazzy.core.model.Episode
 import com.nexient.jazzy.core.model.MediaType
 import com.nexient.jazzy.core.model.PlayableRef
@@ -55,7 +56,7 @@ enum class PlayerPhase { CONNECTING, BUFFERING, PLAYING, ENDED, ERROR }
 
 enum class PlayerPanel { NONE, SOURCES, EPISODES, TRACKS }
 
-data class PlayerError(val message: String, val canTryNext: Boolean, val suggestHideUnsupported: Boolean = false)
+data class PlayerError(val message: UiText, val canTryNext: Boolean, val suggestHideUnsupported: Boolean = false)
 
 data class NextEpisodeCountdown(val playable: PlayableRef, val title: String?, val secondsLeft: Int, val sameTorrent: Boolean)
 
@@ -104,7 +105,7 @@ data class OnlineSubtitlesState(
     val applying: Int? = null,
     val applied: com.nexient.jazzy.core.data.subtitles.OnlineSubtitle? = null,
     val offsetMs: Long = 0,
-    val error: String? = null,
+    val error: UiText? = null,
 )
 
 @OptIn(UnstableApi::class)
@@ -152,6 +153,7 @@ class PlayerViewModel @AssistedInject constructor(
         override fun onPlaybackStateChanged(playbackState: Int) {
             when (playbackState) {
                 Player.STATE_READY -> {
+                    if (_state.value.firstFrameMs == null) android.util.Log.i("JazzyMetrics", "first_frame ttffMs=${SystemClock.elapsedRealtime() - openStartedAt} metadataMs=${_state.value.metadataMs} file=${_state.value.fileName} stats=${_state.value.stats}") // E16-03
                     if (_state.value.firstFrameMs == null) _state.update { it.copy(firstFrameMs = SystemClock.elapsedRealtime() - openStartedAt) }
                     _state.update { it.copy(phase = PlayerPhase.PLAYING, durationMs = player.duration.coerceAtLeast(0)) }
                     stream?.let { s -> if (player.duration > 0) files.setDurationHint(s.infoHash, player.duration) }
@@ -201,7 +203,7 @@ class PlayerViewModel @AssistedInject constructor(
             startSession(request, startPositionMs)
             val source = request.source
             val magnet = source.magnet ?: runCatching { sourcesRepo.resolveMagnet(source) }.getOrElse {
-                fail(PlayerError("Couldn't get the link from ${source.providerNames.firstOrNull() ?: "the site"}.", canTryNext = true)); return@launch
+                fail(PlayerError(UiText.Res(R.string.player_error_resolve_link, source.providerNames.firstOrNull() ?: UiText.Res(R.string.player_error_the_site)), canTryNext = true)); return@launch
             }
             try {
                 val s = engine.open(
@@ -240,11 +242,11 @@ class PlayerViewModel @AssistedInject constructor(
                 fail(
                     PlayerError(
                         when (e.failure) {
-                            StreamFailure.METADATA_TIMEOUT -> "This link isn't responding."
-                            StreamFailure.TITLE_MISMATCH -> "This link doesn't match ${request.snapshot.title}. It has been flagged."
-                            StreamFailure.NO_VIDEO_FILE -> "This link has no playable video."
-                            StreamFailure.NETWORK_NOT_ALLOWED -> "Streaming is set to Wi-Fi only, and you're on a metered connection. Change it in Settings → Network & storage."
-                            StreamFailure.ENGINE_ERROR -> "The streaming engine failed: ${e.message ?: "unknown error"}"
+                            StreamFailure.METADATA_TIMEOUT -> UiText.Res(R.string.player_error_metadata_timeout)
+                            StreamFailure.TITLE_MISMATCH -> UiText.Res(R.string.player_error_title_mismatch, request.snapshot.title)
+                            StreamFailure.NO_VIDEO_FILE -> UiText.Res(R.string.player_error_no_video)
+                            StreamFailure.NETWORK_NOT_ALLOWED -> UiText.Res(R.string.player_error_network_not_allowed)
+                            StreamFailure.ENGINE_ERROR -> UiText.Res(R.string.player_error_engine, e.message ?: UiText.Res(R.string.player_error_unknown))
                         },
                         canTryNext = e.failure != StreamFailure.NETWORK_NOT_ALLOWED,
                     ),
@@ -512,9 +514,9 @@ class PlayerViewModel @AssistedInject constructor(
         fail(
             PlayerError(
                 when {
-                    decoder -> "This device can't decode this video or audio format. Try a different source."
-                    corrupt -> "This file looks broken. It has been flagged; try another source."
-                    else -> "Playback failed: ${error.errorCodeName}"
+                    decoder -> UiText.Res(R.string.player_error_decoder)
+                    corrupt -> UiText.Res(R.string.player_error_corrupt)
+                    else -> UiText.Res(R.string.player_error_playback_failed, error.errorCodeName)
                 },
                 canTryNext = true,
                 suggestHideUnsupported = decoder,
@@ -554,11 +556,14 @@ class PlayerViewModel @AssistedInject constructor(
     fun searchOnlineSubtitles() {
         val req = _state.value.request
         val imdb = req.snapshot.imdbId
+        if (imdb == null) {
+            _state.update { it.copy(onlineSubtitles = it.onlineSubtitles.copy(searching = false, results = null, error = UiText.Res(R.string.player_online_subtitles_no_imdb))) }
+            return
+        }
         _state.update { it.copy(onlineSubtitles = it.onlineSubtitles.copy(searching = true, error = null)) }
         viewModelScope.launch {
             val langs = listOfNotNull(profile?.subtitleLanguage?.substringBefore('-'), profile?.language?.substringBefore('-'), "en").distinct()
             val result = runCatching {
-                if (imdb == null) throw com.nexient.jazzy.core.data.subtitles.SubtitleException("This title has no IMDb ID, so subtitles can't be looked up.")
                 subtitles.search(
                     imdb,
                     req.playable.season.takeIf { req.playable.isEpisode },
@@ -571,7 +576,7 @@ class PlayerViewModel @AssistedInject constructor(
                     onlineSubtitles = it.onlineSubtitles.copy(
                         searching = false,
                         results = result.getOrNull(),
-                        error = result.exceptionOrNull()?.let { e -> e.message ?: "Subtitle search failed." },
+                        error = result.exceptionOrNull()?.let { e -> e.message?.let(UiText::Raw) ?: UiText.Res(R.string.player_online_subtitles_search_failed) },
                     ),
                 )
             }
@@ -587,7 +592,7 @@ class PlayerViewModel @AssistedInject constructor(
                     _state.update { it.copy(onlineSubtitles = it.onlineSubtitles.copy(applying = null, applied = sub, offsetMs = 0)) }
                     attachSubtitle(file, sub.language)
                 }
-                .onFailure { e -> _state.update { it.copy(onlineSubtitles = it.onlineSubtitles.copy(applying = null, error = e.message)) } }
+                .onFailure { e -> _state.update { it.copy(onlineSubtitles = it.onlineSubtitles.copy(applying = null, error = e.message?.let(UiText::Raw))) } }
         }
     }
 
