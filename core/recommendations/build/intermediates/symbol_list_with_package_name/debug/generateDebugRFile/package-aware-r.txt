@@ -1,1 +1,0 @@
-com.nexient.jazzy.core.recommendations

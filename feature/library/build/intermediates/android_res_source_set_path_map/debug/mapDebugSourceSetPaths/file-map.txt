@@ -1,9 +1,0 @@
-com.nexient.jazzy.feature.library-pngs-0 /Users/olatunji/AndroidStudioProjects/Jazzy/feature/library/build/generated/res/pngs/debug
-com.nexient.jazzy.feature.library-updated_navigation_xml-1 /Users/olatunji/AndroidStudioProjects/Jazzy/feature/library/build/generated/updated_navigation_xml/debug
-com.nexient.jazzy.feature.library-mergeDebugResources-2 /Users/olatunji/AndroidStudioProjects/Jazzy/feature/library/build/intermediates/incremental/debug/mergeDebugResources/merged.dir
-com.nexient.jazzy.feature.library-mergeDebugResources-3 /Users/olatunji/AndroidStudioProjects/Jazzy/feature/library/build/intermediates/incremental/debug/mergeDebugResources/stripped.dir
-com.nexient.jazzy.feature.library-debug-4 /Users/olatunji/AndroidStudioProjects/Jazzy/feature/library/build/intermediates/merged_res/debug/mergeDebugResources
-com.nexient.jazzy.feature.library-debug-5 /Users/olatunji/AndroidStudioProjects/Jazzy/feature/library/build/intermediates/packaged_res/debug/packageDebugResources
-com.nexient.jazzy.feature.library-debug-6 /Users/olatunji/AndroidStudioProjects/Jazzy/feature/library/src/debug/res
-com.nexient.jazzy.feature.library-main-7 /Users/olatunji/AndroidStudioProjects/Jazzy/feature/library/src/main/res
-gradleHome-0 /Users/olatunji/.gradle

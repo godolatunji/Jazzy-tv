@@ -1,9 +1,0 @@
-com.nexient.jazzy.core.recommendations-pngs-0 /Users/olatunji/AndroidStudioProjects/Jazzy/core/recommendations/build/generated/res/pngs/debug
-com.nexient.jazzy.core.recommendations-updated_navigation_xml-1 /Users/olatunji/AndroidStudioProjects/Jazzy/core/recommendations/build/generated/updated_navigation_xml/debug
-com.nexient.jazzy.core.recommendations-mergeDebugResources-2 /Users/olatunji/AndroidStudioProjects/Jazzy/core/recommendations/build/intermediates/incremental/debug/mergeDebugResources/merged.dir
-com.nexient.jazzy.core.recommendations-mergeDebugResources-3 /Users/olatunji/AndroidStudioProjects/Jazzy/core/recommendations/build/intermediates/incremental/debug/mergeDebugResources/stripped.dir
-com.nexient.jazzy.core.recommendations-debug-4 /Users/olatunji/AndroidStudioProjects/Jazzy/core/recommendations/build/intermediates/merged_res/debug/mergeDebugResources
-com.nexient.jazzy.core.recommendations-debug-5 /Users/olatunji/AndroidStudioProjects/Jazzy/core/recommendations/build/intermediates/packaged_res/debug/packageDebugResources
-com.nexient.jazzy.core.recommendations-debug-6 /Users/olatunji/AndroidStudioProjects/Jazzy/core/recommendations/src/debug/res
-com.nexient.jazzy.core.recommendations-main-7 /Users/olatunji/AndroidStudioProjects/Jazzy/core/recommendations/src/main/res
-gradleHome-0 /Users/olatunji/.gradle

@@ -1,4 +1,0 @@
-com.nexient.jazzy.core.common.test.common-mergeDebugUnitTestResources-0 /Users/olatunji/AndroidStudioProjects/Jazzy/core/common/build/intermediates/incremental/debugUnitTest/mergeDebugUnitTestResources/merged.dir
-com.nexient.jazzy.core.common.test.common-mergeDebugUnitTestResources-1 /Users/olatunji/AndroidStudioProjects/Jazzy/core/common/build/intermediates/incremental/debugUnitTest/mergeDebugUnitTestResources/stripped.dir
-com.nexient.jazzy.core.common.test.common-debugUnitTest-2 /Users/olatunji/AndroidStudioProjects/Jazzy/core/common/build/intermediates/merged_res/debugUnitTest/mergeDebugUnitTestResources
-gradleHome-0 /Users/olatunji/.gradle

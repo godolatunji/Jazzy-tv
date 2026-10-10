@@ -1,1 +1,0 @@
--keep,allowobfuscation,allowshrinking class com.nexient.jazzy.feature.search.PersonViewModel
