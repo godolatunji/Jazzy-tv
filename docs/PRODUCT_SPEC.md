@@ -3,7 +3,7 @@
 | | |
 |---|---|
 | **Product** | Jazzy: a movie and TV show discovery and streaming app for Android phones and Android TV |
-| **Status** | Draft v0.4 |
+| **Status** | Draft v0.5 |
 | **Date** | 2026-10-10 |
 | **Platforms** | Android phone/tablet (minSdk 34) and Android TV / Google TV (minSdk 34), from a single codebase |
 | **Metadata source** | TMDB API v3 — https://developer.themoviedb.org/reference/getting-started |
@@ -17,6 +17,7 @@
 | 0.2 | **Sources on Details:** opening a title lists every magnet link with seeds, sorted by seeders. **Play** sits on each magnet row, and auto-pick is removed. **Local SQLite** stores play history, stop times and resume points, and caches recent TMDB fetches and general app data. **Like** button and **Liked** list (they replace My List). **History** screen. **Recommendations** from watch history, scored by TMDB genres. **Episodes side panel** for TV shows on the Details page and in the player. |
 | 0.3 | **My List restored** next to Liked. My List is the "save to watch later" list. Liked records titles the user enjoyed and feeds recommendations. |
 | 0.4 | **Built-in torrent-site providers** replace user-run Torznab indexers. Jazzy searches torrent sites directly, using the provider engine from the `TorrentSearch` project. Public sites are enabled by default, so sources appear with **no setup**. Adds per-site settings (enable, mirror URL, login/cookies), lazy magnet resolution, cross-site de-duplication and magnet verification. Torznab becomes an optional P1 provider. |
+| 0.5 | Continue Watching shows any started, unfinished title (≥ 30 s). DTS/TrueHD software decoding via an LGPL FFmpeg build. OpenSubtitles, Baseline Profiles and string resources implemented. New app icon. |
 
 ---
 
@@ -247,7 +248,7 @@ My List is the "save to watch later" list. It's separate from Liked, which recor
 | RS-1 | One resume point per (profile, title) for movies and per (profile, show, season, episode) for episodes. It stores **position, duration, last source (info-hash + file index + release name) and an updated timestamp**. |
 | RS-2 | The position is written to SQLite **every 10 s during playback** and right away on pause, seek, source switch, `onStop` and player close, so a crash or a killed process loses at most 10 s. |
 | RS-3 | A title or episode counts as **watched** at ≥ 90% (or at the start of the end credits, if detected). It then leaves Continue Watching. For shows, the **next episode** takes its place with position 0. |
-| RS-4 | Continue Watching shows items with ≥ 2 min **and** ≥ 3% progress that aren't watched yet, newest first, capped at 20. |
+| RS-4 | Continue Watching shows **every title that was started and not finished**: at least 30 s in and under the 90% watched mark, newest first, capped at 20. It is the first row on Home (all tabs, phone and TV). |
 | RS-5 | Resume works with **any** source, because the position is stored as time, not bytes. If the user picks a different source, they're asked "Resume from 42:13 / Start over". |
 | RS-6 | "Mark as watched / unwatched" on cards and episode rows updates the resume point without creating a history entry. |
 

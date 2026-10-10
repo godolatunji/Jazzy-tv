@@ -89,9 +89,9 @@ class CacheFirstTest {
     fun watchRulesMatchTheSpec() {
         assertThat(WatchRules.isWatched(90, 100)).isTrue()
         assertThat(WatchRules.isWatched(89, 100)).isFalse()
-        // ≥ 2 min and ≥ 3 %, not finished (RS-4)
-        assertThat(WatchRules.qualifiesForContinue(60_000, 3_600_000)).isFalse()
-        assertThat(WatchRules.qualifiesForContinue(150_000, 3_600_000)).isTrue()
+        // Started (≥ 30 s) and not finished (RS-4)
+        assertThat(WatchRules.qualifiesForContinue(20_000, 3_600_000)).isFalse()
+        assertThat(WatchRules.qualifiesForContinue(60_000, 3_600_000)).isTrue()
         assertThat(WatchRules.qualifiesForContinue(150_000, 160_000)).isFalse()
     }
 }

@@ -104,8 +104,8 @@ data class HistoryEntry(
 /** Thresholds from spec RS-3 / RS-4 / HS-2. */
 object WatchRules {
     const val WATCHED_FRACTION = 0.90f
-    const val CONTINUE_MIN_MS = 2 * 60 * 1000L
-    const val CONTINUE_MIN_FRACTION = 0.03f
+    /** Anything started (≥ 30 s in) and not finished shows in Continue Watching (RS-4, v0.5). */
+    const val CONTINUE_MIN_MS = 30 * 1000L
     const val CONTINUE_MAX_ITEMS = 20
     const val HISTORY_MIN_WATCHED_MS = 10 * 1000L
     const val PROGRESS_TICK_MS = 10 * 1000L
@@ -114,6 +114,5 @@ object WatchRules {
         durationMs > 0 && positionMs.toFloat() / durationMs >= WATCHED_FRACTION
 
     fun qualifiesForContinue(positionMs: Long, durationMs: Long) =
-        positionMs >= CONTINUE_MIN_MS && durationMs > 0 &&
-            positionMs.toFloat() / durationMs >= CONTINUE_MIN_FRACTION && !isWatched(positionMs, durationMs)
+        positionMs >= CONTINUE_MIN_MS && durationMs > 0 && !isWatched(positionMs, durationMs)
 }
