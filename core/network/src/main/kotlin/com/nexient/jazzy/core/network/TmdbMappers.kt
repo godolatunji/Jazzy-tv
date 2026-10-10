@@ -57,7 +57,7 @@ fun DetailsDto.toDetails(type: MediaType, region: String, language: String): Tit
     )
     val lang = language.substringBefore('-')
     val logo = images?.logos.orEmpty()
-        .filter { it.filePath != null && (it.language == lang || it.language == "en" || it.language == null) }
+        .filter { it.filePath != null && !it.filePath.endsWith(".svg", ignoreCase = true) && (it.language == lang || it.language == "en" || it.language == null) }
         .sortedWith(compareBy<ImageDto> { if (it.language == lang) 0 else if (it.language == "en") 1 else 2 }.thenByDescending { it.voteAverage ?: 0.0 })
         .firstOrNull()?.filePath
     val trailer = videos?.results.orEmpty()

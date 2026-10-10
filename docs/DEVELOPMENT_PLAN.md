@@ -965,6 +965,14 @@ Likelihood and impact: H = high, M = medium, L = low.
 
 Each decision, once made, is recorded with its date, decider and rationale. ADRs are updated where relevant.
 
+**Decided so far**
+| ID | Decision | Date | By |
+|---|---|---|---|
+| D3 | Application ID and package `com.nexient.jazzy` | 2026-10-10 | PO |
+| D12 | `minSdk` 28 | 2026-10-10 | PO |
+| G1 | **Conditional go.** Spike on a 16 KB-page arm64 emulator: metadata p50 2–3 s, TTFF p50 14.9 s (Sintel) / 17.4 s (Big Buck Bunny), seek p50 7.1 s / 12.4 s. Big Buck Bunny's seek misses the 8 s threshold, so scheduler tuning gets +3 d from contingency (§10.4). Only 4 runs on one emulator; the 20-run device protocol is still owed. | 2026-10-11 | Tech lead |
+| E10-11 | Software DTS/TrueHD decoding deferred. The only published Media3 FFmpeg decoder (Jellyfin) is GPL-3.0 and built for an older Media3, which breaks the LGPL-only rule (§11). Until an LGPL build exists, DTS/TrueHD rows get the "may not play" badge unless the device passes them through. | 2026-10-11 | Tech lead |
+
 ---
 
 ## 18. External dependencies
