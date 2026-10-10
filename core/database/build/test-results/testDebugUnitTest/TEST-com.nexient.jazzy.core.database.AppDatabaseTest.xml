@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.nexient.jazzy.core.database.AppDatabaseTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2026-10-10T21:59:41.108Z" hostname="Olatunjis-MacBook-Pro.local" time="29.55">
+  <properties/>
+  <testcase name="genreListRoundTripsThroughConverter" classname="com.nexient.jazzy.core.database.AppDatabaseTest" time="3.787"/>
+  <testcase name="latestProgressPerTitleReturnsNewestEpisodeOnly" classname="com.nexient.jazzy.core.database.AppDatabaseTest" time="0.029"/>
+  <testcase name="unreferencedSnapshotsAreRemovedButReferencedOnesKept" classname="com.nexient.jazzy.core.database.AppDatabaseTest" time="0.023"/>
+  <testcase name="deletingProfileCascadesToItsDataOnly" classname="com.nexient.jazzy.core.database.AppDatabaseTest" time="0.023"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
