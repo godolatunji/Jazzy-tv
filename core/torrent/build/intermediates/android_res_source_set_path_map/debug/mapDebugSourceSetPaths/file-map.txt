@@ -1,0 +1,9 @@
+com.nexient.jazzy.core.torrent-pngs-0 /Users/olatunji/AndroidStudioProjects/Jazzy/core/torrent/build/generated/res/pngs/debug
+com.nexient.jazzy.core.torrent-updated_navigation_xml-1 /Users/olatunji/AndroidStudioProjects/Jazzy/core/torrent/build/generated/updated_navigation_xml/debug
+com.nexient.jazzy.core.torrent-mergeDebugResources-2 /Users/olatunji/AndroidStudioProjects/Jazzy/core/torrent/build/intermediates/incremental/debug/mergeDebugResources/merged.dir
+com.nexient.jazzy.core.torrent-mergeDebugResources-3 /Users/olatunji/AndroidStudioProjects/Jazzy/core/torrent/build/intermediates/incremental/debug/mergeDebugResources/stripped.dir
+com.nexient.jazzy.core.torrent-debug-4 /Users/olatunji/AndroidStudioProjects/Jazzy/core/torrent/build/intermediates/merged_res/debug/mergeDebugResources
+com.nexient.jazzy.core.torrent-debug-5 /Users/olatunji/AndroidStudioProjects/Jazzy/core/torrent/build/intermediates/packaged_res/debug/packageDebugResources
+com.nexient.jazzy.core.torrent-debug-6 /Users/olatunji/AndroidStudioProjects/Jazzy/core/torrent/src/debug/res
+com.nexient.jazzy.core.torrent-main-7 /Users/olatunji/AndroidStudioProjects/Jazzy/core/torrent/src/main/res
+gradleHome-0 /Users/olatunji/.gradle

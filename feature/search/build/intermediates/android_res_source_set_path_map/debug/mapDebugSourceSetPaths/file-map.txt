@@ -1,0 +1,9 @@
+com.nexient.jazzy.feature.search-pngs-0 /Users/olatunji/AndroidStudioProjects/Jazzy/feature/search/build/generated/res/pngs/debug
+com.nexient.jazzy.feature.search-updated_navigation_xml-1 /Users/olatunji/AndroidStudioProjects/Jazzy/feature/search/build/generated/updated_navigation_xml/debug
+com.nexient.jazzy.feature.search-mergeDebugResources-2 /Users/olatunji/AndroidStudioProjects/Jazzy/feature/search/build/intermediates/incremental/debug/mergeDebugResources/merged.dir
+com.nexient.jazzy.feature.search-mergeDebugResources-3 /Users/olatunji/AndroidStudioProjects/Jazzy/feature/search/build/intermediates/incremental/debug/mergeDebugResources/stripped.dir
+com.nexient.jazzy.feature.search-debug-4 /Users/olatunji/AndroidStudioProjects/Jazzy/feature/search/build/intermediates/merged_res/debug/mergeDebugResources
+com.nexient.jazzy.feature.search-debug-5 /Users/olatunji/AndroidStudioProjects/Jazzy/feature/search/build/intermediates/packaged_res/debug/packageDebugResources
+com.nexient.jazzy.feature.search-debug-6 /Users/olatunji/AndroidStudioProjects/Jazzy/feature/search/src/debug/res
+com.nexient.jazzy.feature.search-main-7 /Users/olatunji/AndroidStudioProjects/Jazzy/feature/search/src/main/res
+gradleHome-0 /Users/olatunji/.gradle

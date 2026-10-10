@@ -1,0 +1,16 @@
+-- Merging decision tree log ---
+manifest
+ADDED from /Users/olatunji/AndroidStudioProjects/Jazzy/core/model/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest12150946714927939605.xml:2:13-83
+INJECTED from /Users/olatunji/AndroidStudioProjects/Jazzy/core/model/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest12150946714927939605.xml:2:13-83
+	package
+		INJECTED from /Users/olatunji/AndroidStudioProjects/Jazzy/core/model/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest12150946714927939605.xml
+	xmlns:android
+		ADDED from /Users/olatunji/AndroidStudioProjects/Jazzy/core/model/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest12150946714927939605.xml:2:23-81
+uses-sdk
+INJECTED from /Users/olatunji/AndroidStudioProjects/Jazzy/core/model/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest12150946714927939605.xml reason: use-sdk injection requested
+INJECTED from /Users/olatunji/AndroidStudioProjects/Jazzy/core/model/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest12150946714927939605.xml
+INJECTED from /Users/olatunji/AndroidStudioProjects/Jazzy/core/model/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest12150946714927939605.xml
+	android:targetSdkVersion
+		INJECTED from /Users/olatunji/AndroidStudioProjects/Jazzy/core/model/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest12150946714927939605.xml
+	android:minSdkVersion
+		INJECTED from /Users/olatunji/AndroidStudioProjects/Jazzy/core/model/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest12150946714927939605.xml

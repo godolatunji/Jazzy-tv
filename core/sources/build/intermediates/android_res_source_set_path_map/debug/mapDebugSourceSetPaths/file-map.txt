@@ -1,0 +1,9 @@
+com.nexient.jazzy.core.sources-pngs-0 /Users/olatunji/AndroidStudioProjects/Jazzy/core/sources/build/generated/res/pngs/debug
+com.nexient.jazzy.core.sources-updated_navigation_xml-1 /Users/olatunji/AndroidStudioProjects/Jazzy/core/sources/build/generated/updated_navigation_xml/debug
+com.nexient.jazzy.core.sources-mergeDebugResources-2 /Users/olatunji/AndroidStudioProjects/Jazzy/core/sources/build/intermediates/incremental/debug/mergeDebugResources/merged.dir
+com.nexient.jazzy.core.sources-mergeDebugResources-3 /Users/olatunji/AndroidStudioProjects/Jazzy/core/sources/build/intermediates/incremental/debug/mergeDebugResources/stripped.dir
+com.nexient.jazzy.core.sources-debug-4 /Users/olatunji/AndroidStudioProjects/Jazzy/core/sources/build/intermediates/merged_res/debug/mergeDebugResources
+com.nexient.jazzy.core.sources-debug-5 /Users/olatunji/AndroidStudioProjects/Jazzy/core/sources/build/intermediates/packaged_res/debug/packageDebugResources
+com.nexient.jazzy.core.sources-debug-6 /Users/olatunji/AndroidStudioProjects/Jazzy/core/sources/src/debug/res
+com.nexient.jazzy.core.sources-main-7 /Users/olatunji/AndroidStudioProjects/Jazzy/core/sources/src/main/res
+gradleHome-0 /Users/olatunji/.gradle
