@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="player_online_subtitles">Find subtitles online</string>
+    <string name="player_online_subtitles_not_configured">Online subtitles need an OpenSubtitles API key. Add OPENSUBTITLES_API_KEY to local.properties and rebuild.</string>
+    <string name="player_online_subtitles_search">Search OpenSubtitles</string>
+    <string name="player_online_subtitles_searching">Searching…</string>
+    <string name="player_online_subtitles_none">No subtitles found in your languages.</string>
+    <string name="player_online_subtitles_using">Using: %1$s</string>
+    <string name="player_online_subtitles_downloads">%1$d downloads</string>
+    <string name="player_online_subtitles_hi">Hearing impaired</string>
+    <string name="player_online_subtitles_machine">Machine translated</string>
+    <string name="player_subtitle_earlier">−0.5 s</string>
+    <string name="player_subtitle_later">+0.5 s</string>
+</resources>

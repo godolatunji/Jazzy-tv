@@ -13,12 +13,20 @@ val tmdbToken: String = Properties().apply {
     ?: System.getenv("TMDB_TOKEN")
     ?: ""
 
+// OpenSubtitles.com consumer API key (optional; online subtitles are disabled without it).
+val openSubtitlesKey: String = Properties().apply {
+    rootProject.file("local.properties").takeIf { it.exists() }?.inputStream()?.use { load(it) }
+}.getProperty("OPENSUBTITLES_API_KEY")?.trim()?.removeSurrounding("\"")
+    ?: System.getenv("OPENSUBTITLES_API_KEY")
+    ?: ""
+
 android {
     buildFeatures {
         buildConfig = true
     }
     defaultConfig {
         buildConfigField("String", "TMDB_TOKEN", "\"$tmdbToken\"")
+        buildConfigField("String", "OPENSUBTITLES_API_KEY", "\"$openSubtitlesKey\"")
     }
 }
 

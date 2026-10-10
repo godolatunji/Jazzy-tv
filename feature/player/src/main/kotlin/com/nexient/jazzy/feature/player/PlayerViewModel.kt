@@ -90,10 +90,22 @@ data class PlayerUiState(
     val finished: Boolean = false,
     val metadataMs: Long? = null,
     val firstFrameMs: Long? = null,
+    val onlineSubtitles: OnlineSubtitlesState = OnlineSubtitlesState(),
 ) {
     val title: String get() = request.snapshot.title
     val subtitle: String? get() = request.playable.label?.let { listOfNotNull(it, request.episodeTitle).joinToString(" · ") }
 }
+
+/** OpenSubtitles search/apply state for the Tracks panel (PL-8). */
+data class OnlineSubtitlesState(
+    val configured: Boolean = false,
+    val searching: Boolean = false,
+    val results: List<com.nexient.jazzy.core.data.subtitles.OnlineSubtitle>? = null,
+    val applying: Int? = null,
+    val applied: com.nexient.jazzy.core.data.subtitles.OnlineSubtitle? = null,
+    val offsetMs: Long = 0,
+    val error: String? = null,
+)
 
 @OptIn(UnstableApi::class)
 @HiltViewModel(assistedFactory = PlayerViewModel.Factory::class)
@@ -108,6 +120,7 @@ class PlayerViewModel @AssistedInject constructor(
     private val profiles: ProfileRepository,
     private val nextEpisodes: NextEpisodeResolver,
     private val loopback: com.nexient.jazzy.core.torrent.LoopbackStreamServer,
+    private val subtitles: com.nexient.jazzy.core.data.subtitles.SubtitleRepository,
 ) : ViewModel() {
 
     @AssistedFactory
@@ -115,7 +128,8 @@ class PlayerViewModel @AssistedInject constructor(
         fun create(request: PlaybackRequest): PlayerViewModel
     }
 
-    private val _state = MutableStateFlow(PlayerUiState(initial))
+    private val _state = MutableStateFlow(PlayerUiState(initial, onlineSubtitles = OnlineSubtitlesState(configured = subtitles.isConfigured)))
+    private var subtitleFile: java.io.File? = null
     val state: StateFlow<PlayerUiState> = _state.asStateFlow()
 
     val player: Player get() = holder.get()
@@ -533,6 +547,78 @@ class PlayerViewModel @AssistedInject constructor(
         if (sessionId != null) exit()
         holder.release()
         super.onCleared()
+    }
+
+    // ---- Online subtitles (OpenSubtitles, PL-8) ----------------------------------------------
+
+    fun searchOnlineSubtitles() {
+        val req = _state.value.request
+        val imdb = req.snapshot.imdbId
+        _state.update { it.copy(onlineSubtitles = it.onlineSubtitles.copy(searching = true, error = null)) }
+        viewModelScope.launch {
+            val langs = listOfNotNull(profile?.subtitleLanguage?.substringBefore('-'), profile?.language?.substringBefore('-'), "en").distinct()
+            val result = runCatching {
+                if (imdb == null) throw com.nexient.jazzy.core.data.subtitles.SubtitleException("This title has no IMDb ID, so subtitles can't be looked up.")
+                subtitles.search(
+                    imdb,
+                    req.playable.season.takeIf { req.playable.isEpisode },
+                    req.playable.episode.takeIf { req.playable.isEpisode },
+                    langs,
+                )
+            }
+            _state.update {
+                it.copy(
+                    onlineSubtitles = it.onlineSubtitles.copy(
+                        searching = false,
+                        results = result.getOrNull(),
+                        error = result.exceptionOrNull()?.let { e -> e.message ?: "Subtitle search failed." },
+                    ),
+                )
+            }
+        }
+    }
+
+    fun applyOnlineSubtitle(sub: com.nexient.jazzy.core.data.subtitles.OnlineSubtitle) {
+        _state.update { it.copy(onlineSubtitles = it.onlineSubtitles.copy(applying = sub.fileId, error = null)) }
+        viewModelScope.launch {
+            runCatching { subtitles.download(sub.fileId) }
+                .onSuccess { file ->
+                    subtitleFile = file
+                    _state.update { it.copy(onlineSubtitles = it.onlineSubtitles.copy(applying = null, applied = sub, offsetMs = 0)) }
+                    attachSubtitle(file, sub.language)
+                }
+                .onFailure { e -> _state.update { it.copy(onlineSubtitles = it.onlineSubtitles.copy(applying = null, error = e.message)) } }
+        }
+    }
+
+    /** Sync offset control: positive delays subtitles, negative shows them earlier. */
+    fun adjustSubtitleOffset(deltaMs: Long) {
+        val file = subtitleFile ?: return
+        val sub = _state.value.onlineSubtitles.applied ?: return
+        val offset = _state.value.onlineSubtitles.offsetMs + deltaMs
+        _state.update { it.copy(onlineSubtitles = it.onlineSubtitles.copy(offsetMs = offset)) }
+        viewModelScope.launch {
+            runCatching { subtitles.shifted(file, offset) }.onSuccess { attachSubtitle(it, sub.language) }
+        }
+    }
+
+    private fun attachSubtitle(file: java.io.File, language: String) {
+        val current = player.currentMediaItem ?: return
+        val position = player.currentPosition
+        val config = MediaItem.SubtitleConfiguration.Builder(android.net.Uri.fromFile(file))
+            .setMimeType(androidx.media3.common.MimeTypes.APPLICATION_SUBRIP)
+            .setLanguage(language)
+            .setSelectionFlags(androidx.media3.common.C.SELECTION_FLAG_DEFAULT or androidx.media3.common.C.SELECTION_FLAG_FORCED)
+            .setId("online:${file.name}")
+            .build()
+        val playWhenReady = player.playWhenReady
+        player.setMediaItem(current.buildUpon().setSubtitleConfigurations(listOf(config)).build(), position)
+        player.prepare()
+        player.trackSelectionParameters = player.trackSelectionParameters.buildUpon()
+            .setTrackTypeDisabled(androidx.media3.common.C.TRACK_TYPE_TEXT, false)
+            .setPreferredTextLanguage(language)
+            .build()
+        player.playWhenReady = playWhenReady
     }
 
     /** "Open in external player" (spec §5.9.2): a tokenised 127.0.0.1 URL with Range support. Pauses our player. */

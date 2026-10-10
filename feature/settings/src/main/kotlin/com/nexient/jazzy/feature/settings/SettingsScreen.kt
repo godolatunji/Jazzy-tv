@@ -186,8 +186,34 @@ private fun SettingsDialogs(dialog: SettingsDialog?, state: SettingsUiState, vie
             onConfirm = { onDismiss(); viewModel.clearTmdbCache() },
             onDismiss = onDismiss,
         )
+        SettingsDialog.OPENSUBTITLES_LOGIN -> OpenSubtitlesLoginDialog(
+            onLogin = { u, pw -> onDismiss(); viewModel.loginOpenSubtitles(u, pw) },
+            onDismiss = onDismiss,
+        )
         null -> Unit
     }
+}
+
+@Composable
+private fun OpenSubtitlesLoginDialog(onLogin: (String, String) -> Unit, onDismiss: () -> Unit) {
+    var user by remember { mutableStateOf("") }
+    var password by remember { mutableStateOf("") }
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text("OpenSubtitles login") },
+        text = {
+            androidx.compose.foundation.layout.Column(verticalArrangement = androidx.compose.foundation.layout.Arrangement.spacedBy(8.dp)) {
+                androidx.compose.material3.OutlinedTextField(user, { user = it }, label = { Text("Username") }, singleLine = true)
+                androidx.compose.material3.OutlinedTextField(
+                    password, { password = it }, label = { Text("Password") }, singleLine = true,
+                    visualTransformation = androidx.compose.ui.text.input.PasswordVisualTransformation(),
+                )
+                Text("Your password is sent to OpenSubtitles only; Jazzy stores just the session token, encrypted.", style = androidx.compose.material3.MaterialTheme.typography.bodySmall)
+            }
+        },
+        confirmButton = { androidx.compose.material3.TextButton(onClick = { onLogin(user, password) }, enabled = user.isNotBlank() && password.isNotBlank()) { Text("Log in") } },
+        dismissButton = { androidx.compose.material3.TextButton(onClick = onDismiss) { Text("Cancel") } },
+    )
 }
 
 @Composable

@@ -23,6 +23,9 @@ import androidx.compose.material.icons.filled.SearchOff
 import androidx.compose.material.icons.automirrored.filled.Sort
 import androidx.compose.material.icons.filled.Speed
 import androidx.compose.material.icons.filled.Storage
+import androidx.compose.material.icons.filled.Subtitles
+import androidx.compose.material.icons.filled.Login
+import androidx.compose.material.icons.filled.Logout
 import androidx.compose.material.icons.filled.SupervisorAccount
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -45,6 +48,7 @@ import com.nexient.jazzy.feature.settings.SettingsViewModel
 internal enum class SettingsSection(val title: String, val icon: ImageVector) {
     PROFILES("Profiles & parental controls", Icons.Filled.SupervisorAccount),
     PLAYBACK("Playback", Icons.Filled.PlayCircle),
+    SUBTITLES("Subtitles", Icons.Filled.Subtitles),
     SOURCES("Sources", Icons.Filled.Public),
     HISTORY("History & recommendations", Icons.Filled.History),
     NETWORK("Network & storage", Icons.Filled.NetworkCheck),
@@ -58,7 +62,7 @@ internal fun SettingsUiState.visibleSections(): List<SettingsSection> =
     SettingsSection.entries.filter { it != SettingsSection.SOURCES || !isKids }
 
 internal enum class SettingsDialog {
-    SORT, UPLOAD, CONNECTIONS, CACHE_CAP, GENRES,
+    SORT, UPLOAD, CONNECTIONS, CACHE_CAP, GENRES, OPENSUBTITLES_LOGIN,
     CONFIRM_CLEAR_HISTORY, CONFIRM_CLEAR_SEARCH, CONFIRM_RESET_RECS, CONFIRM_CLEAR_TORRENT, CONFIRM_CLEAR_TMDB,
 }
 
@@ -176,6 +180,40 @@ internal fun SettingsSectionContent(
                     subtitle = "Include sources with no seeders in the Sources list by default.",
                     checked = s.showDeadLinks,
                     onCheckedChange = { viewModel.setFlag(SettingKeys.SHOW_DEAD, it) },
+                )
+            }
+
+            SettingsSection.SUBTITLES -> {
+                if (!state.openSubtitlesConfigured) {
+                    SettingsActionRow(
+                        title = "Online subtitles",
+                        subtitle = "Not set up. Add OPENSUBTITLES_API_KEY to local.properties and rebuild to search OpenSubtitles from the player.",
+                        icon = Icons.Filled.Subtitles,
+                        onClick = {},
+                        focusRequester = firstItemFocus,
+                    )
+                } else if (state.openSubtitlesUser == null) {
+                    SettingsActionRow(
+                        title = "Log in to OpenSubtitles",
+                        subtitle = "Optional. Logged-in accounts get a higher daily download limit.",
+                        icon = Icons.Filled.Login,
+                        onClick = { nav.openDialog(SettingsDialog.OPENSUBTITLES_LOGIN) },
+                        focusRequester = firstItemFocus,
+                    )
+                } else {
+                    SettingsActionRow(
+                        title = "Log out of OpenSubtitles",
+                        subtitle = "Logged in as ${state.openSubtitlesUser}.",
+                        icon = Icons.Filled.Logout,
+                        onClick = viewModel::logoutOpenSubtitles,
+                        focusRequester = firstItemFocus,
+                    )
+                }
+                Text(
+                    "Subtitle language and style are set per profile (profile settings) and by the system caption settings.",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = JazzyColors.TextTertiary,
+                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
                 )
             }
 

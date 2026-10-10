@@ -54,6 +54,8 @@ data class SettingsUiState(
     val busy: Boolean = false,
     val message: String? = null,
     val pinFlow: SettingsPinFlow? = null,
+    val openSubtitlesConfigured: Boolean = false,
+    val openSubtitlesUser: String? = null,
 ) {
     val isKids: Boolean get() = profile?.isKids == true
 }
@@ -68,8 +70,10 @@ class SettingsViewModel @Inject constructor(
     private val recommendations: RecommendationRepository,
     private val torrentEngine: TorrentEngine,
     private val tmdbCache: TmdbCacheCleaner,
+    private val subtitles: com.nexient.jazzy.core.data.subtitles.SubtitleRepository,
 ) : ViewModel() {
     private data class Local(
+        val openSubtitlesUser: String? = null,
         val hasParentalPin: Boolean = false,
         val torrentCacheBytes: Long? = null,
         val localData: LocalDataSizes? = null,
@@ -98,6 +102,8 @@ class SettingsViewModel @Inject constructor(
             busy = l.busy,
             message = l.message,
             pinFlow = l.pinFlow,
+            openSubtitlesConfigured = subtitles.isConfigured,
+            openSubtitlesUser = l.openSubtitlesUser,
         )
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), SettingsUiState())
 
@@ -108,7 +114,8 @@ class SettingsViewModel @Inject constructor(
     fun refresh() {
         viewModelScope.launch {
             val has = profiles.hasParentalPin()
-            local.update { it.copy(hasParentalPin = has) }
+            val osUser = subtitles.loggedInUser()
+            local.update { it.copy(hasParentalPin = has, openSubtitlesUser = osUser) }
         }
         refreshSizes()
     }
@@ -122,6 +129,29 @@ class SettingsViewModel @Inject constructor(
     }
 
     fun clearMessage() = local.update { it.copy(message = null) }
+
+    // --- OpenSubtitles account (PL-8) ---------------------------------------------------------
+
+    fun loginOpenSubtitles(username: String, password: String) {
+        viewModelScope.launch {
+            local.update { it.copy(busy = true) }
+            val result = runCatching { subtitles.login(username, password) }
+            local.update {
+                it.copy(
+                    busy = false,
+                    openSubtitlesUser = if (result.isSuccess) username.trim() else it.openSubtitlesUser,
+                    message = result.exceptionOrNull()?.message ?: "Logged in to OpenSubtitles",
+                )
+            }
+        }
+    }
+
+    fun logoutOpenSubtitles() {
+        viewModelScope.launch {
+            subtitles.logout()
+            local.update { it.copy(openSubtitlesUser = null, message = "Logged out of OpenSubtitles") }
+        }
+    }
 
     // --- Simple persisted settings ------------------------------------------------------------
 

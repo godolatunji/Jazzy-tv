@@ -107,6 +107,7 @@ internal fun SidePanel(state: PlayerUiState, viewModel: PlayerViewModel, modifie
             PlayerPanel.TRACKS -> {
                 item { TrackSection("Audio", viewModel.player, C.TRACK_TYPE_AUDIO) }
                 item { TrackSection("Subtitles", viewModel.player, C.TRACK_TYPE_TEXT) }
+                item { OnlineSubtitlesSection(state, viewModel) }
             }
             PlayerPanel.NONE -> Unit
         }
