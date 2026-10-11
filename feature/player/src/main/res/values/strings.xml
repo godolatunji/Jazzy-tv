@@ -72,6 +72,16 @@
     <string name="player_controls_time">%1$s / %2$s</string>
     <string name="player_controls_speed">" %1$sx"</string>
     <string name="player_controls_speed_option">%1$sx</string>
+    <string name="player_controls_speed_label">Speed %1$sx</string>
+    <string name="player_controls_next_episode">Next episode</string>
+    <string name="player_controls_more">More options</string>
+    <string name="player_controls_lock">Lock screen</string>
+    <string name="player_controls_unlock">Unlock screen</string>
+    <string name="player_controls_seek">Seek bar</string>
+    <string name="player_aspect_fit">Fit to screen</string>
+    <string name="player_aspect_zoom">Zoom to fill</string>
+    <string name="player_aspect_stretch">Stretch</string>
+    <string name="player_aspect_label">Aspect: %1$s</string>
 
     <!-- Stream stats overlay -->
     <string name="player_stats_title">Stream stats</string>

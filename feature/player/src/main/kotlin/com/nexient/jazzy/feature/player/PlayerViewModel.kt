@@ -425,6 +425,21 @@ class PlayerViewModel @AssistedInject constructor(
         }
     }
 
+    /** The player's "Next episode" button: what the end-of-episode countdown does, without waiting for it. */
+    fun skipToNextEpisode() {
+        val req = _state.value.request
+        if (!req.playable.isEpisode) return
+        viewModelScope.launch {
+            val lang = profile?.language ?: "en-US"
+            val (next, title) = nextPrefetched ?: nextEpisodes.next(req.playable, lang) ?: return@launch
+            val pack = req.source.release.isSeasonPack || req.source.release.isCompleteSeries
+            val sameTorrent = pack && (req.source.release.season == null || req.source.release.season == next.season)
+            countdownJob?.cancel()
+            _state.update { it.copy(countdown = NextEpisodeCountdown(next, title, 0, sameTorrent)) }
+            playNextNow()
+        }
+    }
+
     // ---- Controls --------------------------------------------------------------------------------
 
     fun togglePlay() { if (player.isPlaying) player.pause() else player.play() }

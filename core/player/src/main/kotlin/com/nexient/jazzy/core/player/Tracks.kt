@@ -20,8 +20,11 @@ object TrackHelper {
                 if (!group.isTrackSupported(i)) continue
                 val f = group.getTrackFormat(i)
                 val lang = f.language?.let { java.util.Locale.forLanguageTag(it).displayLanguage }?.takeIf { it.isNotBlank() }
+                // Language first ("French · full"): files often reuse one label, e.g. "full" or "SDH", for every track.
+                val name = listOfNotNull(lang, f.label?.takeIf { it.isNotBlank() && !it.equals(lang, ignoreCase = true) })
+                    .joinToString(" · ").ifEmpty { "Track ${out.size + 1}" }
                 val label = listOfNotNull(
-                    f.label ?: lang ?: "Track ${out.size + 1}",
+                    name,
                     f.channelCount.takeIf { type == C.TRACK_TYPE_AUDIO && it > 0 }?.let { if (it >= 6) "5.1" else if (it == 2) "Stereo" else "${it}ch" },
                     f.sampleMimeType?.substringAfter('/')?.uppercase()?.takeIf { type == C.TRACK_TYPE_AUDIO },
                 ).joinToString(" · ")
