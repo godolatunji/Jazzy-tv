@@ -96,7 +96,7 @@ internal fun DetailsInfo(
         if (crew.isNotEmpty()) {
             Text(stringResource(if (details.mediaType == MediaType.MOVIE) R.string.details_info_director else R.string.details_info_created_by, crew.joinToString(", ")), style = MaterialTheme.typography.bodySmall, color = JazzyColors.TextSecondary)
         }
-        Row(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) {
+        FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
             OutlinedButton(onClick = onToggleMyList) {
                 Icon(if (state.inMyList) Icons.Filled.Check else Icons.Filled.Add, null)
                 Text(stringResource(R.string.details_action_my_list))

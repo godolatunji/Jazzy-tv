@@ -1,5 +1,6 @@
 package com.nexient.jazzy.feature.settings
 
+import com.nexient.jazzy.core.designsystem.component.dpadFocusEscape
 import com.nexient.jazzy.core.designsystem.text.genreLabelRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -209,11 +210,10 @@ private fun OpenSubtitlesLoginDialog(onLogin: (String, String) -> Unit, onDismis
         title = { Text(stringResource(R.string.settings_subtitles_login_dialog_title)) },
         text = {
             androidx.compose.foundation.layout.Column(verticalArrangement = androidx.compose.foundation.layout.Arrangement.spacedBy(8.dp)) {
-                androidx.compose.material3.OutlinedTextField(user, { user = it }, label = { Text(stringResource(R.string.settings_common_username)) }, singleLine = true)
+                androidx.compose.material3.OutlinedTextField(user, { user = it }, label = { Text(stringResource(R.string.settings_common_username)) }, singleLine = true, modifier = Modifier.dpadFocusEscape(),)
                 androidx.compose.material3.OutlinedTextField(
                     password, { password = it }, label = { Text(stringResource(R.string.settings_common_password)) }, singleLine = true,
-                    visualTransformation = androidx.compose.ui.text.input.PasswordVisualTransformation(),
-                )
+                    visualTransformation = androidx.compose.ui.text.input.PasswordVisualTransformation(), modifier = Modifier.dpadFocusEscape(),)
                 Text(stringResource(R.string.settings_subtitles_login_dialog_note), style = androidx.compose.material3.MaterialTheme.typography.bodySmall)
             }
         },

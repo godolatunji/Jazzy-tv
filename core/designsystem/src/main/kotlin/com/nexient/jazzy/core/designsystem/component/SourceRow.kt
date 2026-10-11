@@ -26,6 +26,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
@@ -61,8 +62,11 @@ fun SourceRow(
     onPlay: () -> Unit,
     onResume: (() -> Unit)?,
     modifier: Modifier = Modifier,
+    /** Attached to the row's primary button (Resume, else Play) so TV can put initial focus on it. */
+    playFocusRequester: androidx.compose.ui.focus.FocusRequester? = null,
 ) {
     var expanded by remember { mutableStateOf(false) }
+    val primaryFocus = playFocusRequester?.let { Modifier.focusRequester(it) } ?: Modifier
     val release = source.release
     val a11yBase = stringResource(R.string.designsystem_source_a11y, release.qualityLabel, formatBytes(source.sizeBytes), formatCount(source.seeders))
     val a11y = if (flags.lastPlayed) stringResource(R.string.designsystem_source_a11y_last_played, a11yBase) else a11yBase
@@ -118,7 +122,7 @@ fun SourceRow(
             } else if (onResume != null && flags.resumePositionMs != null) {
                 FilledTonalButton(
                     onClick = onResume,
-                    modifier = Modifier.jazzyFocusHold { expanded = it },
+                    modifier = primaryFocus.jazzyFocusHold { expanded = it },
                 ) {
                     Icon(Icons.Filled.PlayArrow, null, Modifier.size(18.dp))
                     Text(stringResource(R.string.designsystem_source_resume, formatDuration(flags.resumePositionMs)))
@@ -128,7 +132,7 @@ fun SourceRow(
                     Text(stringResource(if (JazzyTheme.isTv) R.string.designsystem_source_from_start else R.string.designsystem_source_start_over))
                 }
             } else {
-                FilledTonalButton(onClick = onPlay, modifier = Modifier.jazzyFocusHold { expanded = it }) {
+                FilledTonalButton(onClick = onPlay, modifier = primaryFocus.jazzyFocusHold { expanded = it }) {
                     Icon(Icons.Filled.PlayArrow, null, Modifier.size(18.dp))
                     Text(stringResource(R.string.designsystem_source_play))
                 }

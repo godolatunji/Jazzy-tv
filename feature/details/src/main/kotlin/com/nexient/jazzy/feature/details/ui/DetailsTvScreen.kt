@@ -74,7 +74,18 @@ private fun TvContent(details: TitleDetails, state: DetailsUiState, viewModel: D
     var showSources by remember { mutableStateOf(!isShow || state.focusSources) }
     BackHandler(enabled = isShow && showSources) { showSources = false }
     val rightFocus = remember { FocusRequester() }
+    val firstRowFocus = remember { FocusRequester() }
     LaunchedEffect(showSources, details.tmdbId) { runCatching { rightFocus.requestFocus() } }
+    // Spec §5.10: initial focus on the Resume row, else the first source row's Play, once rows arrive.
+    val focusKey = state.sources.rows.firstOrNull { it.flags.resumePositionMs != null }?.source?.key ?: state.sources.rows.firstOrNull()?.source?.key
+    var focusedFirstRowFor by remember { mutableStateOf<String?>(null) }
+    LaunchedEffect(focusKey, showSources) {
+        val key = focusKey ?: return@LaunchedEffect
+        if (showSources && focusedFirstRowFor != (state.sources.query?.cacheKey ?: "") ) {
+            kotlinx.coroutines.delay(150)
+            if (runCatching { firstRowFocus.requestFocus() }.isSuccess) focusedFirstRowFor = state.sources.query?.cacheKey ?: ""
+        }
+    }
 
     Box(Modifier.fillMaxSize()) {
         HeroBackdrop(details.toHeroContent(), Modifier.fillMaxSize())
@@ -123,6 +134,7 @@ private fun TvContent(details: TitleDetails, state: DetailsUiState, viewModel: D
                                     row.source, row.flags,
                                     onPlay = { viewModel.play(row.source) },
                                     onResume = { viewModel.resume(row.source) }.takeIf { row.flags.resumePositionMs != null },
+                                    playFocusRequester = firstRowFocus.takeIf { row.source.key == focusKey },
                                 )
                             }
                             item { SourcesEmpty(state.sources, viewModel::refreshSources, actions.openSitesSettings) }

@@ -1,5 +1,6 @@
 package com.nexient.jazzy.feature.profiles.ui
 
+import com.nexient.jazzy.core.designsystem.component.dpadFocusEscape
 import com.nexient.jazzy.core.designsystem.text.labelRes
 import com.nexient.jazzy.core.designsystem.text.genreLabelRes
 import androidx.compose.foundation.border
@@ -182,7 +183,7 @@ private fun NameField(state: ProfileEditUiState, viewModel: ProfileEditViewModel
         },
         keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Words, imeAction = ImeAction.Done),
         colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = JazzyColors.Focus, cursorColor = JazzyColors.Accent),
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.dpadFocusEscape().then(Modifier.fillMaxWidth()),
     )
 }
 

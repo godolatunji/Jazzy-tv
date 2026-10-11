@@ -41,9 +41,10 @@ class PlayerHolder @Inject constructor(
     private fun build(): ExoPlayer {
         val upstream = DefaultDataSource.Factory(context)
         val dataSources = TorrentAwareDataSourceFactory(files, upstream)
-        // Extension renderers (FFmpeg audio for DTS/TrueHD, PL-2) are preferred when present.
+        // FFmpeg (DTS/TrueHD, PL-2) is a fallback: hardware decoders and HDMI passthrough win when they
+        // can handle a format, FFmpeg decodes only what the device can't.
         val renderers = DefaultRenderersFactory(context)
-            .setExtensionRendererMode(DefaultRenderersFactory.EXTENSION_RENDERER_MODE_PREFER)
+            .setExtensionRendererMode(DefaultRenderersFactory.EXTENSION_RENDERER_MODE_ON)
             .setEnableDecoderFallback(true)
         // Torrent reads can stall briefly; buffer more than the defaults before and during playback.
         val loadControl = DefaultLoadControl.Builder()

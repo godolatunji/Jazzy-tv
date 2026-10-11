@@ -1,5 +1,6 @@
 package com.nexient.jazzy.feature.search.ui
 
+import com.nexient.jazzy.core.designsystem.component.dpadFocusEscape
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -98,7 +99,7 @@ internal fun SearchField(
     TextField(
         value = query,
         onValueChange = callbacks.onQueryChange,
-        modifier = modifier.then(if (focusRequester != null) Modifier.focusRequester(focusRequester) else Modifier),
+        modifier = Modifier.dpadFocusEscape().then(modifier.then(if (focusRequester != null) Modifier.focusRequester(focusRequester) else Modifier)),
         placeholder = { Text(stringResource(R.string.search_field_placeholder), maxLines = 1, overflow = TextOverflow.Ellipsis) },
         leadingIcon = { Icon(Icons.Filled.Search, null) },
         trailingIcon = {

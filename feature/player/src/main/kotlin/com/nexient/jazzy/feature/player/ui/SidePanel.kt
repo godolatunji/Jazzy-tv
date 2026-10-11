@@ -36,6 +36,7 @@ import com.nexient.jazzy.core.designsystem.component.EpisodeRow
 import com.nexient.jazzy.core.designsystem.component.SourceRow
 import com.nexient.jazzy.core.designsystem.component.SourceRowFlags
 import com.nexient.jazzy.core.designsystem.component.jazzyClickable
+import com.nexient.jazzy.core.designsystem.text.asString
 import com.nexient.jazzy.core.designsystem.theme.JazzyColors
 import com.nexient.jazzy.core.player.TrackHelper
 import com.nexient.jazzy.feature.player.PlayerPanel
@@ -70,6 +71,17 @@ internal fun SidePanel(state: PlayerUiState, viewModel: PlayerViewModel, modifie
                     modifier = Modifier.weight(1f),
                 )
                 IconButton(onClick = viewModel::closePanel) { Icon(Icons.Filled.Close, stringResource(R.string.player_panel_close)) }
+            }
+        }
+        // Why we're here after a failure (the error overlay is hidden while a panel is open).
+        state.error?.let { err ->
+            item {
+                Text(
+                    err.message.asString(),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = JazzyColors.Poor,
+                    modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
+                )
             }
         }
         when (state.panel) {

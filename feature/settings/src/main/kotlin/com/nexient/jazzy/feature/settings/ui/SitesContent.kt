@@ -1,5 +1,6 @@
 package com.nexient.jazzy.feature.settings.ui
 
+import com.nexient.jazzy.core.designsystem.component.dpadFocusEscape
 import android.text.format.DateUtils
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -342,7 +343,7 @@ internal fun ConnectionDialog(
                     singleLine = true,
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Uri),
                     colors = fieldColors,
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier.dpadFocusEscape().then(Modifier.fillMaxWidth()),
                 )
                 Text(
                     stringResource(R.string.settings_sites_mirror_warning),
@@ -352,20 +353,20 @@ internal fun ConnectionDialog(
                 if (credentials) {
                     OutlinedTextField(
                         value = username, onValueChange = { username = it }, label = { Text(stringResource(R.string.settings_common_username)) },
-                        singleLine = true, colors = fieldColors, modifier = Modifier.fillMaxWidth(),
+                        singleLine = true, colors = fieldColors, modifier = Modifier.dpadFocusEscape().then(Modifier.fillMaxWidth()),
                     )
                     OutlinedTextField(
                         value = password, onValueChange = { password = it }, label = { Text(stringResource(R.string.settings_common_password)) },
                         singleLine = true, visualTransformation = PasswordVisualTransformation(),
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-                        colors = fieldColors, modifier = Modifier.fillMaxWidth(),
+                        colors = fieldColors, modifier = Modifier.dpadFocusEscape().then(Modifier.fillMaxWidth()),
                     )
                 }
                 if (cookieAuth) {
                     OutlinedTextField(
                         value = cookies, onValueChange = { cookies = it }, label = { Text(stringResource(R.string.settings_sites_cookies)) },
                         placeholder = { Text(stringResource(R.string.settings_sites_cookies_placeholder)) },
-                        minLines = 2, maxLines = 4, colors = fieldColors, modifier = Modifier.fillMaxWidth(),
+                        minLines = 2, maxLines = 4, colors = fieldColors, modifier = Modifier.dpadFocusEscape().then(Modifier.fillMaxWidth()),
                     )
                 }
                 if (credentials || cookieAuth) {

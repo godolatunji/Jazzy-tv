@@ -1,5 +1,6 @@
 package com.nexient.jazzy.feature.library.ui
 
+import com.nexient.jazzy.core.designsystem.component.dpadFocusEscape
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -182,7 +183,7 @@ private fun HistoryToolbar(
             OutlinedTextField(
                 value = query,
                 onValueChange = onQueryChange,
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.dpadFocusEscape().then(Modifier.fillMaxWidth()),
                 placeholder = { Text(stringResource(R.string.library_history_search_placeholder)) },
                 leadingIcon = { Icon(Icons.Filled.Search, null) },
                 trailingIcon = if (query.isNotEmpty()) ({ IconButton(onClick = { onQueryChange("") }) { Icon(Icons.Filled.Close, stringResource(R.string.library_history_clear_search)) } }) else null,

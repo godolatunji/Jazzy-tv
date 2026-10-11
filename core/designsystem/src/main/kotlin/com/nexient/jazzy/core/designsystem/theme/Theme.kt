@@ -107,6 +107,21 @@ private val ColorScheme = darkColorScheme(
     error = JazzyColors.Poor,
 )
 
+private val TvColorScheme = androidx.tv.material3.darkColorScheme(
+    primary = JazzyColors.Accent,
+    onPrimary = Color.White,
+    secondary = JazzyColors.OnBackground,
+    background = JazzyColors.Background,
+    onBackground = JazzyColors.OnBackground,
+    surface = JazzyColors.Surface,
+    onSurface = JazzyColors.OnBackground,
+    surfaceVariant = JazzyColors.SurfaceVariant,
+    onSurfaceVariant = JazzyColors.TextSecondary,
+    inverseSurface = JazzyColors.OnBackground,
+    inverseOnSurface = JazzyColors.Background,
+    border = JazzyColors.Outline,
+)
+
 @Composable
 fun JazzyTheme(formFactor: FormFactor = FormFactor.PHONE, content: @Composable () -> Unit) {
     val spacing = when (formFactor) {
@@ -118,8 +133,16 @@ fun JazzyTheme(formFactor: FormFactor = FormFactor.PHONE, content: @Composable (
         MaterialTheme(
             colorScheme = ColorScheme,
             typography = if (formFactor == FormFactor.TV) TvTypography else PhoneTypography,
-            content = content,
-        )
+        ) {
+            // Screens without a Scaffold/Surface (most TV layouts) would otherwise draw text black.
+            androidx.tv.material3.MaterialTheme(colorScheme = TvColorScheme) {
+                CompositionLocalProvider(
+                    androidx.compose.material3.LocalContentColor provides JazzyColors.OnBackground,
+                    androidx.tv.material3.LocalContentColor provides JazzyColors.OnBackground,
+                    content = content,
+                )
+            }
+        }
     }
 }
 
