@@ -12,7 +12,7 @@
     </plurals>
 
     <!-- Profile picker ("Who's watching?") -->
-    <string name="profiles_picker_brand" translatable="false">JAZZYTV</string>
+    <string name="profiles_picker_brand" translatable="false">Jazzy Tv</string>
     <string name="profiles_picker_heading">Who\'s watching?</string>
     <string name="profiles_picker_heading_manage">Manage profiles</string>
     <string name="profiles_picker_heading_empty">Create a profile to get started</string>
@@ -78,7 +78,7 @@
 
     <!-- Genre step -->
     <string name="profiles_genres_pick_title">Pick %1$d or more genres you like</string>
-    <string name="profiles_genres_explainer">JazzyTv uses these to recommend titles until there\'s enough watch history. You can change them any time in Settings.</string>
+    <string name="profiles_genres_explainer">Jazzy Tv uses these to recommend titles until there\'s enough watch history. You can change them any time in Settings.</string>
     <string name="profiles_genres_nothing_selected">Nothing selected</string>
     <plurals name="profiles_genres_selected_pick_more">
         <item quantity="one">%1$d selected · pick %2$d more</item>

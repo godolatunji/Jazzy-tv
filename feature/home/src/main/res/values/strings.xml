@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="home_brand_wordmark" translatable="false">JAZZYTV</string>
+    <string name="home_brand_wordmark" translatable="false">Jazzy Tv</string>
 
     <!-- Rails -->
     <string name="home_rail_continue_watching">Continue Watching</string>
