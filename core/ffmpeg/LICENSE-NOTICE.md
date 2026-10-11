@@ -62,9 +62,8 @@ Every Jazzy release publishes, next to the APKs, the files produced by
 | `LGPL-SOURCES.txt` | What the files are and how to rebuild or replace the libraries. |
 | `SHA256SUMS` | Checksums for all of the above. |
 
-The tag-triggered workflow `.github/workflows/release.yml` attaches these to the same release as
-the APKs. Wherever APKs are hosted, these files must be hosted with them, for at least three years
-after each release.
+Run the script for every release and upload its output next to the APKs. Wherever APKs are
+hosted, these files must be hosted with them, for at least three years after each release.
 
 ## 2. Media3 FFmpeg decoder extension — Apache-2.0
 

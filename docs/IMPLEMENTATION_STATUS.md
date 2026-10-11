@@ -11,7 +11,7 @@ All 18 modules are in place and the app builds for phone and TV from one APK. Un
 ## Done, by epic
 | Epic | State | Notes |
 |---|---|---|
-| E0 Setup | Done | Convention plugins, 18 modules, version catalog, Java 17, ABI splits + versionCode scheme, CI workflow, debug-only `jazzy_force_tv` switch. E0-07 (managed devices) not done. |
+| E0 Setup | Done | Convention plugins, 18 modules, version catalog, Java 17, ABI splits + versionCode scheme, CI workflow (GitHub workflows removed 2026-10-11), debug-only `jazzy_force_tv` switch. E0-07 (managed devices) not done. |
 | E1 Design system | Done | Theme tokens, focus-aware clickable, cards, rails, hero, source/episode rows, PIN pad, avatars, settings rows, chips. E1-07 screenshot tests not done. |
 | E2 Database | Done | `jazzy.db` + `jazzy_cache.db`, DAOs, exported schemas, Keystore secrets, PBKDF2 PINs, backup rules, seed data. Robolectric DAO tests. |
 | E3 TMDB + cache | Done | Cache-first with TTLs, paging, 8-request limit, 429 backoff, maturity filtering, eviction worker. |
