@@ -60,8 +60,7 @@ fun PosterCard(
         modifier
             .width(width)
             .aspectRatio(2f / 3f)
-            .clip(CardShape)
-            .jazzyClickable(CardShape, onLongClick = onLongClick, onFocused = onFocused, onClick = onClick),
+            .jazzyClickable(CardShape, clipContent = true, onLongClick = onLongClick, onFocused = onFocused, onClick = onClick),
     ) {
         JazzyImage(TmdbImages.poster(posterPath, JazzyTheme.isTv), title, Modifier.fillMaxSize(), fallbackText = title)
         if (inMyList || liked) {
@@ -96,8 +95,7 @@ fun BackdropProgressCard(
             Modifier
                 .fillMaxWidth()
                 .aspectRatio(16f / 9f)
-                .clip(CardShape)
-                .jazzyClickable(CardShape, onLongClick = onMenu, onFocused = onFocused, onClick = onClick),
+                .jazzyClickable(CardShape, clipContent = true, onLongClick = onMenu, onFocused = onFocused, onClick = onClick),
         ) {
             JazzyImage(TmdbImages.backdrop(backdropPath, JazzyTheme.isTv), title, Modifier.fillMaxSize(), fallbackText = title)
             Box(Modifier.fillMaxSize().background(Brush.verticalGradient(listOf(Color.Transparent, JazzyColors.Scrim))))

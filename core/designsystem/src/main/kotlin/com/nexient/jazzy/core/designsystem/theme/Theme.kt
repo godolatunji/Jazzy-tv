@@ -1,6 +1,9 @@
 package com.nexient.jazzy.core.designsystem.theme
 
+import androidx.compose.material.ripple.RippleAlpha
+import androidx.compose.material3.LocalRippleConfiguration
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.RippleConfiguration
 import androidx.compose.material3.Typography
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.runtime.Composable
@@ -30,7 +33,12 @@ object JazzyColors {
     val Fair = Color(0xFFFFB020)
     val Poor = Color(0xFFFF5A5F)
     val Info = Color(0xFF5AA9FF)
-    val Focus = Color(0xFFFFFFFF)
+    /**
+     * D-pad focus ring and focused fills. Not white: white is the primary-button, selected-chip and
+     * text colour, so a white ring or highlight disappears against them.
+     */
+    val Focus = Color(0xFFFFC93C)
+    val OnFocus = Color(0xFF14110A)
     val Scrim = Color(0xCC0B0B0F)
 }
 
@@ -122,6 +130,11 @@ private val TvColorScheme = androidx.tv.material3.darkColorScheme(
     border = JazzyColors.Outline,
 )
 
+private val TvRipple = RippleConfiguration(
+    color = JazzyColors.Focus,
+    rippleAlpha = RippleAlpha(draggedAlpha = 0.16f, focusedAlpha = 0.30f, hoveredAlpha = 0.08f, pressedAlpha = 0.24f),
+)
+
 @Composable
 fun JazzyTheme(formFactor: FormFactor = FormFactor.PHONE, content: @Composable () -> Unit) {
     val spacing = when (formFactor) {
@@ -139,6 +152,9 @@ fun JazzyTheme(formFactor: FormFactor = FormFactor.PHONE, content: @Composable (
                 CompositionLocalProvider(
                     androidx.compose.material3.LocalContentColor provides JazzyColors.OnBackground,
                     androidx.tv.material3.LocalContentColor provides JazzyColors.OnBackground,
+                    // On TV, Material buttons, chips and icon buttons show focus only as a state layer,
+                    // which is 10% white by default and unreadable at 10 feet. Tint it with the focus colour.
+                    LocalRippleConfiguration provides if (formFactor == FormFactor.TV) TvRipple else LocalRippleConfiguration.current,
                     content = content,
                 )
             }

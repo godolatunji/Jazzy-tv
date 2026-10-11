@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import com.nexient.jazzy.core.designsystem.component.EpisodeRow
 import com.nexient.jazzy.core.designsystem.component.MessageState
 import com.nexient.jazzy.core.designsystem.component.RailSkeleton
+import com.nexient.jazzy.core.designsystem.component.focusRing
 import com.nexient.jazzy.core.model.Episode
 import com.nexient.jazzy.core.model.SeasonSummary
 import com.nexient.jazzy.core.model.WatchRules
@@ -35,7 +36,7 @@ import com.nexient.jazzy.feature.details.R
 internal fun SeasonDropdown(seasons: List<SeasonSummary>, selected: Int?, onSelect: (Int) -> Unit, modifier: Modifier = Modifier) {
     var open by remember { mutableStateOf(false) }
     Box(modifier) {
-        OutlinedButton(onClick = { open = true }) {
+        OutlinedButton(onClick = { open = true }, modifier = Modifier.focusRing()) {
             Text(seasons.firstOrNull { it.seasonNumber == selected }?.name ?: stringResource(R.string.details_season_fallback, selected ?: 1))
             Icon(Icons.Filled.ArrowDropDown, null)
         }

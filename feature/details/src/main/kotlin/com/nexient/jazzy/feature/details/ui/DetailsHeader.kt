@@ -20,8 +20,8 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
-import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Movie
+import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -41,6 +41,7 @@ import com.nexient.jazzy.core.common.formatRuntime
 import com.nexient.jazzy.core.designsystem.component.JazzyImage
 import com.nexient.jazzy.core.designsystem.component.MaturityBadge
 import com.nexient.jazzy.core.designsystem.component.PosterCard
+import com.nexient.jazzy.core.designsystem.component.focusRing
 import com.nexient.jazzy.core.designsystem.theme.JazzyColors
 import com.nexient.jazzy.core.designsystem.theme.JazzyTheme
 import com.nexient.jazzy.core.model.MediaType
@@ -97,21 +98,21 @@ internal fun DetailsInfo(
             Text(stringResource(if (details.mediaType == MediaType.MOVIE) R.string.details_info_director else R.string.details_info_created_by, crew.joinToString(", ")), style = MaterialTheme.typography.bodySmall, color = JazzyColors.TextSecondary)
         }
         FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-            OutlinedButton(onClick = onToggleMyList) {
+            OutlinedButton(onClick = onToggleMyList, modifier = Modifier.focusRing()) {
                 Icon(if (state.inMyList) Icons.Filled.Check else Icons.Filled.Add, null)
                 Text(stringResource(R.string.details_action_my_list))
             }
-            OutlinedButton(onClick = onToggleLike) {
+            OutlinedButton(onClick = onToggleLike, modifier = Modifier.focusRing()) {
                 Icon(if (state.liked) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder, null, tint = if (state.liked) JazzyColors.Accent else JazzyColors.OnBackground)
                 Text(stringResource(if (state.liked) R.string.details_action_liked else R.string.details_action_like))
             }
             if (details.trailerYoutubeKey != null) {
-                OutlinedButton(onClick = onTrailer) { Icon(Icons.Filled.Movie, null); Text(stringResource(R.string.details_action_trailer)) }
+                OutlinedButton(onClick = onTrailer, modifier = Modifier.focusRing()) { Icon(Icons.Filled.Movie, null); Text(stringResource(R.string.details_action_trailer)) }
             }
         }
         val progress = state.progress
         if (progress != null && onResumeBanner != null) {
-            FilledTonalButton(onClick = onResumeBanner, contentPadding = PaddingValues(horizontal = 14.dp, vertical = 8.dp)) {
+            FilledTonalButton(onClick = onResumeBanner, modifier = Modifier.focusRing(focusScale = 1.03f), contentPadding = PaddingValues(horizontal = 14.dp, vertical = 8.dp)) {
                 Icon(Icons.Filled.PlayArrow, null, Modifier.size(18.dp))
                 val stoppedAt = stringResource(R.string.details_resume_banner_stopped_at, formatDuration(progress.positionMs))
                 val withEpisode = progress.playable.label?.let { stringResource(R.string.details_resume_banner_episode, it, stoppedAt) } ?: stoppedAt

@@ -122,17 +122,17 @@ fun SourceRow(
             } else if (onResume != null && flags.resumePositionMs != null) {
                 FilledTonalButton(
                     onClick = onResume,
-                    modifier = primaryFocus.jazzyFocusHold { expanded = it },
+                    modifier = primaryFocus.focusRing().jazzyFocusHold { expanded = it },
                 ) {
                     Icon(Icons.Filled.PlayArrow, null, Modifier.size(18.dp))
                     Text(stringResource(R.string.designsystem_source_resume, formatDuration(flags.resumePositionMs)))
                 }
-                OutlinedButton(onClick = onPlay) {
+                OutlinedButton(onClick = onPlay, modifier = Modifier.focusRing()) {
                     Icon(Icons.Filled.Replay, null, Modifier.size(16.dp))
                     Text(stringResource(if (JazzyTheme.isTv) R.string.designsystem_source_from_start else R.string.designsystem_source_start_over))
                 }
             } else {
-                FilledTonalButton(onClick = onPlay, modifier = primaryFocus.jazzyFocusHold { expanded = it }) {
+                FilledTonalButton(onClick = onPlay, modifier = primaryFocus.focusRing().jazzyFocusHold { expanded = it }) {
                     Icon(Icons.Filled.PlayArrow, null, Modifier.size(18.dp))
                     Text(stringResource(R.string.designsystem_source_play))
                 }

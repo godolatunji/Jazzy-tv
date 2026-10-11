@@ -9,6 +9,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Sort
@@ -35,6 +37,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.nexient.jazzy.core.designsystem.component.Badge
 import com.nexient.jazzy.core.designsystem.component.BadgeTone
+import com.nexient.jazzy.core.designsystem.component.focusRing
 import com.nexient.jazzy.core.designsystem.theme.JazzyColors
 import com.nexient.jazzy.core.model.FailureReason
 import com.nexient.jazzy.core.model.ProviderSearchState
@@ -61,9 +64,9 @@ internal fun SourcesHeader(
         Row(verticalAlignment = Alignment.CenterVertically) {
             Text(title, style = MaterialTheme.typography.titleLarge, modifier = Modifier.weight(1f))
             if (sources.searching) CircularProgressIndicator(Modifier.size(18.dp), strokeWidth = 2.dp, color = JazzyColors.Accent)
-            IconButton(onClick = onRefresh) { Icon(Icons.Filled.Refresh, stringResource(R.string.details_sources_refresh)) }
+            IconButton(onClick = onRefresh, modifier = Modifier.focusRing(CircleShape)) { Icon(Icons.Filled.Refresh, stringResource(R.string.details_sources_refresh)) }
             androidx.compose.foundation.layout.Box {
-                IconButton(onClick = { sortMenu = true }) { Icon(Icons.Filled.Sort, stringResource(R.string.details_sources_sort)) }
+                IconButton(onClick = { sortMenu = true }, modifier = Modifier.focusRing(CircleShape)) { Icon(Icons.Filled.Sort, stringResource(R.string.details_sources_sort)) }
                 DropdownMenu(expanded = sortMenu, onDismissRequest = { sortMenu = false }) {
                     listOf(SourceSort.SEEDERS to R.string.details_sort_seeders, SourceSort.QUALITY to R.string.details_sort_quality, SourceSort.SIZE to R.string.details_sort_size).forEach { (sort, labelRes) ->
                         val label = stringResource(labelRes)
@@ -92,7 +95,7 @@ internal fun SourcesHeader(
             }
             val failures = statuses.filter { it.state is ProviderSearchState.Failed }
             if (failures.isNotEmpty()) {
-                TextButton(onClick = { showErrors = !showErrors }) { Text(if (showErrors) stringResource(R.string.details_sources_hide_errors) else pluralStringResource(R.plurals.details_sources_failures, failures.size, failures.size)) }
+                TextButton(onClick = { showErrors = !showErrors }, modifier = Modifier.focusRing()) { Text(if (showErrors) stringResource(R.string.details_sources_hide_errors) else pluralStringResource(R.plurals.details_sources_failures, failures.size, failures.size)) }
                 if (showErrors) failures.forEach { s ->
                     val st = s.state as ProviderSearchState.Failed
                     Text(stringResource(R.string.details_provider_failure_line, s.providerName, stringResource(reasonText(st.reason))), style = MaterialTheme.typography.bodySmall, color = JazzyColors.TextSecondary)
@@ -106,11 +109,12 @@ internal fun SourcesHeader(
                     selected = r in f.resolutions,
                     onClick = { onFilters { it.copy(resolutions = if (r in it.resolutions) it.resolutions - r else it.resolutions + r) } },
                     label = { Text(r.label) },
+                    modifier = Modifier.focusRing(ChipShape),
                 )
             }
-            FilterChip(selected = f.hideCam, onClick = { onFilters { it.copy(hideCam = !it.hideCam) } }, label = { Text(stringResource(R.string.details_filter_hide_cam)) })
-            FilterChip(selected = f.hideUnsupported, onClick = { onFilters { it.copy(hideUnsupported = !it.hideUnsupported) } }, label = { Text(stringResource(R.string.details_filter_hide_unsupported)) })
-            FilterChip(selected = f.showDead, onClick = { onFilters { it.copy(showDead = !it.showDead) } }, label = { Text(stringResource(R.string.details_filter_show_dead)) })
+            FilterChip(selected = f.hideCam, onClick = { onFilters { it.copy(hideCam = !it.hideCam) } }, label = { Text(stringResource(R.string.details_filter_hide_cam)) }, modifier = Modifier.focusRing(ChipShape))
+            FilterChip(selected = f.hideUnsupported, onClick = { onFilters { it.copy(hideUnsupported = !it.hideUnsupported) } }, label = { Text(stringResource(R.string.details_filter_hide_unsupported)) }, modifier = Modifier.focusRing(ChipShape))
+            FilterChip(selected = f.showDead, onClick = { onFilters { it.copy(showDead = !it.showDead) } }, label = { Text(stringResource(R.string.details_filter_show_dead)) }, modifier = Modifier.focusRing(ChipShape))
         }
         if (sources.hiddenCount > 0) {
             Text(pluralStringResource(R.plurals.details_sources_hidden_count, sources.hiddenCount, sources.hiddenCount), style = MaterialTheme.typography.labelSmall, color = JazzyColors.TextTertiary)
@@ -139,8 +143,8 @@ internal fun SourcesEmpty(sources: SourcesUi, onRefresh: () -> Unit, onOpenSites
             style = MaterialTheme.typography.bodySmall, color = JazzyColors.TextSecondary,
         )
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            TextButton(onClick = onRefresh) { Text(stringResource(R.string.details_sources_search_again)) }
-            TextButton(onClick = onOpenSites) { Text(stringResource(R.string.details_sources_check_sites)) }
+            TextButton(onClick = onRefresh, modifier = Modifier.focusRing()) { Text(stringResource(R.string.details_sources_search_again)) }
+            TextButton(onClick = onOpenSites, modifier = Modifier.focusRing()) { Text(stringResource(R.string.details_sources_check_sites)) }
         }
     }
 }
@@ -155,3 +159,6 @@ private fun reasonText(reason: FailureReason): Int = when (reason) {
     FailureReason.LOGIN_REQUIRED -> R.string.details_failure_login_required
     FailureReason.OTHER -> R.string.details_failure_other
 }
+
+/** FilterChip's shape, for its focus ring. */
+private val ChipShape = RoundedCornerShape(8.dp)
