@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Jazzy</string>
+    <string name="app_name">JazzyTv</string>
     <string name="search_hint">Search movies and shows</string>
     <!-- Navigation: phone bottom bar and TV drawer -->
     <string name="app_nav_home">Home</string>
@@ -22,7 +22,7 @@
 
     <!-- First-run disclaimer -->
     <string name="app_disclaimer_title">Before you start</string>
-    <string name="app_disclaimer_message">Jazzy finds titles on TMDB and searches public torrent sites for links. Jazzy hosts no content. Streaming a torrent also shares pieces of it with other people. You\'re responsible for what you stream and for following the laws where you live.</string>
+    <string name="app_disclaimer_message">JazzyTv finds titles on TMDB and searches public torrent sites for links. JazzyTv hosts no content. Streaming a torrent also shares pieces of it with other people. You\'re responsible for what you stream and for following the laws where you live.</string>
     <string name="app_disclaimer_accept">I understand</string>
 
     <!-- System / Google TV search suggestions: second line after the year. -->

@@ -83,7 +83,7 @@
     <string name="settings_subtitles_logged_in_as">Logged in as %1$s.</string>
     <string name="settings_subtitles_note">Subtitle language and style are set per profile (profile settings) and by the system caption settings.</string>
     <string name="settings_subtitles_login_dialog_title">OpenSubtitles login</string>
-    <string name="settings_subtitles_login_dialog_note">Your password is sent to OpenSubtitles only; Jazzy stores just the session token, encrypted.</string>
+    <string name="settings_subtitles_login_dialog_note">Your password is sent to OpenSubtitles only; JazzyTv stores just the session token, encrypted.</string>
     <string name="settings_subtitles_login">Log in</string>
     <string name="settings_subtitles_logged_in">Logged in to OpenSubtitles</string>
     <string name="settings_subtitles_logged_out">Logged out of OpenSubtitles</string>
@@ -147,14 +147,14 @@
     <string name="settings_privacy_metrics_subtitle">Aggregate counts only. History, likes and recommendations never leave this device.</string>
 
     <!-- About row -->
-    <string name="settings_about_row_title">About Jazzy</string>
+    <string name="settings_about_row_title">About JazzyTv</string>
     <string name="settings_about_row_subtitle">Version, TMDB attribution, open-source licences, privacy and disclaimer.</string>
 
     <!-- Torrent sites (SRC-2…SRC-6) -->
     <string name="settings_sites_title">Torrent sites</string>
     <string name="settings_sites_kids_title">Not available on Kids profiles</string>
     <string name="settings_sites_kids_message">Switch to another profile to change torrent site settings.</string>
-    <string name="settings_sites_explainer">Torrent sites change domains often. If a site stops answering, try a mirror URL, but check a mirror before you rely on it: some clones return the same unrelated file for every search or redirect to ads. Sites that show a CAPTCHA or Cloudflare challenge are reported as \"Blocked by the site\" and skipped; Jazzy never tries to bypass them.</string>
+    <string name="settings_sites_explainer">Torrent sites change domains often. If a site stops answering, try a mirror URL, but check a mirror before you rely on it: some clones return the same unrelated file for every search or redirect to ads. Sites that show a CAPTCHA or Cloudflare challenge are reported as \"Blocked by the site\" and skipped; JazzyTv never tries to bypass them.</string>
     <string name="settings_sites_empty">No sites available</string>
     <string name="settings_sites_badge_not_responding">Not responding</string>
     <string name="settings_sites_badge_public">Public</string>
@@ -183,7 +183,7 @@
     </plurals>
     <string name="settings_sites_test_searching">Still searching</string>
     <string name="settings_sites_test_unsupported">This site doesn\'t support the test search</string>
-    <string name="settings_sites_test_blocked">Blocked by the site (CAPTCHA or Cloudflare challenge). Jazzy can\'t bypass this; try a mirror.</string>
+    <string name="settings_sites_test_blocked">Blocked by the site (CAPTCHA or Cloudflare challenge). JazzyTv can\'t bypass this; try a mirror.</string>
     <string name="settings_sites_test_timeout">Timed out</string>
     <string name="settings_sites_test_unreachable">Couldn\'t reach the site. The domain may have moved; try a mirror.</string>
     <string name="settings_sites_test_http_error">The site returned an error</string>
@@ -204,23 +204,23 @@
 
     <!-- About -->
     <string name="settings_about_title">About</string>
-    <string name="settings_about_brand" translatable="false">JAZZY</string>
+    <string name="settings_about_brand" translatable="false">JAZZYTV</string>
     <string name="settings_about_version">Version %1$s</string>
     <string name="settings_about_version_unknown">Unknown</string>
     <string name="settings_about_tmdb_wordmark" translatable="false">TMDB</string>
     <string name="settings_about_tmdb_attribution">This product uses the TMDB API but is not endorsed or certified by TMDB.</string>
     <string name="settings_about_tmdb_detail">Film and TV information and artwork come from The Movie Database (themoviedb.org).</string>
     <string name="settings_about_disclaimer_title">Disclaimer</string>
-    <string name="settings_about_disclaimer">Jazzy doesn\'t host, upload or store any films or TV shows. It searches third-party torrent sites and streams the file you choose directly from other people\'s computers (peer to peer), which also shares pieces of that file with them while you watch. You are responsible for what you search for, stream and share, and for following the copyright law where you live. Only watch content you have the right to watch.</string>
+    <string name="settings_about_disclaimer">JazzyTv doesn\'t host, upload or store any films or TV shows. It searches third-party torrent sites and streams the file you choose directly from other people\'s computers (peer to peer), which also shares pieces of that file with them while you watch. You are responsible for what you search for, stream and share, and for following the copyright law where you live. Only watch content you have the right to watch.</string>
     <string name="settings_about_privacy_title">Privacy</string>
-    <string name="settings_about_privacy">Jazzy has no account and no servers. Profiles, play history, likes, My List, search history and recommendations are stored only in a local database on this device and never leave it. TMDB receives the look-ups needed to show title information, torrent sites receive the searches Jazzy runs for you, and other peers in a torrent swarm can see your IP address. Crash reports and usage metrics stay off unless you turn them on in Settings → Privacy.</string>
+    <string name="settings_about_privacy">JazzyTv has no account and no servers. Profiles, play history, likes, My List, search history and recommendations are stored only in a local database on this device and never leave it. TMDB receives the look-ups needed to show title information, torrent sites receive the searches JazzyTv runs for you, and other peers in a torrent swarm can see your IP address. Crash reports and usage metrics stay off unless you turn them on in Settings → Privacy.</string>
     <string name="settings_about_licences_header">Open-source licences</string>
     <!-- Open-source licence notes; the library and licence names stay in code. -->
     <string name="settings_about_licence_libtorrent">Copyright Arvid Norberg. BitTorrent engine.</string>
     <string name="settings_about_licence_libtorrent4j">Java bindings for libtorrent.</string>
     <string name="settings_about_licence_torrent_search_api">Copyright Jimmy Laurent. Torrent-site search engine, ported to Kotlin through the TorrentSearch project.</string>
     <string name="settings_about_licence_androidx_media3">Copyright The Android Open Source Project.</string>
-    <string name="settings_about_licence_ffmpeg">Copyright the FFmpeg developers. Decodes DTS and Dolby TrueHD audio (plus AC-3/E-AC-3, AAC, MP3, FLAC, ALAC, Opus and Vorbis) in software. Built in an LGPL-only configuration (no GPL or non-free parts) as separate shared libraries linked dynamically, so you can replace them. The complete FFmpeg 7.1.5 source (ffmpeg-7.1.5.tar.xz) and Jazzy\'s build script are published next to every Jazzy APK download (see LGPL-SOURCES.txt there). Licence text: gnu.org/licenses/old-licenses/lgpl-2.1.html.</string>
+    <string name="settings_about_licence_ffmpeg">Copyright the FFmpeg developers. Decodes DTS and Dolby TrueHD audio (plus AC-3/E-AC-3, AAC, MP3, FLAC, ALAC, Opus and Vorbis) in software. Built in an LGPL-only configuration (no GPL or non-free parts) as separate shared libraries linked dynamically, so you can replace them. The complete FFmpeg 7.1.5 source (ffmpeg-7.1.5.tar.xz) and JazzyTv\'s build script are published next to every JazzyTv APK download (see LGPL-SOURCES.txt there). Licence text: gnu.org/licenses/old-licenses/lgpl-2.1.html.</string>
     <string name="settings_about_licence_okhttp">Copyright Square, Inc.</string>
     <string name="settings_about_licence_retrofit">Copyright Square, Inc.</string>
     <string name="settings_about_licence_jsoup">Copyright Jonathan Hedley.</string>
