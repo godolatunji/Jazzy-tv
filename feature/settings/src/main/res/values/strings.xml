@@ -220,7 +220,7 @@
     <string name="settings_about_licence_libtorrent4j">Java bindings for libtorrent.</string>
     <string name="settings_about_licence_torrent_search_api">Copyright Jimmy Laurent. Torrent-site search engine, ported to Kotlin through the TorrentSearch project.</string>
     <string name="settings_about_licence_androidx_media3">Copyright The Android Open Source Project.</string>
-    <string name="settings_about_licence_ffmpeg">Copyright the FFmpeg developers. Decodes DTS and Dolby TrueHD audio (plus AC-3/E-AC-3, AAC, MP3, FLAC, ALAC, Opus and Vorbis) in software. Built in an LGPL-only configuration (no GPL or non-free parts) as separate shared libraries linked dynamically, so they can be replaced. Source: git.ffmpeg.org/ffmpeg.git, tag n7.1.5; the build script is in core/ffmpeg/build-ffmpeg of Jazzy\'s source. Licence text: gnu.org/licenses/old-licenses/lgpl-2.1.html.</string>
+    <string name="settings_about_licence_ffmpeg">Copyright the FFmpeg developers. Decodes DTS and Dolby TrueHD audio (plus AC-3/E-AC-3, AAC, MP3, FLAC, ALAC, Opus and Vorbis) in software. Built in an LGPL-only configuration (no GPL or non-free parts) as separate shared libraries linked dynamically, so you can replace them. The complete FFmpeg 7.1.5 source (ffmpeg-7.1.5.tar.xz) and Jazzy\'s build script are published next to every Jazzy APK download (see LGPL-SOURCES.txt there). Licence text: gnu.org/licenses/old-licenses/lgpl-2.1.html.</string>
     <string name="settings_about_licence_okhttp">Copyright Square, Inc.</string>
     <string name="settings_about_licence_retrofit">Copyright Square, Inc.</string>
     <string name="settings_about_licence_jsoup">Copyright Jonathan Hedley.</string>
