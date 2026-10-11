@@ -37,6 +37,7 @@ include(":core:data")
 include(":core:recommendations")
 include(":core:torrent")
 include(":core:player")
+include(":core:ffmpeg")
 include(":core:designsystem")
 
 include(":feature:profiles")
@@ -47,3 +48,5 @@ include(":feature:discover")
 include(":feature:library")
 include(":feature:player")
 include(":feature:settings")
+
+include(":baselineprofile")

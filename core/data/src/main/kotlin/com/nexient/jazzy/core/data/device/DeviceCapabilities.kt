@@ -8,6 +8,7 @@ import android.media.MediaCodecList
 import android.media.MediaFormat
 import android.os.Build
 import android.view.Display
+import com.nexient.jazzy.core.ffmpeg.FfmpegAudioDecoders
 import com.nexient.jazzy.core.model.HdrFormat
 import com.nexient.jazzy.core.model.Resolution
 import com.nexient.jazzy.core.model.TorrentSource
@@ -50,10 +51,12 @@ class DeviceCapabilities @Inject constructor(@ApplicationContext private val con
     }
 
     /**
-     * True once an LGPL FFmpeg audio decoder ships with the app (PL-2, plan E10-11). Until then DTS/TrueHD
-     * only play through HDMI passthrough, so rows with them are flagged when passthrough isn't available.
+     * True when the bundled LGPL FFmpeg audio decoder (PL-2, plan E10-11, `:core:ffmpeg`) loaded and can
+     * decode both DTS and TrueHD in software, so those rows play regardless of HDMI passthrough. False
+     * when the native libraries are missing for this ABI (or off-device), falling back to the
+     * MediaCodec/passthrough checks. First access loads the native libraries (a few ms).
      */
-    var softwareAudio: Boolean = false
+    val softwareAudio: Boolean by lazy { FfmpegAudioDecoders.dts && FfmpegAudioDecoders.trueHd }
 
     private fun passthrough(encoding: Int): Boolean = runCatching {
         val am = context.getSystemService(AudioManager::class.java)

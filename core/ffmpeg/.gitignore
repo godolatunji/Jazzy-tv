@@ -1,0 +1,3 @@
+/build
+# Source clones and intermediates from build-ffmpeg/build.sh
+/build-ffmpeg/.work

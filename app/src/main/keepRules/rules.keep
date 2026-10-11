@@ -10,3 +10,8 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
+# R8 + `optimization.packageScope` (kotlin.**): R8 repackaged Kotlin multi-file facade parts
+# (e.g. kotlin.text.StringsKt__StringBuilderKt) out of their package while their superclass part stays
+# package-private, so release crashed at startup with IllegalAccessError (found by the E16 benchmarks,
+# see docs/PERFORMANCE.md). Keep the part classes' names/packages; they can still be optimized/shrunk.
+-keep,allowshrinking,allowoptimization class kotlin.**Kt__**

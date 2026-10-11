@@ -12,6 +12,7 @@ dependencies {
     api(projects.core.sources)
     implementation(projects.core.recommendations)
     api(projects.core.torrent)
+    implementation(projects.core.ffmpeg) // DeviceCapabilities.softwareAudio (DTS/TrueHD, PL-2)
     api(libs.androidx.paging.runtime)
     implementation(libs.androidx.work.runtime)
     implementation(libs.androidx.hilt.work)
