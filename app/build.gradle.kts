@@ -17,8 +17,8 @@ android {
 
     defaultConfig {
         applicationId = "com.nexient.jazzy"
-        versionCode = 1
-        versionName = "0.1.0"
+        versionCode = 2
+        versionName = "0.2.0"
     }
 
     // Per-ABI APKs plus a universal one for sideloading (plan E0-04, §14.2).
