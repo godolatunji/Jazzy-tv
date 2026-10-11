@@ -91,7 +91,7 @@ internal object Filters {
             "match" -> runCatching { Regex(args.getOrElse(0) { "" }).find(value)?.groupValues?.getOrNull(1) }
                 .getOrNull() ?: value
             "decodeURIComponent" -> runCatching {
-                URLDecoder.decode(value.replace("+", "%2B"), Charsets.UTF_8)
+                URLDecoder.decode(value.replace("+", "%2B"), "UTF-8") // the Charset overload is API 33+
             }.getOrDefault(value)
             else -> value
         }

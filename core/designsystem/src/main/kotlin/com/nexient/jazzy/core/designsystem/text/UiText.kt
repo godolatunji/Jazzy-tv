@@ -1,6 +1,7 @@
 package com.nexient.jazzy.core.designsystem.text
 
 import android.content.Context
+import android.content.res.Resources
 import androidx.annotation.PluralsRes
 import androidx.annotation.StringRes
 import androidx.compose.runtime.Composable
@@ -43,8 +44,11 @@ fun UiText.asString(): String = when (this) {
 }
 
 /** For non-composable call sites such as snackbars shown from a `LaunchedEffect`. */
-fun UiText.asString(context: Context): String = when (this) {
+fun UiText.asString(context: Context): String = asString(context.resources)
+
+/** As above; in composables pass `LocalResources.current` so the text follows configuration changes. */
+fun UiText.asString(resources: Resources): String = when (this) {
     is UiText.Raw -> value
-    is UiText.Res -> context.getString(id, *args.map { if (it is UiText) it.asString(context) else it }.toTypedArray())
-    is UiText.Plural -> context.resources.getQuantityString(id, count, *args.map { if (it is UiText) it.asString(context) else it }.toTypedArray())
+    is UiText.Res -> resources.getString(id, *args.map { if (it is UiText) it.asString(resources) else it }.toTypedArray())
+    is UiText.Plural -> resources.getQuantityString(id, count, *args.map { if (it is UiText) it.asString(resources) else it }.toTypedArray())
 }

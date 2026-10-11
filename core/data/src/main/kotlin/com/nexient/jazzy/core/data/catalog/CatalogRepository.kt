@@ -157,19 +157,25 @@ class CatalogRepository @Inject constructor(
     }
 }
 
-/** Pages 1…[maxPages] of a rail, read through [load]. */
+/**
+ * Pages 1…[maxPages] of a rail, read through [load]. TMDB lists shift between requests, so the same
+ * title can come back on two pages; later copies are dropped because the rail keys items by title.
+ */
 class RailPagingSource(
     private val maxPages: Int,
     private val load: suspend (Int) -> TitlePage,
 ) : PagingSource<Int, TitleSummary>() {
+    private val seen = mutableSetOf<Pair<Int, MediaType>>()
+
     override fun getRefreshKey(state: PagingState<Int, TitleSummary>): Int? = null
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, TitleSummary> {
         val page = params.key ?: 1
         return try {
             val result = load(page)
+            val fresh = synchronized(seen) { result.items.filter { seen.add(it.tmdbId to it.mediaType) } }
             LoadResult.Page(
-                data = result.items,
+                data = fresh,
                 prevKey = null,
                 nextKey = if (page < minOf(maxPages, result.totalPages) && result.items.isNotEmpty()) page + 1 else null,
             )

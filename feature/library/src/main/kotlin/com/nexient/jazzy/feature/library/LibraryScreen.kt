@@ -22,7 +22,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
@@ -61,19 +61,19 @@ fun LibraryRoute(
     val state by viewModel.state.collectAsStateWithLifecycle()
     var tab by rememberSaveable(initialTab) { mutableIntStateOf(initialTab.coerceIn(0, LibraryTab.entries.lastIndex)) }
     val snackbar = remember { SnackbarHostState() }
-    val context = LocalContext.current
+    val resources = LocalResources.current
 
     LaunchedEffect(viewModel, snackbar) {
         viewModel.messages.collectLatest { message ->
             snackbar.currentSnackbarData?.dismiss()
             val undo = message.undo
-            val text = message.text.asString(context)
+            val text = message.text.asString(resources)
             if (undo == null) {
                 snackbar.showSnackbar(text, duration = SnackbarDuration.Short)
             } else {
                 // Material's durations are 4 s / 10 s; the spec asks for exactly 5 s.
                 val result = withTimeoutOrNull(UNDO_WINDOW_MS) {
-                    snackbar.showSnackbar(text, actionLabel = context.getString(R.string.library_common_undo), duration = SnackbarDuration.Indefinite)
+                    snackbar.showSnackbar(text, actionLabel = resources.getString(R.string.library_common_undo), duration = SnackbarDuration.Indefinite)
                 }
                 if (result == SnackbarResult.ActionPerformed) viewModel.undo(undo)
             }

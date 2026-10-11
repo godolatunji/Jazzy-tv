@@ -117,7 +117,7 @@ internal object Uris {
 
     /** JavaScript `encodeURIComponent` semantics (space -> %20, keeps `!'()*~`). */
     fun encodeComponent(value: String): String =
-        URLEncoder.encode(value, Charsets.UTF_8)
+        URLEncoder.encode(value, "UTF-8") // the Charset overload is API 33+
             .replace("+", "%20")
             .replace("%21", "!")
             .replace("%27", "'")
