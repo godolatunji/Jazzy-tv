@@ -1,8 +1,5 @@
 package com.nexient.jazzy.feature.details
 
-import android.content.ActivityNotFoundException
-import android.content.Intent
-import android.net.Uri
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
@@ -25,6 +22,7 @@ import com.nexient.jazzy.core.model.TitleRef
 import com.nexient.jazzy.core.model.TorrentSource
 import com.nexient.jazzy.feature.details.ui.DetailsPhoneScreen
 import com.nexient.jazzy.feature.details.ui.DetailsTvScreen
+import com.nexient.jazzy.feature.details.ui.TrailerPlayerDialog
 
 data class DetailsActions(
     val back: () -> Unit,
@@ -44,6 +42,7 @@ fun DetailsRoute(args: DetailsArgs, actions: DetailsActions) {
     val snackbar = remember { SnackbarHostState() }
     val context = LocalContext.current
     var askResume by remember { mutableStateOf<Pair<TorrentSource, Long>?>(null) }
+    var trailerKey by remember { mutableStateOf<String?>(null) }
 
     LaunchedEffect(viewModel) {
         viewModel.events.collect { event ->
@@ -51,13 +50,7 @@ fun DetailsRoute(args: DetailsArgs, actions: DetailsActions) {
                 is DetailsEvent.Play -> actions.play(event.request)
                 is DetailsEvent.AskResume -> askResume = event.source to event.positionMs
                 is DetailsEvent.Message -> snackbar.showSnackbar(event.text.asString(context))
-                is DetailsEvent.OpenTrailer -> {
-                    val app = Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:${event.youtubeKey}"))
-                    val web = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.youtube.com/watch?v=${event.youtubeKey}"))
-                    try { context.startActivity(app) } catch (_: ActivityNotFoundException) {
-                        runCatching { context.startActivity(web) }
-                    }
-                }
+                is DetailsEvent.OpenTrailer -> trailerKey = event.youtubeKey
             }
         }
     }
@@ -71,6 +64,8 @@ fun DetailsRoute(args: DetailsArgs, actions: DetailsActions) {
             dismissButton = { TextButton(onClick = { askResume = null; viewModel.launchPlayback(source, 0) }) { Text(stringResource(R.string.details_resume_dialog_start_over)) } },
         )
     }
+
+    trailerKey?.let { key -> TrailerPlayerDialog(key, onDismiss = { trailerKey = null }) }
 
     if (JazzyTheme.isTv) DetailsTvScreen(state, viewModel, actions, snackbar)
     else DetailsPhoneScreen(state, viewModel, actions, snackbar)

@@ -34,6 +34,12 @@
     <string name="details_action_like">" Like"</string>
     <string name="details_action_liked">" Liked"</string>
     <string name="details_action_trailer">" Trailer"</string>
+
+    <!-- In-app trailer player -->
+    <string name="details_trailer_close">Close trailer</string>
+    <string name="details_trailer_error_not_embeddable">The owner of this trailer doesn\'t allow it to be played outside YouTube.</string>
+    <string name="details_trailer_error_not_found">This trailer is no longer available.</string>
+    <string name="details_trailer_error_generic">This trailer couldn\'t be played.</string>
     <string name="details_resume_banner_stopped_at">You stopped at %1$s</string>
     <string name="details_resume_banner_episode">%1$s · %2$s</string>
     <string name="details_resume_banner_last_used">%1$s · %2$s (last used)</string>
