@@ -17,6 +17,8 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
@@ -107,33 +109,38 @@ internal fun TrailerPlayerDialog(youtubeKey: String, onDismiss: () -> Unit) {
         var started by remember { mutableStateOf(false) }
         var errorCode by remember { mutableStateOf<Int?>(null) }
 
-        Box(Modifier.fillMaxSize().background(Color.Black)) {
-            if (errorCode == null) {
-                TrailerWebView(
-                    youtubeKey = youtubeKey,
-                    showYoutubeControls = !tv,
-                    onState = { state ->
-                        playerState = state
-                        if (state == YT_PLAYING) started = true
-                        if (state == YT_ENDED) currentOnDismiss()
-                    },
-                    onError = { errorCode = it },
-                    modifier = Modifier.fillMaxSize(),
-                )
-                if (!started) CircularProgressIndicator(Modifier.align(Alignment.Center), color = Color.White)
-                if (tv && started && playerState == YT_PAUSED) {
-                    Icon(
-                        Icons.Filled.PlayArrow, null,
-                        Modifier.align(Alignment.Center).size(96.dp).background(Color.Black.copy(alpha = 0.5f), MaterialTheme.shapes.extraLarge),
-                        tint = Color.White,
-                    )
-                }
-            } else {
-                TrailerError(errorCode!!, onDismiss, Modifier.align(Alignment.Center))
-            }
+        Column(Modifier.fillMaxSize().background(Color.Black)) {
+            // Phone: the close button gets its own strip so it never covers YouTube's title row.
             if (!tv) {
-                IconButton(onClick = onDismiss, modifier = Modifier.align(Alignment.TopStart).padding(12.dp)) {
-                    Icon(Icons.Filled.Close, stringResource(R.string.details_trailer_close), tint = Color.White)
+                Box(Modifier.fillMaxWidth().height(48.dp)) {
+                    IconButton(onClick = onDismiss, modifier = Modifier.align(Alignment.CenterStart).padding(start = 4.dp)) {
+                        Icon(Icons.Filled.Close, stringResource(R.string.details_trailer_close), tint = Color.White)
+                    }
+                }
+            }
+            Box(Modifier.fillMaxWidth().weight(1f)) {
+                if (errorCode == null) {
+                    TrailerWebView(
+                        youtubeKey = youtubeKey,
+                        showYoutubeControls = !tv,
+                        onState = { state ->
+                            playerState = state
+                            if (state == YT_PLAYING) started = true
+                            if (state == YT_ENDED) currentOnDismiss()
+                        },
+                        onError = { errorCode = it },
+                        modifier = Modifier.fillMaxSize(),
+                    )
+                    if (!started) CircularProgressIndicator(Modifier.align(Alignment.Center), color = Color.White)
+                    if (tv && started && playerState == YT_PAUSED) {
+                        Icon(
+                            Icons.Filled.PlayArrow, null,
+                            Modifier.align(Alignment.Center).size(96.dp).background(Color.Black.copy(alpha = 0.5f), MaterialTheme.shapes.extraLarge),
+                            tint = Color.White,
+                        )
+                    }
+                } else {
+                    TrailerError(errorCode!!, onDismiss, Modifier.align(Alignment.Center))
                 }
             }
         }
