@@ -22,14 +22,24 @@ sealed interface RailSource {
 
 enum class RailStyle { POSTER, BACKDROP_PROGRESS, TOP_TEN }
 
-/** A Home rail definition (spec §5.2). */
+/**
+ * A Home rail definition (spec §5.2). A rail with [fullPage] has its own page that pages through
+ * the same query without the [maxPages] cap; see [fullPageRail].
+ */
 data class RailDefinition(
     val key: String,
     val title: String,
     val sources: List<RailSource>,
     val style: RailStyle = RailStyle.POSTER,
     val maxPages: Int = 5,
+    val fullPage: Boolean = false,
 )
+
+/** TMDB serves at most 500 pages of any list or discover query. */
+const val TMDB_MAX_PAGES = 500
+
+/** Originals rails stop at 40 titles on Home; the rest are on the network's own page. */
+private const val ORIGINALS_RAIL_PAGES = 2
 
 /** Home tabs: All, Movies only, TV only (HM-4). */
 enum class HomeTab(val mediaType: MediaType?) { ALL(null), MOVIES(MediaType.MOVIE), TV(MediaType.TV) }
@@ -62,12 +72,16 @@ fun tmdbRails(tab: HomeTab, networks: List<OriginalsNetwork> = DefaultOriginals)
             rails += RailDefinition(
                 "originals_${n.id}", "${n.name} Originals",
                 listOf(RailSource.Discover(MediaType.TV, mapOf("with_networks" to n.id.toString(), "sort_by" to "popularity.desc"))),
+                maxPages = ORIGINALS_RAIL_PAGES,
+                fullPage = true,
             )
         }
         if (networks.size > 3) {
             rails += RailDefinition(
                 "originals_more", "More Originals",
                 listOf(RailSource.Discover(MediaType.TV, mapOf("with_networks" to networks.drop(3).joinToString("|") { it.id.toString() }, "sort_by" to "popularity.desc"))),
+                maxPages = ORIGINALS_RAIL_PAGES,
+                fullPage = true,
             )
         }
     }
@@ -77,6 +91,10 @@ fun tmdbRails(tab: HomeTab, networks: List<OriginalsNetwork> = DefaultOriginals)
     genreRails(tab).forEach { rails += it }
     return rails
 }
+
+/** The full-page version of the rail with [key] (an Originals network): the same query, every page. */
+fun fullPageRail(key: String, networks: List<OriginalsNetwork> = DefaultOriginals): RailDefinition? =
+    tmdbRails(HomeTab.ALL, networks).firstOrNull { it.key == key && it.fullPage }?.copy(maxPages = TMDB_MAX_PAGES)
 
 private fun genreRails(tab: HomeTab): List<RailDefinition> {
     val genres = listOf(

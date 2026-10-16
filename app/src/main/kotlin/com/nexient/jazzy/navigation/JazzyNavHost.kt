@@ -48,6 +48,7 @@ import com.nexient.jazzy.feature.discover.DiscoverRoute as DiscoverScreenRoute
 import com.nexient.jazzy.feature.home.HomeActions
 import com.nexient.jazzy.feature.home.HomeViewModel
 import com.nexient.jazzy.feature.home.HomeRoute as HomeScreenRoute
+import com.nexient.jazzy.feature.home.NetworkRoute as NetworkScreenRoute
 import com.nexient.jazzy.feature.library.LibraryRoute as LibraryScreenRoute
 import com.nexient.jazzy.feature.player.PlayerRoute as PlayerScreenRoute
 import com.nexient.jazzy.feature.profiles.ProfileEditRoute as ProfileEditScreenRoute
@@ -113,6 +114,9 @@ fun JazzyNavHost(startKey: NavKey, appViewModel: AppViewModel, pendingLink: Deta
                         onOpenPerson = { id, name -> nav.push(PersonRoute(id, name)) },
                     )
                 }
+                entry<NetworkRoute> { key ->
+                    NetworkScreenRoute(key.railKey, onOpenTitle = { ref -> nav.push(DetailsRoute(ref.tmdbId, ref.mediaType)) }, onBack = { nav.back() })
+                }
                 entry<PersonRoute> { key ->
                     PersonScreenRoute(key.personId, key.name, onOpenTitle = { ref -> nav.push(DetailsRoute(ref.tmdbId, ref.mediaType)) }, onBack = { nav.back() })
                 }
@@ -161,6 +165,7 @@ private fun homeActions(nav: Navigator, openProfileMenu: () -> Unit) = HomeActio
     openTitle = { ref, season, episode, focus -> nav.push(DetailsRoute(ref.tmdbId, ref.mediaType, season, episode, focus)) },
     openProfiles = openProfileMenu,
     openSearch = { nav.navigateTopLevel(SearchRoute) },
+    openNetwork = { railKey -> nav.push(NetworkRoute(railKey)) },
 )
 
 /** Thin wrapper over the Navigation 3 back stack. */

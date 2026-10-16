@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyListScope
@@ -14,6 +15,9 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -29,13 +33,14 @@ import com.nexient.jazzy.core.designsystem.R
 import com.nexient.jazzy.core.designsystem.theme.JazzyColors
 import com.nexient.jazzy.core.designsystem.theme.JazzyTheme
 
-/** A titled horizontal rail (spec §5.2). */
+/** A titled horizontal rail (spec §5.2). With [onTitleClick] the title opens the rail's own page. */
 @Composable
 fun Rail(
     title: String,
     modifier: Modifier = Modifier,
     state: LazyListState = rememberLazyListState(),
     trailing: (@Composable () -> Unit)? = null,
+    onTitleClick: (() -> Unit)? = null,
     content: LazyListScope.() -> Unit,
 ) {
     val spacing = JazzyTheme.spacing
@@ -44,7 +49,23 @@ fun Rail(
             Modifier.fillMaxWidth().padding(horizontal = spacing.gutter).padding(bottom = spacing.sm),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            Text(title, style = MaterialTheme.typography.titleLarge, modifier = Modifier.weight(1f).semantics { heading() })
+            if (onTitleClick == null) {
+                Text(title, style = MaterialTheme.typography.titleLarge, modifier = Modifier.weight(1f).semantics { heading() })
+            } else {
+                Row(Modifier.weight(1f)) {
+                    // Pulled back by its inner padding so the text lines up with plain rail titles.
+                    Row(
+                        Modifier
+                            .offset(x = (-4).dp)
+                            .jazzyClickable(RoundedCornerShape(8.dp), focusScale = 1.03f, onClick = onTitleClick)
+                            .padding(horizontal = 4.dp, vertical = 2.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        Text(title, style = MaterialTheme.typography.titleLarge, modifier = Modifier.semantics { heading() })
+                        Icon(Icons.AutoMirrored.Filled.KeyboardArrowRight, stringResource(R.string.designsystem_rail_see_all), tint = JazzyColors.TextSecondary)
+                    }
+                }
+            }
             trailing?.invoke()
         }
         LazyRow(

@@ -61,10 +61,14 @@ sealed interface HomeRail {
 
     data class Paged(val definition: RailDefinition, val items: Flow<PagingData<TitleSummary>>) : HomeRail {
         override val key get() = definition.key
-        override val title: UiText get() = railTitle(definition.key, definition.title, definition.title.removeSuffix(" Originals").takeIf { definition.key.startsWith("originals_") })
+        override val title: UiText get() = definition.uiTitle()
         val style: RailStyle get() = definition.style
     }
 }
+
+/** A TMDB rail's localized title; Originals rails fill "%s Originals" with the network name. */
+internal fun RailDefinition.uiTitle(): UiText =
+    railTitle(key, title, title.removeSuffix(" Originals").takeIf { key.startsWith("originals_") })
 
 data class HeroState(val summary: TitleSummary, val content: HeroContent)
 

@@ -7,12 +7,14 @@
     <!-- States / banners / rails -->
     <string name="designsystem_offline_banner">You\'re offline. Showing saved content.</string>
     <string name="designsystem_rail_error">Couldn\'t load</string>
+    <string name="designsystem_rail_see_all">See all</string>
     <string name="designsystem_paging_load_more_failed">Couldn\'t load more. Retry</string>
     <string name="designsystem_hero_genre">• %1$s</string>
 
     <!-- Cards -->
     <string name="designsystem_card_in_my_list">In My List</string>
     <string name="designsystem_card_liked">Liked</string>
+    <string name="designsystem_card_see_more">See more</string>
     <string name="designsystem_card_more_options">More options for %1$s</string>
 
     <!-- Episode row -->

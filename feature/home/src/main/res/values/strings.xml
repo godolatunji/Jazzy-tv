@@ -22,6 +22,16 @@
     <string name="home_hero_more_info">More Info</string>
     <string name="home_hero_more_info_a11y">More info</string>
 
+    <!-- Network page -->
+    <string name="home_network_back">Back</string>
+    <string name="home_network_fallback_title">Originals</string>
+    <string name="home_network_error_title">Couldn\'t load titles</string>
+    <string name="home_network_offline_title">You\'re offline</string>
+    <string name="home_network_error_message">Check your connection and try again.</string>
+    <string name="home_network_retry">Retry</string>
+    <string name="home_network_empty_title">Nothing here yet</string>
+    <string name="home_network_empty_message">There are no titles to show for this network right now.</string>
+
     <!-- Card menus -->
     <string name="home_menu_add_to_my_list">Add to My List</string>
     <string name="home_menu_remove_from_my_list">Remove from My List</string>

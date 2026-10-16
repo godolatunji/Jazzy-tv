@@ -16,6 +16,8 @@ data class HomeActions(
     val openTitle: (ref: TitleRef, season: Int?, episode: Int?, focusSources: Boolean) -> Unit,
     val openProfiles: () -> Unit,
     val openSearch: () -> Unit,
+    /** Opens the full page of a rail that has one (an Originals network), by rail key. */
+    val openNetwork: (railKey: String) -> Unit,
 )
 
 @Composable

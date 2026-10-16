@@ -20,6 +20,8 @@ data class DetailsRoute(
     val episode: Int? = null,
     val focusSources: Boolean = false,
 ) : NavKey
+/** A network's page (e.g. Netflix Originals), identified by its Home rail key. */
+@Serializable data class NetworkRoute(val railKey: String) : NavKey
 @Serializable data class PersonRoute(val personId: Int, val name: String) : NavKey
 @Serializable data class PlayerRoute(val request: PlaybackRequest) : NavKey
 @Serializable data object SettingsRoute : NavKey

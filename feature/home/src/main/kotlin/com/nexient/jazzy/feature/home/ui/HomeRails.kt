@@ -24,6 +24,7 @@ import com.nexient.jazzy.core.designsystem.component.PosterCard
 import com.nexient.jazzy.core.designsystem.component.Rail
 import com.nexient.jazzy.core.designsystem.component.RailError
 import com.nexient.jazzy.core.designsystem.component.RailSkeleton
+import com.nexient.jazzy.core.designsystem.component.SeeMoreCard
 import com.nexient.jazzy.core.designsystem.component.TopTenCard
 import com.nexient.jazzy.core.designsystem.text.asString
 import com.nexient.jazzy.core.model.ContinueWatchingItem
@@ -85,7 +86,10 @@ private fun PagedRail(
         items.itemCount == 0 && refresh is LoadState.Loading -> RailSkeleton()
         items.itemCount == 0 && refresh is LoadState.Error -> RailError(rail.title.asString(), onRetry = items::retry)
         items.itemCount == 0 -> Unit // empty rails are hidden (HM-1)
-        else -> Rail(rail.title.asString()) {
+        else -> Rail(
+            rail.title.asString(),
+            onTitleClick = if (rail.definition.fullPage) ({ actions.openNetwork(rail.key) }) else null,
+        ) {
             items(items.itemCount, key = items.itemKey { "${it.tmdbId}:${it.mediaType.apiValue}" }) { index ->
                 val item = items[index] ?: return@items
                 if (rail.style == RailStyle.TOP_TEN) {
@@ -94,6 +98,10 @@ private fun PagedRail(
                 } else {
                     TitlePoster(item, state, viewModel, actions, onFocusTitle)
                 }
+            }
+            // Once the rail's pages run out, a last card leads to the full page.
+            if (rail.definition.fullPage && items.loadState.append.endOfPaginationReached) {
+                item(key = "see_more") { SeeMoreCard(onClick = { actions.openNetwork(rail.key) }) }
             }
         }
     }

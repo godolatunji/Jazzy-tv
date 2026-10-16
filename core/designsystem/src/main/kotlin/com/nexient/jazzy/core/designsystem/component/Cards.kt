@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.MoreVert
@@ -68,6 +69,30 @@ fun PosterCard(
                 if (inMyList) MarkerIcon { Icon(Icons.Filled.Check, stringResource(R.string.designsystem_card_in_my_list), Modifier.size(12.dp), tint = Color.White) }
                 if (liked) MarkerIcon { Icon(Icons.Filled.Favorite, stringResource(R.string.designsystem_card_liked), Modifier.size(12.dp), tint = JazzyColors.Accent) }
             }
+        }
+    }
+}
+
+/** Poster-sized "See more" card that ends a rail and opens the rail's own page. */
+@Composable
+fun SeeMoreCard(onClick: () -> Unit, modifier: Modifier = Modifier, onFocused: ((Boolean) -> Unit)? = null) {
+    Box(
+        modifier
+            .width(JazzyTheme.spacing.posterWidth)
+            .aspectRatio(2f / 3f)
+            .jazzyClickable(CardShape, clipContent = true, onFocused = onFocused, onClick = onClick)
+            .background(JazzyColors.SurfaceVariant),
+        contentAlignment = Alignment.Center,
+    ) {
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            Box(Modifier.size(48.dp).background(JazzyColors.Scrim, CircleShape), contentAlignment = Alignment.Center) {
+                Icon(Icons.AutoMirrored.Filled.ArrowForward, null, tint = Color.White)
+            }
+            Text(
+                stringResource(R.string.designsystem_card_see_more),
+                style = MaterialTheme.typography.titleSmall,
+                modifier = Modifier.padding(top = 8.dp),
+            )
         }
     }
 }
