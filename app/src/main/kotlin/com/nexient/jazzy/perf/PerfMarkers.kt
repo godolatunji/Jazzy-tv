@@ -49,7 +49,8 @@ object PerfTrace {
 @Composable
 fun HomeReadyMarker(viewModel: HomeViewModel) {
     val state by viewModel.state.collectAsStateWithLifecycle()
-    val ready = state.rails.isNotEmpty() && (state.hero != null || state.offline)
+    val hero by viewModel.heroState.collectAsStateWithLifecycle()
+    val ready = state.rails.isNotEmpty() && (hero != null || state.offline)
     ReportDrawnWhen { ready }
     if (ready) LaunchedEffect(Unit) { PerfTrace.end(PerfTrace.HOME_FIRST_RAIL) }
 }

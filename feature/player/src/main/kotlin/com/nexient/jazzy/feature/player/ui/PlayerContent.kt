@@ -325,7 +325,7 @@ private const val SCRUB_COMMIT_MS = 900L
 @Composable
 private fun PreRoll(state: PlayerUiState, onCancel: () -> Unit) {
     Box(Modifier.fillMaxSize()) {
-        JazzyImage(TmdbImages.backdrop(state.request.snapshot.backdropPath, tv = true), null, Modifier.fillMaxSize())
+        JazzyImage(TmdbImages.heroBackdrop(state.request.snapshot.backdropPath), null, Modifier.fillMaxSize())
         Box(Modifier.fillMaxSize().background(Brush.verticalGradient(listOf(JazzyColors.Scrim, Color.Black))))
         Column(Modifier.align(Alignment.Center).padding(32.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(12.dp)) {
             Text(state.title, style = MaterialTheme.typography.headlineMedium)

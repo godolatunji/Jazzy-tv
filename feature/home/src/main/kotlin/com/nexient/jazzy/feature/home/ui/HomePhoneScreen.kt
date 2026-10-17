@@ -2,6 +2,7 @@ package com.nexient.jazzy.feature.home.ui
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -36,11 +37,13 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.nexient.jazzy.core.data.catalog.HomeTab
 import com.nexient.jazzy.core.designsystem.component.AvatarTile
 import com.nexient.jazzy.core.designsystem.component.HeroBackdrop
@@ -66,27 +69,7 @@ internal fun HomePhoneScreen(state: HomeUiState, viewModel: HomeViewModel, actio
         ) {
             item(key = "header") {
                 Box {
-                    state.hero?.let { hero ->
-                        HeroBackdrop(hero.content, Modifier.fillMaxWidth().aspectRatio(0.72f))
-                        HeroText(hero.content, Modifier.align(Alignment.BottomStart).padding(horizontal = JazzyTheme.spacing.gutter, vertical = 8.dp)) {
-                            val inList = hero.summary.ref in state.myList
-                            val liked = hero.summary.ref in state.liked
-                            Button(
-                                onClick = { actions.openTitle(hero.summary.ref, null, null, true) },
-                                colors = ButtonDefaults.buttonColors(containerColor = Color.White, contentColor = Color.Black),
-                            ) { Icon(Icons.Filled.PlayArrow, null); Text(stringResource(R.string.home_hero_watch)) }
-                            OutlinedButton(onClick = { viewModel.toggleMyList(hero.summary.snapshot()) }) {
-                                Icon(if (inList) Icons.Filled.Check else Icons.Filled.Add, null)
-                                Text(stringResource(R.string.home_hero_my_list))
-                            }
-                            IconButton(onClick = { viewModel.toggleLike(hero.summary.snapshot()) }) {
-                                Icon(if (liked) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder, stringResource(if (liked) R.string.home_hero_unlike else R.string.home_hero_like), tint = if (liked) JazzyColors.Accent else Color.White)
-                            }
-                            IconButton(onClick = { actions.openTitle(hero.summary.ref, null, null, false) }) {
-                                Icon(Icons.Filled.Info, stringResource(R.string.home_hero_more_info_a11y), tint = Color.White)
-                            }
-                        }
-                    } ?: Box(Modifier.fillMaxWidth().heightIn(min = 140.dp))
+                    PhoneHeroSlot(viewModel, state, actions)
                     Column(Modifier.align(Alignment.TopStart).windowInsetsPadding(WindowInsets.statusBars)) {
                         TopBar(state, actions)
                         TabChips(state.tab, viewModel::selectTab)
@@ -94,11 +77,38 @@ internal fun HomePhoneScreen(state: HomeUiState, viewModel: HomeViewModel, actio
                 }
                 if (state.offline) OfflineBanner()
             }
-            items(state.rails, key = { it.key }) { rail ->
+            items(state.rails, key = { it.key }, contentType = { it::class }) { rail ->
                 HomeRailContent(rail, state, viewModel, actions)
             }
         }
     }
+}
+
+/** Hero collected on its own so it (and the whole header) doesn't re-run when rails/state update. */
+@Composable
+private fun BoxScope.PhoneHeroSlot(viewModel: HomeViewModel, state: HomeUiState, actions: HomeActions) {
+    val hero by viewModel.heroState.collectAsStateWithLifecycle()
+    hero?.let { h ->
+        HeroBackdrop(h.content, Modifier.fillMaxWidth().aspectRatio(0.72f))
+        HeroText(h.content, Modifier.align(Alignment.BottomStart).padding(horizontal = JazzyTheme.spacing.gutter, vertical = 8.dp)) {
+            val inList = h.summary.ref in state.myList
+            val liked = h.summary.ref in state.liked
+            Button(
+                onClick = { actions.openTitle(h.summary.ref, null, null, true) },
+                colors = ButtonDefaults.buttonColors(containerColor = Color.White, contentColor = Color.Black),
+            ) { Icon(Icons.Filled.PlayArrow, null); Text(stringResource(R.string.home_hero_watch)) }
+            OutlinedButton(onClick = { viewModel.toggleMyList(h.summary.snapshot()) }) {
+                Icon(if (inList) Icons.Filled.Check else Icons.Filled.Add, null)
+                Text(stringResource(R.string.home_hero_my_list))
+            }
+            IconButton(onClick = { viewModel.toggleLike(h.summary.snapshot()) }) {
+                Icon(if (liked) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder, stringResource(if (liked) R.string.home_hero_unlike else R.string.home_hero_like), tint = if (liked) JazzyColors.Accent else Color.White)
+            }
+            IconButton(onClick = { actions.openTitle(h.summary.ref, null, null, false) }) {
+                Icon(Icons.Filled.Info, stringResource(R.string.home_hero_more_info_a11y), tint = Color.White)
+            }
+        }
+    } ?: Box(Modifier.fillMaxWidth().heightIn(min = 140.dp))
 }
 
 @Composable

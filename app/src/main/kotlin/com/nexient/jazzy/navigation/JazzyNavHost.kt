@@ -28,6 +28,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
 import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
 import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
@@ -67,6 +68,9 @@ fun JazzyNavHost(startKey: NavKey, appViewModel: AppViewModel, pendingLink: Deta
     val backStack = rememberNavBackStack(startKey)
     val nav = remember(backStack) { Navigator(backStack) }
     val current = backStack.lastOrNull()
+    // Home's ViewModel is scoped to the activity (not the nav entry) so its scroll/focus/hero survive
+    // a Details page being pushed on top; Navigation 3 otherwise rebuilds the popped entry's VM.
+    val appOwner = checkNotNull(LocalViewModelStoreOwner.current)
     val profile by appViewModel.activeProfile.collectAsStateWithLifecycle()
     var profileMenu by remember { mutableStateOf(false) }
 
@@ -102,12 +106,15 @@ fun JazzyNavHost(startKey: NavKey, appViewModel: AppViewModel, pendingLink: Deta
                     )
                 }
                 entry<HomeRoute> {
-                    // Same key HomeRoute uses by default; shared so the perf marker can watch Home's state.
-                    val homeViewModel = hiltViewModel<HomeViewModel>(key = "home_all")
+                    // Activity-scoped so Home state is kept while Details is on top; "home_all" also lets the perf marker watch it.
+                    val homeViewModel = hiltViewModel<HomeViewModel>(viewModelStoreOwner = appOwner, key = "home_all")
                     HomeReadyMarker(homeViewModel)
                     HomeScreenRoute(homeActions(nav) { profileMenu = true }, viewModel = homeViewModel)
                 }
-                entry<HomeTabRoute> { key -> HomeScreenRoute(homeActions(nav) { profileMenu = true }, tab = HomeTab.valueOf(key.tab)) }
+                entry<HomeTabRoute> { key ->
+                    val tabViewModel = hiltViewModel<HomeViewModel>(viewModelStoreOwner = appOwner, key = "home_${key.tab}")
+                    HomeScreenRoute(homeActions(nav) { profileMenu = true }, tab = HomeTab.valueOf(key.tab), viewModel = tabViewModel)
+                }
                 entry<SearchRoute> {
                     SearchScreenRoute(
                         onOpenTitle = { ref -> nav.push(DetailsRoute(ref.tmdbId, ref.mediaType)) },

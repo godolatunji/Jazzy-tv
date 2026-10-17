@@ -1,5 +1,8 @@
 package com.nexient.jazzy.feature.home
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
@@ -32,7 +35,9 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
@@ -75,7 +80,6 @@ data class HeroState(val summary: TitleSummary, val content: HeroContent)
 data class HomeUiState(
     val profile: Profile? = null,
     val tab: HomeTab = HomeTab.ALL,
-    val hero: HeroState? = null,
     val rails: List<HomeRail> = emptyList(),
     val myList: Set<TitleRef> = emptySet(),
     val liked: Set<TitleRef> = emptySet(),
@@ -99,6 +103,37 @@ class HomeViewModel @Inject constructor(
     private val refreshing = MutableStateFlow(false)
     private val heroSeed = Random.nextInt(5)
 
+    /**
+     * The TV dynamic backdrop. Kept OUT of [state] on purpose: it changes on every d-pad focus step,
+     * and folding it into the screen-wide state made every focus landing re-emit [state] and re-run
+     * all visible rails. Collected on its own next to the hero so focus changes touch only the hero.
+     */
+    val heroState: StateFlow<HeroState?> = hero.asStateFlow()
+    private val focusedCard = MutableStateFlow<TitleSummary?>(null)
+
+    /**
+     * TV focus/scroll restoration (bug fix): the Home composable is torn down while a Details page
+     * is on top, so Back would otherwise land on the nav drawer with the list reset to the top.
+     * We remember the card a title was opened from and the scroll offset here (the VM outlives the
+     * round-trip) and restore both on return — see HomeTvScreen.
+     */
+    var pendingRestoreKey: String? by mutableStateOf(null)
+        private set
+    private var lastOpenedKey: String? = null
+    var homeScrollIndex: Int = 0
+    var homeScrollOffset: Int = 0
+
+    /** Records the (rail-qualified) card a title was opened from; [armRestore] arms it when Home leaves. */
+    fun rememberForRestore(cardKey: String) { lastOpenedKey = cardKey }
+
+    /**
+     * Called as Home leaves composition (a title page is now on top). Arming here, not at click time,
+     * keeps the still-visible card from consuming the key before we navigate away.
+     */
+    fun armRestore() { pendingRestoreKey = lastOpenedKey }
+
+    fun clearRestore() { pendingRestoreKey = null; lastOpenedKey = null }
+
     private val profile = profiles.activeProfile.stateIn(viewModelScope, SharingStarted.Eagerly, null)
 
     /** Paged TMDB rails are rebuilt only when the tab or profile changes, and cached in the VM scope. */
@@ -120,7 +155,7 @@ class HomeViewModel @Inject constructor(
     }
 
     val state: StateFlow<HomeUiState> = combine(
-        combine(profile, tab, hero, refreshing) { p, t, h, r -> HeaderPart(p, t, h, r) },
+        combine(profile, tab, refreshing) { p, t, r -> HeaderPart(p, t, r) },
         localRails,
         pagedRails,
         keys,
@@ -129,7 +164,6 @@ class HomeViewModel @Inject constructor(
         HomeUiState(
             profile = header.profile,
             tab = header.tab,
-            hero = header.hero,
             rails = assemble(header.tab, local, paged),
             myList = myList,
             liked = liked,
@@ -142,6 +176,12 @@ class HomeViewModel @Inject constructor(
         // Pick the hero once per tab/profile (spec §5.2: rotated per session).
         viewModelScope.launch {
             combine(tab, profile.filterNotNull()) { t, p -> t to p }.collect { (t, p) -> pickHero(t, p) }
+        }
+        // Follow the focused card, debounced so holding the d-pad doesn't thrash hero image loads.
+        viewModelScope.launch {
+            focusedCard.filterNotNull().debounce(180).collect { summary ->
+                if (hero.value?.summary?.ref != summary.ref) hero.value = HeroState(summary, summary.toHero(null, null, emptyList()))
+            }
         }
     }
 
@@ -178,11 +218,8 @@ class HomeViewModel @Inject constructor(
         library.markWatched(p.id, item.progress.playable, true, item.progress.durationMs)
     }
 
-    /** TV dynamic backdrop: the hero follows the focused card (spec §5.2). */
-    fun onCardFocused(summary: TitleSummary) {
-        if (hero.value?.summary?.ref == summary.ref) return
-        hero.value = HeroState(summary, summary.toHero(null, null, emptyList()))
-    }
+    /** TV dynamic backdrop: the hero follows the focused card (spec §5.2), applied debounced in [init]. */
+    fun onCardFocused(summary: TitleSummary) { focusedCard.value = summary }
 
     private suspend fun pickHero(t: HomeTab, p: Profile) {
         val recs = recommendations.rails(p.id).first().firstOrNull()?.items.orEmpty()
@@ -219,7 +256,7 @@ class HomeViewModel @Inject constructor(
         val recommendations: List<RecommendationRail>,
     )
 
-    private data class HeaderPart(val profile: Profile?, val tab: HomeTab, val hero: HeroState?, val refreshing: Boolean)
+    private data class HeaderPart(val profile: Profile?, val tab: HomeTab, val refreshing: Boolean)
 }
 
 internal fun TitleSummary.toHero(logo: String?, certification: String?, genres: List<String>, tagline: String? = null) = HeroContent(
@@ -234,3 +271,6 @@ internal fun TitleSummary.toHero(logo: String?, certification: String?, genres: 
 )
 
 fun TitleSummary.snapshot(): TitleSnapshot = toSnapshot()
+
+/** Stable per-title key used to match a card for TV focus restoration; mirrors the rails' item keys. */
+internal fun TitleRef.restoreKey(): String = "$tmdbId:${mediaType.apiValue}"

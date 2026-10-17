@@ -34,9 +34,13 @@ class JazzyApplication : Application(), Configuration.Provider, SingletonImageLo
 
     override fun onCreate() {
         super.onCreate()
-        appScope.launch { seedData.ensureSeeded() }
+        // Keep cold start off the main thread: WorkManager.getInstance() does first-time init
+        // (opens its own Room DB) and enqueues, so schedule it on the background scope with seeding.
+        appScope.launch {
+            seedData.ensureSeeded()
+            JazzyWork.schedule(this@JazzyApplication)
+        }
         recommendationTriggers.start()
-        JazzyWork.schedule(this)
         watchNext.start()
     }
 

@@ -24,6 +24,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -33,6 +34,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.nexient.jazzy.core.designsystem.component.HeroBackdrop
 import com.nexient.jazzy.core.designsystem.component.HeroText
 import com.nexient.jazzy.core.designsystem.component.OfflineBanner
@@ -51,13 +53,22 @@ import kotlinx.coroutines.launch
  */
 @Composable
 internal fun HomeTvScreen(state: HomeUiState, viewModel: HomeViewModel, actions: HomeActions) {
-    val listState = rememberLazyListState()
+    // Scroll is hoisted into the VM so it survives Details being pushed on top (the composable is
+    // torn down); restored here with the originating card's focus so Back returns to where we were.
+    val listState = rememberLazyListState(viewModel.homeScrollIndex, viewModel.homeScrollOffset)
+    DisposableEffect(Unit) {
+        onDispose {
+            viewModel.homeScrollIndex = listState.firstVisibleItemIndex
+            viewModel.homeScrollOffset = listState.firstVisibleItemScrollOffset
+            viewModel.armRestore()
+        }
+    }
     val scope = rememberCoroutineScope()
     val scrolled by remember { derivedStateOf { listState.firstVisibleItemIndex > 0 } }
     BackHandler(enabled = scrolled) { scope.launch { listState.animateScrollToItem(0) } }
 
     Box(Modifier.fillMaxSize()) {
-        HeroBackdrop(state.hero?.content, Modifier.fillMaxWidth().fillMaxHeight(0.65f).align(Alignment.TopEnd))
+        HeroBackdropSlot(viewModel, Modifier.fillMaxWidth().fillMaxHeight(0.65f).align(Alignment.TopEnd))
         LazyColumn(
             state = listState,
             modifier = Modifier.fillMaxSize(),
@@ -65,30 +76,43 @@ internal fun HomeTvScreen(state: HomeUiState, viewModel: HomeViewModel, actions:
             verticalArrangement = Arrangement.spacedBy(24.dp),
         ) {
             item(key = "hero") {
-                Box(Modifier.fillMaxWidth().height(340.dp).padding(horizontal = JazzyTheme.spacing.gutter)) {
-                    state.hero?.let { hero ->
-                        HeroText(hero.content, Modifier.align(Alignment.BottomStart)) {
-                            val inList = hero.summary.ref in state.myList
-                            val liked = hero.summary.ref in state.liked
-                            Button(
-                                onClick = { actions.openTitle(hero.summary.ref, null, null, true) },
-                                colors = ButtonDefaults.buttonColors(containerColor = Color.White, contentColor = Color.Black),
-                            ) { Icon(Icons.Filled.PlayArrow, null); Text(stringResource(R.string.home_hero_watch)) }
-                            OutlinedButton(onClick = { viewModel.toggleMyList(hero.summary.snapshot()) }) {
-                                Icon(if (inList) Icons.Filled.Check else Icons.Filled.Add, null); Text(stringResource(R.string.home_hero_my_list))
-                            }
-                            OutlinedButton(onClick = { viewModel.toggleLike(hero.summary.snapshot()) }) {
-                                Icon(if (liked) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder, null, tint = if (liked) JazzyColors.Accent else Color.White)
-                                Text(stringResource(if (liked) R.string.home_hero_liked else R.string.home_hero_like))
-                            }
-                            OutlinedButton(onClick = { actions.openTitle(hero.summary.ref, null, null, false) }) { Text(stringResource(R.string.home_hero_more_info)) }
-                        }
-                    }
-                }
+                HeroTextSlot(viewModel, state, actions)
                 if (state.offline) OfflineBanner()
             }
-            items(state.rails, key = { it.key }) { rail ->
+            items(state.rails, key = { it.key }, contentType = { it::class }) { rail ->
                 HomeRailContent(rail, state, viewModel, actions, onFocusTitle = viewModel::onCardFocused)
+            }
+        }
+    }
+}
+
+/** The hero is collected in its own slot so a focus step repaints only the backdrop, not the rails. */
+@Composable
+private fun HeroBackdropSlot(viewModel: HomeViewModel, modifier: Modifier) {
+    val hero by viewModel.heroState.collectAsStateWithLifecycle()
+    HeroBackdrop(hero?.content, modifier)
+}
+
+@Composable
+private fun HeroTextSlot(viewModel: HomeViewModel, state: HomeUiState, actions: HomeActions) {
+    val hero by viewModel.heroState.collectAsStateWithLifecycle()
+    Box(Modifier.fillMaxWidth().height(340.dp).padding(horizontal = JazzyTheme.spacing.gutter)) {
+        hero?.let { h ->
+            HeroText(h.content, Modifier.align(Alignment.BottomStart)) {
+                val inList = h.summary.ref in state.myList
+                val liked = h.summary.ref in state.liked
+                Button(
+                    onClick = { actions.openTitle(h.summary.ref, null, null, true) },
+                    colors = ButtonDefaults.buttonColors(containerColor = Color.White, contentColor = Color.Black),
+                ) { Icon(Icons.Filled.PlayArrow, null); Text(stringResource(R.string.home_hero_watch)) }
+                OutlinedButton(onClick = { viewModel.toggleMyList(h.summary.snapshot()) }) {
+                    Icon(if (inList) Icons.Filled.Check else Icons.Filled.Add, null); Text(stringResource(R.string.home_hero_my_list))
+                }
+                OutlinedButton(onClick = { viewModel.toggleLike(h.summary.snapshot()) }) {
+                    Icon(if (liked) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder, null, tint = if (liked) JazzyColors.Accent else Color.White)
+                    Text(stringResource(if (liked) R.string.home_hero_liked else R.string.home_hero_like))
+                }
+                OutlinedButton(onClick = { actions.openTitle(h.summary.ref, null, null, false) }) { Text(stringResource(R.string.home_hero_more_info)) }
             }
         }
     }

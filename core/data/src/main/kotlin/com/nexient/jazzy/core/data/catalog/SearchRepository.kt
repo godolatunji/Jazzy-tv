@@ -46,7 +46,9 @@ class SearchRepository @Inject constructor(
     private val serializer = ListSerializer(SearchResult.serializer())
 
     fun search(query: String, filter: SearchFilter, profile: Profile?): Flow<PagingData<SearchResult>> = Pager(
-        PagingConfig(pageSize = 20, enablePlaceholders = false),
+        // initialLoadSize defaults to 3×pageSize (=60); TMDB serves 20/page, so the default fires
+        // three sequential fetches before the first result shows. Match pageSize for fast first paint.
+        PagingConfig(pageSize = 20, initialLoadSize = 20, prefetchDistance = 10, enablePlaceholders = false),
     ) {
         object : PagingSource<Int, SearchResult>() {
             override fun getRefreshKey(state: PagingState<Int, SearchResult>): Int? = null

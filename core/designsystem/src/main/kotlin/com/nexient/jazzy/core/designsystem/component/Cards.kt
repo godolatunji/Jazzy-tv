@@ -115,9 +115,10 @@ fun BackdropProgressCard(
     onFocused: ((Boolean) -> Unit)? = null,
 ) {
     val width = JazzyTheme.spacing.backdropWidth
-    Column(modifier.width(width)) {
+    Column(Modifier.width(width)) {
+        // The external modifier rides the focusable box so a focusRequester on it works.
         Box(
-            Modifier
+            modifier
                 .fillMaxWidth()
                 .aspectRatio(16f / 9f)
                 .jazzyClickable(CardShape, clipContent = true, onLongClick = onMenu, onFocused = onFocused, onClick = onClick),
@@ -159,7 +160,7 @@ fun TopTenCard(
     onFocused: ((Boolean) -> Unit)? = null,
 ) {
     val poster = JazzyTheme.spacing.posterWidth
-    Row(modifier, verticalAlignment = Alignment.Bottom) {
+    Row(verticalAlignment = Alignment.Bottom) {
         Text(
             text = rank.toString(),
             style = TextStyle(
@@ -170,7 +171,8 @@ fun TopTenCard(
             ),
             modifier = Modifier.padding(end = 0.dp),
         )
-        PosterCard(title, posterPath, onClick, Modifier.width(poster * 0.9f), onFocused = onFocused)
+        // The external modifier rides the focusable poster so a focusRequester on it works.
+        PosterCard(title, posterPath, onClick, modifier.width(poster * 0.9f), onFocused = onFocused)
     }
 }
 

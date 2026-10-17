@@ -47,7 +47,7 @@ data class HeroContent(
 fun HeroBackdrop(content: HeroContent?, modifier: Modifier = Modifier) {
     Box(modifier) {
         Crossfade(content?.backdropPath, label = "heroBackdrop") { path ->
-            JazzyImage(TmdbImages.backdrop(path, tv = true), null, Modifier.fillMaxSize(), contentScale = ContentScale.Crop)
+            JazzyImage(TmdbImages.heroBackdrop(path), null, Modifier.fillMaxSize(), contentScale = ContentScale.Crop)
         }
         Box(Modifier.fillMaxSize().background(Brush.verticalGradient(listOf(Color.Transparent, JazzyColors.Background), startY = 200f)))
         Box(Modifier.fillMaxSize().background(Brush.horizontalGradient(listOf(JazzyColors.Background.copy(alpha = 0.85f), Color.Transparent))))

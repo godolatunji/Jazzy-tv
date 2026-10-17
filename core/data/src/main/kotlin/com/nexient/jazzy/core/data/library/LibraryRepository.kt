@@ -30,6 +30,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -176,7 +177,7 @@ class LibraryRepository @Inject constructor(
     ): Flow<List<ContinueWatchingItem>> = combine(
         progressDao.observeLatestPerTitle(profileId, 60),
         libraryDao.observeMyList(profileId), // re-emit when snapshots change
-    ) { rows, _ -> rows }.map { rows ->
+    ) { rows, _ -> rows }.distinctUntilChanged().map { rows ->
         withContext(io) {
             rows.filter { it.updatedAt > 0 }.mapNotNull { row ->
                 val snapshot = snapshotDao.get(row.tmdbId, row.mediaType)?.toModel() ?: return@mapNotNull null
